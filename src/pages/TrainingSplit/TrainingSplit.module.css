@@ -16,12 +16,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
+  gap: 1rem;
 }
 
 .add-training-wrapper {
   order: 1;
-  border-radius: 1rem;
   padding: clamp(0.7rem, 2.5vw, 1rem) clamp(1.5rem, 2.5vw, 2rem);
 }
 
@@ -38,6 +37,23 @@
 
 }
 
+@media (min-width: 940px) {
+
+  .content-wrapper {
+    align-items: flex-start;
+    flex-direction: row;
+  }
+
+  .add-training-wrapper {
+    order: 2;
+  }
+
+  .content-main {
+    order: 1;
+    width: auto;
+  }
+}
+
 hr {
   background-color: white;
   width: 100%;
@@ -48,7 +64,7 @@ hr {
   background-color: rgb(39, 134, 56);
   color: white;
   font-weight: 700;
-  font-size: clamp(1.7rem, 2vw, 2.2rem);
+  font-size: clamp(1.6rem, 1vw, 2rem);
   padding: 1rem 2rem;
   border: none;
   border-radius: 1rem;
@@ -68,7 +84,6 @@ hr {
 .training-split-name-wrapper {
   display: flex;
   justify-content: space-between;
-
 }
 
 .training-split-name-add-workout-wrapper {
