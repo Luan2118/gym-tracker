@@ -40,6 +40,8 @@ h2 {
   height: fit-content;
   padding: 2rem;
   border-radius: 1rem;
+  width: fit-content;
+  align-self: center;
 }
 
 
@@ -79,7 +81,6 @@ h2 {
   cursor: pointer;
   transition: 0.2s ease;
   margin-top: 1.5rem;
-  width: 85%;
   align-self: center;
 }
 
@@ -97,7 +98,7 @@ h2 {
   gap: 0.8rem;
   margin-top: 1.5rem;
   padding: 1rem 1.4rem;
-  font-size: 1.6rem;
+  font-size: clamp(1.4rem, 2vw, 1.6rem);
   font-weight: 600;
   color: rgb(235, 235, 235);
   background-color: rgb(62, 62, 62);
@@ -120,12 +121,12 @@ h2 {
 
 .fieldset-wrapper {
   display: flex;
-  flex-direction: row;
   border: none;
   padding: 0;
+  margin: 0;
   margin-bottom: clamp(1.6rem, 2vw, 2rem);
   flex-wrap: wrap;
-  gap: 0.6rem;
+  gap: 0.7rem;
   justify-content: center;
 }
 
@@ -133,7 +134,9 @@ h2 {
 .date-from-wrapper,
 .date-to-wrapper {
   text-align: start;
-  margin-right: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .date-from-label,
@@ -157,6 +160,7 @@ h2 {
 .filter-buttons-wrapper {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 
@@ -165,13 +169,12 @@ h2 {
 .last-month-button,
 .last-2-months-button,
 .show-all-button {
-  flex: 1;
   border: 1px solid rgb(255, 255, 255, 0.06);
   background-color: rgb(75, 75, 75);
   color: white;
-  font-size: clamp(1.5rem, 3vw, 1.8rem);
+  font-size: clamp(1.5rem, 1vw, 1.8rem);
   border-radius: 1rem;
-  padding: clamp(0.7rem, 2.5vw, 1rem) clamp(1.5rem, 2.5vw, 2rem);
+  padding: clamp(0.7rem, 1vw, 1rem) clamp(1.5rem, 1vw, 2rem);
   margin-right: 1rem;
   margin-top: 1rem;
   cursor: pointer;
@@ -247,4 +250,26 @@ h2 {
 .active-page-button:disabled {
   opacity: 0.45;
   cursor: not-allowed;
+}
+
+
+@media (min-width: 940px) {
+
+  .content-wrapper {
+    flex-direction: row;
+  }
+
+  .weight-submit-wrapper {
+    align-self: flex-start;
+  }
+
+  .content-main-wrapper {
+    order: 1;
+  }
+
+  .weight-submit-wrapper  {
+    order: 2;
+  }
+
+
 }
