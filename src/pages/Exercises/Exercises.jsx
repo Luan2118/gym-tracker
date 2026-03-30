@@ -28,6 +28,8 @@ export default function Exercises() {
 
   function handleSelectExercise(exerciseId) {
     setSelectedExerciseId(exerciseId)
+    
+    if (isMobile) dialogRef.current.close();
   }
 
   const dialogRef = useRef(null);
@@ -47,7 +49,7 @@ export default function Exercises() {
       </header>
 
       {isMobile ?
-        <>
+        <div className={styles["select-exercise-content-wrapper"]}>
           <div className={styles["select-exercise-wrapper"]}>
             <button onClick={handleExercisesList} className={styles["select-exercise-button"]}>Select Exercise</button>
 
@@ -61,9 +63,10 @@ export default function Exercises() {
           </div>
           
           <SelectedExercisePanel
+            isMobile={isMobile}
             selectedExerciseId={selectedExerciseId}
           />
-        </>
+        </div>
         :
 
         <div className={styles["content-wrapper"]}>

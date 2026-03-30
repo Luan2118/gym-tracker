@@ -1,4 +1,3 @@
-
 .main-content-wrapper {
   display: flex;
   flex-direction: column;
@@ -8,15 +7,30 @@
 
 .selected-exercise-wrapper {
   display: flex;
+  flex-direction: column;
   align-items: center;
   background-color: rgb(41, 41, 41);
   border: 1px solid rgba(255, 255, 255, 0.06);
-  padding: clamp(1.2rem, 2vw, 2rem) clamp(1.8rem, 2vw, 2.5rem);
+  padding: clamp(1.2rem, 2vw, 1.8rem) clamp(1.3rem, 2vw, 2rem);
   border-radius: 1rem;
   gap: 4rem;
+
+}
+
+.selected-exercise-content {
+  display: flex;
+  justify-content: space-between;
+  gap: clamp(1rem, 2vw, 4rem);
+  width: 100%;
+}
+
+.dialog-selected-exercise-wrapper {
+  gap: 1.5rem;
 }
 
 .selected-exercise-name {
+  align-self: flex-start;
+  text-wrap: wrap;
   font-size: clamp(1.8rem, 2vw, 2.3rem);
   font-weight: 600;
 }
@@ -42,16 +56,11 @@
 }
 
 .selected-exercise-image {
-  width: clamp(20rem, 26vw, 35rem);
+  width: clamp(20rem, 52vw, 35rem);
   border-radius: 1rem;
 }
 
-.selected-exercise-info {
-  display: flex;
-  flex-direction: column;
-  gap: 4rem;
-  align-self: flex-start;
-}
+
 
 .selected-exercise-primary-secondary-wrapper {
   line-height: 2.6rem;

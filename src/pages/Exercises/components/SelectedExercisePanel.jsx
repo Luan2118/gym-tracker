@@ -8,7 +8,7 @@ import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, LineElement, PointElement, CategoryScale, LinearScale, Title, Tooltip } from 'chart.js';
 ChartJS.register(LineElement, PointElement, CategoryScale, LinearScale, Title, Tooltip);
 
-export default function SelectedExercisePanel({ selectedExerciseId, }) {
+export default function SelectedExercisePanel({ isMobile, selectedExerciseId, }) {
 
   const { workoutHistory } = useOutletContext();
 
@@ -156,10 +156,10 @@ export default function SelectedExercisePanel({ selectedExerciseId, }) {
       {selectedExerciseId ?
         <>
           <div className={styles["selected-exercise-wrapper"]}>
-            <div className={styles["selected-exercise-info"]}>
-              <div className={styles["selected-exercise-name"]}>{selectedExercise.name}
-              </div>
+            <div className={styles["selected-exercise-name"]}>{selectedExercise.name}
+            </div>
 
+            <div className={styles["selected-exercise-content"]}>
               <div className={styles["selected-exercise-primary-secondary-wrapper"]}>
                 <div className={styles["selected-exercise-primary-muscle-wrapper"]}>
                   <span className={styles["selected-exercise-primary-muscle-label"]}>Primary Muscle: </span>
@@ -173,8 +173,6 @@ export default function SelectedExercisePanel({ selectedExerciseId, }) {
                   ''
                 }
               </div>
-            </div>
-            <div>
 
               <button onClick={() => setClickedExImg((prev) => !prev)} className={styles["selected-exercise-image-button"]}>
                 <img src={`${EXERCISE_BASE_PREFIX}${clickedExImg ? selectedExercise.images[0] : selectedExercise.images[1]}`} alt={selectedExercise.name} className={styles["selected-exercise-image"]} />

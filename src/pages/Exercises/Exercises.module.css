@@ -23,6 +23,12 @@
   min-height: 0;
 }
 
+.select-exercise-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem; 
+}
+
 .select-exercise-wrapper {
   display: flex;
 }
