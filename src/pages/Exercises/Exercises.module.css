@@ -85,143 +85,6 @@
   margin-bottom: 2rem;
 }
 
-.filter-search-wrapper {
-  display: flex;
-  align-items: center;
-  margin-bottom: 2rem;
-  background-color: rgb(60, 60, 60);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 1rem;
-}
-
-.search-icon {
-  margin-left: 1rem;
-  max-height: clamp(2rem, 2vw, 3rem);
-  max-width: clamp(2rem, 2vw, 3rem);
-}
-
-.search-exercise-input {
-  background-color: rgb(60, 60, 60);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  color: white;
-  font-size: clamp(1.5rem, 1vw, 1.8rem);
-  border: none;
-  padding: clamp(0.7rem, 2vw, 1rem) clamp(1.5rem, 2vw, 2rem);
-  margin-right: 3rem;
-}
-
-.search-exercise-input:focus {
-  outline: none;
-  box-shadow: none;
-}
-
-.search-exercise-input::placeholder {
-  color: rgb(219, 219, 219);
-}
-
-
-.filter-exercises-wrapper {
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-  flex: 1;
-}
-
-
-.filter-input-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  border-radius: 1rem;
-  background-color: rgb(41, 41, 41);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  margin-bottom: 1.5rem;
-  padding: clamp(0.7rem, 2vw, 1rem) clamp(1.5rem, 2vw, 2rem);
-}
-
-.exercise-category-select,
-.equipment-category-select {
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  background-color: rgb(60, 60, 60);
-  color: white;
-  font-size: clamp(1.5rem, 1vw, 1.8rem);
-  border-radius: 1rem;
-  padding: clamp(0.7rem, 1vw, 0.8rem) clamp(1.5rem, 2vw, 2rem);
-  cursor: pointer;
-  width: 100%;
-  margin-bottom: 1rem;
-}
-
-.upper-body-exercises {
-  margin-right: 1rem;
-}
-
-.upper-body-exercises-button,
-.lower-body-exercises-button {
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  background-color: rgb(60, 60, 60);
-  color: white;
-  font-size: clamp(1.5rem, 1vw, 1.8rem);
-  border-radius: 1rem;
-  cursor: pointer;
-  padding: clamp(0.7rem, 2vw, 1rem) clamp(1.5rem, 2vw, 2rem);
-  margin-right: 1rem;
-  transition: 0.2s ease;
-  margin-bottom: 0.8rem;
-}
-
-.selected-exercise-buttons-wrapper {
-  margin: 1rem 0;
-}
-
-.selected-exercise-last-30-btn,
-.selected-exercise-last-60-btn,
-.selected-exercise-last-90-btn,
-.selected-exercise-all-btn {
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  background-color: rgb(60, 60, 60);
-  color: white;
-  font-size: clamp(1.3rem, 1vw, 1.5rem);
-  border-radius: 1rem;
-  cursor: pointer;
-  padding: 0.8rem 1.3rem;
-  margin-right: 1rem;
-  transition: 0.2s ease;
-}
-
-.upper-body-exercises-button:hover,
-.lower-body-exercises-button:hover,
-.selected-exercise-last-30-btn:hover,
-.selected-exercise-last-60-btn:hover,
-.selected-exercise-last-90-btn:hover,
-.selected-exercise-all-btn:hover {
-  background-color: rgb(70, 70, 70);
-}
-
-.upper-body-exercises-button:active,
-.lower-body-exercises-button:active,
-.selected-exercise-last-30-btn:active,
-.selected-exercise-last-60-btn:active,
-.selected-exercise-last-90-btn:active,
-.selected-exercise-all-btn:active {
-  background-color: rgb(80, 80, 80);
-}
-
-.exercise-list-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  width: auto;
-  border-radius: 1rem;
-  padding: 2rem;
-  background-color: rgb(41, 41, 41);
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  margin-bottom: 2rem;
-  scrollbar-width: 1.5rem;
-  scrollbar-color: #6f6f6f #222;
-}
 
 
 .clicked-filter-button {
@@ -288,7 +151,7 @@
   background-color: rgb(58, 58, 58);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 1.2rem;
-  padding:  clamp(1.4rem, 2vw, 1.8rem) clamp(1rem, 2vw, 1.4rem);
+  padding: clamp(1.4rem, 2vw, 1.8rem) clamp(1rem, 2vw, 1.4rem);
   margin-top: 1.6rem;
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
 }
@@ -315,4 +178,85 @@
   font-size: clamp(1.5rem, 2vw, 1.8rem);
   font-weight: 700;
   color: white;
+}
+
+.selected-exercise-buttons-wrapper {
+  margin: 1rem 0;
+}
+
+.selected-exercise-last-30-btn,
+.selected-exercise-last-60-btn,
+.selected-exercise-last-90-btn,
+.selected-exercise-all-btn {
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background-color: rgb(60, 60, 60);
+  color: white;
+  font-size: clamp(1.3rem, 1vw, 1.5rem);
+  border-radius: 1rem;
+  cursor: pointer;
+  padding: 0.8rem 1.3rem;
+  margin-right: 1rem;
+  transition: 0.2s ease;
+}
+
+.selected-exercise-last-30-btn:hover,
+.selected-exercise-last-60-btn:hover,
+.selected-exercise-last-90-btn:hover,
+.selected-exercise-all-btn:hover {
+  background-color: rgb(70, 70, 70);
+}
+
+.selected-exercise-last-30-btn:active,
+.selected-exercise-last-60-btn:active,
+.selected-exercise-last-90-btn:active,
+.selected-exercise-all-btn:active {
+  background-color: rgb(80, 80, 80);
+}
+
+.select-exercise-wrapper {
+  display: flex;
+}
+
+.select-exercise-button {
+  background-color: rgb(51, 51, 51);
+  color: white;
+  font-size: clamp(1.6rem, 3vw, 2rem);
+  border: none;
+  border-radius: 1rem;
+  cursor: pointer;
+  padding: clamp(1rem, 3vw, 1.2rem) clamp(1.6rem, 3vw, 2.2rem);
+  transition: 0.3s ease;
+  font-weight: 600 ;
+  width: 100%;
+
+}
+
+.dialog-popup {
+  background-color: rgb(30, 30, 30);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 1rem;
+  padding: 1rem 2rem;
+  box-shadow: 0 4px 50px rgba(0, 0, 0, 0.4);
+  width: clamp(30rem, 55vw, 51.5rem);
+  height: clamp(60rem, 70vh, 80rem);
+  scrollbar-width: thin;
+  scrollbar-color: #6f6f6f #222;
+  overflow-y: hidden;
+}
+
+
+
+.filter-exercises-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1;
+}
+
+.filter-exercises-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1;
 }

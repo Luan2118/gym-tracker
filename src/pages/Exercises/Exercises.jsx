@@ -1,13 +1,12 @@
-import ExerciseList from './components/ExerciseList'
 import styles from './Exercises.module.css'
-import searchIcon from '../../assets/searchIcon.png'
 import { exercises, EXERCISE_BASE_PREFIX } from '../../data/exercises'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, LineElement, PointElement, CategoryScale, LinearScale, Title, Tooltip } from 'chart.js';
 import formatISODate from '../../utils/formatISODate'
 import { useOutletContext } from 'react-router-dom'
 import setPastDate from '../../utils/setPastDate'
+import ExerciseBrowser from './components/ExerciseBrowser'
 
 ChartJS.register(LineElement, PointElement, CategoryScale, LinearScale, Title, Tooltip);
 
@@ -15,20 +14,16 @@ ChartJS.register(LineElement, PointElement, CategoryScale, LinearScale, Title, T
 export default function Exercises() {
 
   const { workoutHistory } = useOutletContext();
-  const [searchText, setSearchText] = useState('');
-  const [selectedMuscleOption, setSelectedMuscleOption] = useState('');
-  const [selectedUpperBodyEx, setSelectedUpperBodyEx] = useState(false);
-  const [selectedLowerBodyEx, setSelectedLowerBodyEx] = useState(false);
   const [selectedExerciseId, setSelectedExerciseId] = useState('');
   const [clickedExImg, setClickedExImg] = useState(false);
   const [progressClicked, setProgressClicked] = useState(true);
   const [historyClicked, setHistoryClicked] = useState(false);
   const [chartFilter, setChartFilter] = useState('last30');
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 900);
 
   const selectedExercise = selectedExerciseId ? exercises.find((ex) => ex.id === selectedExerciseId) : '';
 
 
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 900);
 
   useEffect(() => {
 
@@ -43,9 +38,11 @@ export default function Exercises() {
     };
   }, []);
 
-  console.log(isMobile)
 
   console.log(isMobile)
+
+
+
   const primaryMuscle = selectedExercise ? selectedExercise.primaryMuscles.map((muscle) => {
     return muscle.charAt(0).toUpperCase() + muscle.slice(1)
   }) : '';
@@ -55,22 +52,6 @@ export default function Exercises() {
       return muscle.charAt(0).toUpperCase() + muscle.slice(1)
     }) : ''
 
-
-  const filteredExercises =
-    searchText ? exercises.filter((ex) => ex.name.toLowerCase().includes(searchText)) :
-      selectedMuscleOption ? exercises.filter((ex) => {
-        if (selectedMuscleOption.toLocaleLowerCase() === 'all muscles') {
-          return ex;
-        } else {
-          return ex.muscleGroup === selectedMuscleOption
-        }
-      }) :
-        selectedUpperBodyEx ? exercises.filter((ex) => ex.bodyRegion === 'upper') :
-          selectedLowerBodyEx ? exercises.filter((ex) => ex.bodyRegion === 'lower')
-            :
-            exercises
-
-  const muscleGroupList = [];
 
 
   function handleSelectExercise(exerciseId) {
@@ -169,6 +150,7 @@ export default function Exercises() {
       },
     },
   };
+
   function handleProgressBtn() {
     setProgressClicked(true);
     setHistoryClicked(false);
@@ -197,6 +179,17 @@ export default function Exercises() {
 
   const latestSet = [...filteredWorkouts].sort((a, b) => new Date(b.date) - new Date(a.date))[0]?.exercises.find((ex) => ex.exerciseId === selectedExerciseId).sets[0]
 
+
+  const dialogRef = useRef(null);
+
+  function handleExercisesList() {
+    dialogRef.current.showModal();
+  }
+
+  function handleCloseDialog() {
+    dialogRef.current.close();
+  }
+
   return (
     <div className={styles["exercise-page"]}>
       <header>
@@ -204,9 +197,22 @@ export default function Exercises() {
       </header>
 
       {isMobile ?
-        <div>
-          MOBILE
-        </div> :
+        <>
+          <div className={styles["select-exercise-wrapper"]}>
+            <button onClick={handleExercisesList} className={styles["select-exercise-button"]}>Select Exercise</button>
+
+            <dialog ref={dialogRef} className={styles["dialog-popup"]}>
+              <ExerciseBrowser
+                isMobile={isMobile}
+                handleSelectExercise={handleSelectExercise}
+                handleCloseDialog={handleCloseDialog}
+              />
+            </dialog>
+          </div>
+
+
+        </>
+        :
 
         <div className={styles["content-wrapper"]}>
 
@@ -308,45 +314,11 @@ export default function Exercises() {
           </div>
 
           <div className={styles["filter-exercises-wrapper"]}>
-            <section className={styles["filter-input-wrapper"]}>
-              <h2 className={styles["sr-only"]}>Filter</h2>
-
-              <div className={styles["filter-search-wrapper"]}>
-                <label htmlFor='search-exercise' />
-                <img src={searchIcon} alt="" className={styles["search-icon"]} />
-                <input type="text" id="search-exercise" className={styles["search-exercise-input"]} onChange={(e) => setSearchText(e.target.value.toLowerCase())} value={searchText} placeholder='Search...' />
-              </div>
-
-
-              <label htmlFor="exercise-category" className={styles["sr-only"]}>Category</label>
-              <select id="exercise-category" className={styles["exercise-category-select"]} onChange={(e) => setSelectedMuscleOption(e.target.value)} value={selectedMuscleOption}>
-                <option value="All Muscles">All Muscles</option>
-                {
-                  muscleGroupList.map((muscleGroup) => {
-                    return (
-                      <option value={muscleGroup} key={muscleGroup}>
-                        {muscleGroup.charAt(0).toUpperCase() + muscleGroup.slice(1)}
-                      </option>
-                    )
-                  })
-                }
-              </select>
-
-              <label htmlFor="equipment-category" className={styles["sr-only"]}>Category</label>
-              <select id="equipment-category" className={styles["equipment-category-select"]}>
-                <option value="All Equipment">All Equipment</option>
-              </select>
-
-              <div className={styles["filter-upper-lower-wrapper"]}>
-                <button className={selectedUpperBodyEx ? styles["clicked-filter-button"] : styles["upper-body-exercises-button"]} onClick={() => setSelectedUpperBodyEx((prev) => !prev)}>Upper Body Exercises</button>
-                <button className={selectedLowerBodyEx ? styles["clicked-filter-button"] : styles["lower-body-exercises-button"]} onClick={() => setSelectedLowerBodyEx((prev) => !prev)}>Lower Body Exercises</button>
-              </div>
-
-            </section>
-            <section aria-label='Exercise List' className={styles["exercise-list-wrapper"]}>
-              <ExerciseList filteredExercises={filteredExercises} handleSelectExercise={handleSelectExercise} />
-            </section>
+            <ExerciseBrowser
+              handleSelectExercise={handleSelectExercise}
+            />
           </div>
+
         </div>
       }
     </div>

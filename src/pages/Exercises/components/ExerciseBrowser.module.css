@@ -1,0 +1,186 @@
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.filter-search-wrapper {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+  background-color: rgb(60, 60, 60);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 1rem;
+}
+
+.search-icon {
+  margin-left: 1rem;
+  max-height: clamp(2rem, 2vw, 3rem);
+  max-width: clamp(2rem, 2vw, 3rem);
+}
+
+.search-exercise-input {
+  background-color: rgb(60, 60, 60);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: white;
+  font-size: clamp(1.5rem, 1vw, 1.8rem);
+  border: none;
+  padding: clamp(0.7rem, 2vw, 1rem) clamp(1.5rem, 2vw, 2rem);
+  margin-right: 3rem;
+}
+
+.search-exercise-input:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.search-exercise-input::placeholder {
+  color: rgb(219, 219, 219);
+}
+
+
+
+.filter-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border-radius: 1rem;
+  background-color: rgb(41, 41, 41);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  margin-bottom: 1.5rem;
+  padding: clamp(0.7rem, 2vw, 1rem) clamp(1.5rem, 2vw, 2rem);
+}
+
+.dialog-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border-radius: 1rem;
+  margin-bottom: 1.5rem;
+  padding: clamp(0.7rem, 2vw, 1rem) clamp(1.5rem, 2vw, 2rem);
+}
+
+.exercise-category-select,
+.equipment-category-select {
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background-color: rgb(60, 60, 60);
+  color: white;
+  font-size: clamp(1.5rem, 1vw, 1.8rem);
+  border-radius: 1rem;
+  padding: clamp(0.7rem, 1vw, 0.8rem) clamp(1.5rem, 2vw, 2rem);
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.clicked-filter-button {
+  background-color: rgb(59, 130, 246);
+  color: white;
+  font-size: clamp(1.5rem, 1vw, 1.8rem);
+  border: none;
+  border-radius: 1rem;
+  cursor: pointer;
+  padding: 1rem 2rem;
+  transition: 0.2s ease;
+  margin-bottom: 0.5rem;
+}
+
+.upper-body-exercises {
+  margin-right: 1rem;
+}
+
+.upper-body-exercises-button,
+.lower-body-exercises-button {
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background-color: rgb(60, 60, 60);
+  color: white;
+  font-size: clamp(1.5rem, 1vw, 1.8rem);
+  border-radius: 1rem;
+  cursor: pointer;
+  padding: clamp(0.7rem, 2vw, 1rem) clamp(1.5rem, 2vw, 2rem);
+  margin-right: 1rem;
+  transition: 0.2s ease;
+  margin-bottom: 0.8rem;
+}
+
+.selected-exercise-buttons-wrapper {
+  margin: 1rem 0;
+}
+
+.selected-exercise-last-30-btn,
+.selected-exercise-last-60-btn,
+.selected-exercise-last-90-btn,
+.selected-exercise-all-btn {
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background-color: rgb(60, 60, 60);
+  color: white;
+  font-size: clamp(1.3rem, 1vw, 1.5rem);
+  border-radius: 1rem;
+  cursor: pointer;
+  padding: 0.8rem 1.3rem;
+  margin-right: 1rem;
+  transition: 0.2s ease;
+}
+
+.upper-body-exercises-button:hover,
+.lower-body-exercises-button:hover {
+  background-color: rgb(70, 70, 70);
+}
+
+.upper-body-exercises-button:active,
+.lower-body-exercises-button:active {
+  background-color: rgb(80, 80, 80);
+}
+
+.exercise-list-wrapper,
+.dialog-exercise-list-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  border-radius: 1rem;
+  padding: 2rem;
+  background-color: rgb(41, 41, 41);
+  flex: 1;
+  overflow-y: scroll;
+  scrollbar-width: 1.5rem;
+  scrollbar-color: #6f6f6f #222;
+  height: clamp(20rem, 37vh, 45rem);
+}
+
+.exercise-list-wrapper {
+  margin-bottom: 2rem;
+}
+
+.select-exercise-title-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.select-exercise-title {
+  font-size: clamp(2rem, 2vw, 2.6rem);
+}
+
+
+.close-dialog-button {
+  background-color: rgb(30, 30, 30);
+  border: none;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.close-dialog-button:hover {
+  opacity: 0.8;
+}
+
+.close-dialog-img {
+  width: clamp(1.7rem, 3vw, 2rem);
+}
