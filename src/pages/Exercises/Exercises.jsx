@@ -2,7 +2,7 @@ import ExerciseList from './components/ExerciseList'
 import styles from './Exercises.module.css'
 import searchIcon from '../../assets/searchIcon.png'
 import { exercises, EXERCISE_BASE_PREFIX } from '../../data/exercises'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, LineElement, PointElement, CategoryScale, LinearScale, Title, Tooltip } from 'chart.js';
 import formatISODate from '../../utils/formatISODate'
@@ -27,6 +27,25 @@ export default function Exercises() {
 
   const selectedExercise = selectedExerciseId ? exercises.find((ex) => ex.id === selectedExerciseId) : '';
 
+
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 900);
+
+  useEffect(() => {
+
+    function handleResize() {
+      setIsMobile(window.innerWidth <= 900);
+    }
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  console.log(isMobile)
+
+  console.log(isMobile)
   const primaryMuscle = selectedExercise ? selectedExercise.primaryMuscles.map((muscle) => {
     return muscle.charAt(0).toUpperCase() + muscle.slice(1)
   }) : '';
@@ -92,64 +111,64 @@ export default function Exercises() {
     ],
   };
 
-const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      display: false,
-    },
-    title: {
-      display: true,
-      text: 'Heaviest Weight Progress',
-      color: 'rgb(238, 238, 238)',
-      font: {
-        size: 20,
-        weight: '600',
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: false,
       },
-      padding: {
-        bottom: 18,
+      title: {
+        display: true,
+        text: 'Heaviest Weight Progress',
+        color: 'rgb(238, 238, 238)',
+        font: {
+          size: 20,
+          weight: '600',
+        },
+        padding: {
+          bottom: 18,
+        },
       },
-    },
-    tooltip: {
-      displayColors: false,
-      backgroundColor: 'rgb(95, 95, 95)',
-      titleColor: 'rgb(245, 245, 245)',
-      bodyColor: 'rgb(245, 245, 245)',
-      bodyFont: {
-        weight: 'bold',
-      },
-      callbacks: {
-        label: (context) => {
-          return `Weight: ${context.formattedValue} kg`;
+      tooltip: {
+        displayColors: false,
+        backgroundColor: 'rgb(95, 95, 95)',
+        titleColor: 'rgb(245, 245, 245)',
+        bodyColor: 'rgb(245, 245, 245)',
+        bodyFont: {
+          weight: 'bold',
+        },
+        callbacks: {
+          label: (context) => {
+            return `Weight: ${context.formattedValue} kg`;
+          },
         },
       },
     },
-  },
-  scales: {
-    x: {
-      ticks: {
-        color: 'rgb(200, 200, 200)',
+    scales: {
+      x: {
+        ticks: {
+          color: 'rgb(200, 200, 200)',
+        },
+        grid: {
+          color: 'rgba(255, 255, 255, 0.08)',
+        },
+        border: {
+          display: false,
+        },
       },
-      grid: {
-        color: 'rgba(255, 255, 255, 0.08)',
-      },
-      border: {
-        display: false,
+      y: {
+        ticks: {
+          color: 'rgb(200, 200, 200)',
+        },
+        grid: {
+          color: 'rgba(255, 255, 255, 0.08)',
+        },
+        border: {
+          display: false,
+        },
       },
     },
-    y: {
-      ticks: {
-        color: 'rgb(200, 200, 200)',
-      },
-      grid: {
-        color: 'rgba(255, 255, 255, 0.08)',
-      },
-      border: {
-        display: false,
-      },
-    },
-  },
-};
+  };
   function handleProgressBtn() {
     setProgressClicked(true);
     setHistoryClicked(false);
@@ -184,141 +203,152 @@ const options = {
         <h1>Exercise</h1>
       </header>
 
-      <div className={styles["content-wrapper"]}>
+      {isMobile ?
+        <div>
+          MOBILE
+        </div> :
 
-        <div className={styles["main-content-wrapper"]}>
-          {selectedExerciseId ?
-            <>
-              <div className={styles["selected-exercise-wrapper"]}>
-                <div className={styles["selected-exercise-info"]}>
-                  <div className={styles["selected-exercise-name"]}>{selectedExercise.name}</div>
-                  <div>
-                    <span className={styles["selected-exercise-primary-muscle-label"]}>Primary Muscle: </span>
-                    <span className={styles["selected-exercise-primary-muscle-value"]}>{primaryMuscle}</span></div>
-                  {secondaryMuscles.length > 0 ?
-                    <div>
-                      <span className={styles["selected-exercise-secondary-muscle-label"]}>Secondary Muscles:{' '}</span>
-                      <span className={styles["selected-exercise-secondary-muscle-value"]}>{secondaryMuscles.join(', ')}</span>
-                    </div> :
-                    ''
-                  }
-                </div>
-                <div>
+        <div className={styles["content-wrapper"]}>
 
-                  <button onClick={() => setClickedExImg((prev) => !prev)} className={styles["selected-exercise-image-button"]}>
-                    <img src={`${EXERCISE_BASE_PREFIX}${clickedExImg ? selectedExercise.images[0] : selectedExercise.images[1]}`} alt={selectedExercise.name} className={styles["selected-exercise-image"]} />
-                  </button>
-                </div>
-              </div>
-
-              <div className={styles["selected-exercise-statistics-wrapper"]}>
-                <div>
-                  <button className={progressClicked ? styles["clicked-statistics-button"] : styles["selected-exercise-statistics-progress-button"]} onClick={handleProgressBtn}>Progress</button>
-                  <button className={historyClicked ? styles["clicked-statistics-button"] : styles["selected-exercise-statistics-history-button"]} onClick={handleHistoryBtn}>History</button>
-                </div>
-
-                <hr className={styles["selected-exercise-statistics-hr"]} />
-
-                {progressClicked ?
-                  <>
-
-                    <div className={styles["selected-exercise-buttons-wrapper"]}>
-                      <button className={styles["selected-exercise-last-30-btn"]} onClick={() => setChartFilter('last30')}>Last 30 Days</button>
-                      <button className={styles["selected-exercise-last-60-btn"]} onClick={() => setChartFilter('last60')}>Last 60 Days</button>
-                      <button className={styles["selected-exercise-last-90-btn"]} onClick={() => setChartFilter('last90')}>Last 90 Days</button>
-                      <button className={styles["selected-exercise-all-btn"]} onClick={() => setChartFilter('all')}>All</button>
+          <div className={styles["main-content-wrapper"]}>
+            {selectedExerciseId ?
+              <>
+                <div className={styles["selected-exercise-wrapper"]}>
+                  <div className={styles["selected-exercise-info"]}>
+                    <div className={styles["selected-exercise-name"]}>{selectedExercise.name}
                     </div>
-                    <div className={styles["heaviest-weight-chart-wrapper"]}>
-                      <Line
-                        data={data} options={options}
-                      />
+
+                    <div className={styles["selected-exercise-primary-secondary-wrapper"]}>
+                      <div className={styles["selected-exercise-primary-muscle-wrapper"]}>
+                        <span className={styles["selected-exercise-primary-muscle-label"]}>Primary Muscle: </span>
+                        <span className={styles["selected-exercise-primary-muscle-value"]}>{primaryMuscle}</span>
+                      </div>
+                      {secondaryMuscles.length > 0 ?
+                        <div className={styles["selected-exercise-secondary-muscle-wrapper"]}>
+                          <span className={styles["selected-exercise-secondary-muscle-label"]}>Secondary Muscles:{' '}</span>
+                          <span className={styles["selected-exercise-secondary-muscle-value"]}>{secondaryMuscles.join(', ')}</span>
+                        </div> :
+                        ''
+                      }
                     </div>
-                  </> :
-                  <div className={styles["selected-exercise-history-wrapper"]}>
-                    {latestSet && (
-                      <div className={styles["history-stat-card"]}>
-                        <p className={styles["history-stat-label"]}>Latest Set</p>
-                        <p className={styles["history-stat-value"]}>
-                          {latestSet.weight} x {latestSet.reps}
-                        </p>
-                      </div>
-                    )}
-
-                    {latestBestSet && (
-                      <div className={styles["history-stat-card"]}>
-                        <p className={styles["history-stat-label"]}>Best Set</p>
-                        <p className={styles["history-stat-value"]}>
-                          {latestBestSet.weight} x {latestBestSet.reps}
-                        </p>
-                      </div>
-                    )}
-
-                    {firstLoggedSet && (
-                      <div className={styles["history-stat-card"]}>
-                        <p className={styles["history-stat-label"]}>First Set</p>
-                        <p className={styles["history-stat-value"]}>
-                          {firstLoggedSet.weight} x {firstLoggedSet.reps}
-                        </p>
-                      </div>
-                    )}
-
-                    {filteredWorkouts.length > 0 &&
-                      <div className={styles["history-stat-card"]}>
-                        <p className={styles["history-stat-label"]}>Workouts</p>
-                        <p className={styles["history-stat-value"]}>{filteredWorkouts?.length}</p>
-                      </div>
-                    }
                   </div>
-                }
+                  <div>
 
+                    <button onClick={() => setClickedExImg((prev) => !prev)} className={styles["selected-exercise-image-button"]}>
+                      <img src={`${EXERCISE_BASE_PREFIX}${clickedExImg ? selectedExercise.images[0] : selectedExercise.images[1]}`} alt={selectedExercise.name} className={styles["selected-exercise-image"]} />
+                    </button>
+                  </div>
+                </div>
+
+                <div className={styles["selected-exercise-statistics-wrapper"]}>
+                  <div>
+                    <button className={progressClicked ? styles["clicked-statistics-button"] : styles["selected-exercise-statistics-progress-button"]} onClick={handleProgressBtn}>Progress</button>
+                    <button className={historyClicked ? styles["clicked-statistics-button"] : styles["selected-exercise-statistics-history-button"]} onClick={handleHistoryBtn}>History</button>
+                  </div>
+
+                  <hr className={styles["selected-exercise-statistics-hr"]} />
+
+                  {progressClicked ?
+                    <>
+
+                      <div className={styles["selected-exercise-buttons-wrapper"]}>
+                        <button className={styles["selected-exercise-last-30-btn"]} onClick={() => setChartFilter('last30')}>Last 30 Days</button>
+                        <button className={styles["selected-exercise-last-60-btn"]} onClick={() => setChartFilter('last60')}>Last 60 Days</button>
+                        <button className={styles["selected-exercise-last-90-btn"]} onClick={() => setChartFilter('last90')}>Last 90 Days</button>
+                        <button className={styles["selected-exercise-all-btn"]} onClick={() => setChartFilter('all')}>All</button>
+                      </div>
+                      <div className={styles["heaviest-weight-chart-wrapper"]}>
+                        <Line
+                          data={data} options={options}
+                        />
+                      </div>
+                    </> :
+                    <div className={styles["selected-exercise-history-wrapper"]}>
+                      {latestSet && (
+                        <div className={styles["history-stat-card"]}>
+                          <p className={styles["history-stat-label"]}>Latest Set</p>
+                          <p className={styles["history-stat-value"]}>
+                            {latestSet.weight} x {latestSet.reps}
+                          </p>
+                        </div>
+                      )}
+
+                      {latestBestSet && (
+                        <div className={styles["history-stat-card"]}>
+                          <p className={styles["history-stat-label"]}>Best Set</p>
+                          <p className={styles["history-stat-value"]}>
+                            {latestBestSet.weight} x {latestBestSet.reps}
+                          </p>
+                        </div>
+                      )}
+
+                      {firstLoggedSet && (
+                        <div className={styles["history-stat-card"]}>
+                          <p className={styles["history-stat-label"]}>First Set</p>
+                          <p className={styles["history-stat-value"]}>
+                            {firstLoggedSet.weight} x {firstLoggedSet.reps}
+                          </p>
+                        </div>
+                      )}
+
+                      {filteredWorkouts.length > 0 &&
+                        <div className={styles["history-stat-card"]}>
+                          <p className={styles["history-stat-label"]}>Workouts</p>
+                          <p className={styles["history-stat-value"]}>{filteredWorkouts?.length}</p>
+                        </div>
+                      }
+                    </div>
+                  }
+
+                </div>
+              </>
+              :
+              ''}
+
+          </div>
+
+          <div className={styles["filter-exercises-wrapper"]}>
+            <section className={styles["filter-input-wrapper"]}>
+              <h2 className={styles["sr-only"]}>Filter</h2>
+
+              <div className={styles["filter-search-wrapper"]}>
+                <label htmlFor='search-exercise' />
+                <img src={searchIcon} alt="" className={styles["search-icon"]} />
+                <input type="text" id="search-exercise" className={styles["search-exercise-input"]} onChange={(e) => setSearchText(e.target.value.toLowerCase())} value={searchText} placeholder='Search...' />
               </div>
-            </>
-            :
-            ''}
 
+
+              <label htmlFor="exercise-category" className={styles["sr-only"]}>Category</label>
+              <select id="exercise-category" className={styles["exercise-category-select"]} onChange={(e) => setSelectedMuscleOption(e.target.value)} value={selectedMuscleOption}>
+                <option value="All Muscles">All Muscles</option>
+                {
+                  muscleGroupList.map((muscleGroup) => {
+                    return (
+                      <option value={muscleGroup} key={muscleGroup}>
+                        {muscleGroup.charAt(0).toUpperCase() + muscleGroup.slice(1)}
+                      </option>
+                    )
+                  })
+                }
+              </select>
+
+              <label htmlFor="equipment-category" className={styles["sr-only"]}>Category</label>
+              <select id="equipment-category" className={styles["equipment-category-select"]}>
+                <option value="All Equipment">All Equipment</option>
+              </select>
+
+              <div className={styles["filter-upper-lower-wrapper"]}>
+                <button className={selectedUpperBodyEx ? styles["clicked-filter-button"] : styles["upper-body-exercises-button"]} onClick={() => setSelectedUpperBodyEx((prev) => !prev)}>Upper Body Exercises</button>
+                <button className={selectedLowerBodyEx ? styles["clicked-filter-button"] : styles["lower-body-exercises-button"]} onClick={() => setSelectedLowerBodyEx((prev) => !prev)}>Lower Body Exercises</button>
+              </div>
+
+            </section>
+            <section aria-label='Exercise List' className={styles["exercise-list-wrapper"]}>
+              <ExerciseList filteredExercises={filteredExercises} handleSelectExercise={handleSelectExercise} />
+            </section>
+          </div>
         </div>
-
-        <div className={styles["filter-exercises-wrapper"]}>
-          <section className={styles["filter-input-wrapper"]}>
-            <h2 className={styles["sr-only"]}>Filter</h2>
-
-            <div className={styles["filter-search-wrapper"]}>
-              <label htmlFor='search-exercise' />
-              <img src={searchIcon} alt="" className={styles["search-icon"]} />
-              <input type="text" id="search-exercise" className={styles["search-exercise-input"]} onChange={(e) => setSearchText(e.target.value.toLowerCase())} value={searchText} placeholder='Search...' />
-            </div>
-
-
-            <label htmlFor="exercise-category" className={styles["sr-only"]}>Category</label>
-            <select id="exercise-category" className={styles["exercise-category-select"]} onChange={(e) => setSelectedMuscleOption(e.target.value)} value={selectedMuscleOption}>
-              <option value="All Muscles">All Muscles</option>
-              {
-                muscleGroupList.map((muscleGroup) => {
-                  return (
-                    <option value={muscleGroup} key={muscleGroup}>
-                      {muscleGroup.charAt(0).toUpperCase() + muscleGroup.slice(1)}
-                    </option>
-                  )
-                })
-              }
-            </select>
-
-            <label htmlFor="equipment-category" className={styles["sr-only"]}>Category</label>
-            <select id="equipment-category" className={styles["equipment-category-select"]}>
-              <option value="All Equipment">All Equipment</option>
-            </select>
-
-            <div className={styles["filter-upper-lower-wrapper"]}>
-              <button className={selectedUpperBodyEx ? styles["clicked-filter-button"] : styles["upper-body-exercises-button"]} onClick={() => setSelectedUpperBodyEx((prev) => !prev)}>Upper Body Exercises</button>
-              <button className={selectedLowerBodyEx ? styles["clicked-filter-button"] : styles["lower-body-exercises-button"]} onClick={() => setSelectedLowerBodyEx((prev) => !prev)}>Lower Body Exercises</button>
-            </div>
-
-          </section>
-          <section aria-label='Exercise List' className={styles["exercise-list-wrapper"]}>
-            <ExerciseList filteredExercises={filteredExercises} handleSelectExercise={handleSelectExercise} />
-          </section>
-        </div>
-      </div>
+      }
     </div>
   )
 }

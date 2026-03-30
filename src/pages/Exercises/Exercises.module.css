@@ -16,12 +16,10 @@
   flex-direction: column;
 }
 
-
 .content-wrapper {
   display: flex;
   flex-direction: row;
   gap: 2rem;
-  flex: 1;
   min-height: 0;
 }
 
@@ -29,22 +27,22 @@
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  flex: 1;
-  min-width: 0;
+  flex: 2;
 }
 
 .selected-exercise-wrapper {
   display: flex;
+  align-items: center;
   background-color: rgb(41, 41, 41);
   border: 1px solid rgba(255, 255, 255, 0.06);
-  padding: 3rem;
+  padding: clamp(1.2rem, 2vw, 2rem) clamp(1.8rem, 2vw, 2.5rem);
   border-radius: 1rem;
+  gap: 4rem;
 }
 
 .selected-exercise-name {
-  font-size: 2.3rem;
+  font-size: clamp(1.8rem, 2vw, 2.3rem);
   font-weight: 600;
-  margin-bottom: 2rem;
 }
 
 .selected-exercise-primary-muscle-label,
@@ -64,19 +62,27 @@
   border: none;
   padding: 0;
   margin: 0;
-  font: inherit;
-  color: inherit;
   cursor: pointer;
 }
 
 .selected-exercise-image {
-  max-width: 40rem;
+  width: clamp(20rem, 26vw, 35rem);
   border-radius: 1rem;
 }
 
 .selected-exercise-info {
-  margin-right: 6rem;
-  line-height: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  align-self: flex-start;
+}
+
+.selected-exercise-primary-secondary-wrapper {
+  line-height: 2.6rem;
+}
+
+.selected-exercise-primary-muscle-wrapper {
+  margin-bottom: 2rem;
 }
 
 .filter-search-wrapper {
@@ -90,17 +96,17 @@
 
 .search-icon {
   margin-left: 1rem;
-  max-height: 3rem;
-  max-width: 3rem;
+  max-height: clamp(2rem, 2vw, 3rem);
+  max-width: clamp(2rem, 2vw, 3rem);
 }
 
 .search-exercise-input {
   background-color: rgb(60, 60, 60);
   border: 1px solid rgba(255, 255, 255, 0.06);
   color: white;
-  font-size: 1.8rem;
+  font-size: clamp(1.5rem, 1vw, 1.8rem);
   border: none;
-  padding: 1rem 2rem;
+  padding: clamp(0.7rem, 2vw, 1rem) clamp(1.5rem, 2vw, 2rem);
   margin-right: 3rem;
 }
 
@@ -118,6 +124,7 @@
   display: flex;
   flex-direction: column;
   min-height: 0;
+  flex: 1;
 }
 
 
@@ -125,13 +132,11 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: auto;
   border-radius: 1rem;
   background-color: rgb(41, 41, 41);
   border: 1px solid rgba(255, 255, 255, 0.06);
   margin-bottom: 1.5rem;
-  padding: 1.7rem 2.2rem;
-
+  padding: clamp(0.7rem, 2vw, 1rem) clamp(1.5rem, 2vw, 2rem);
 }
 
 .exercise-category-select,
@@ -139,9 +144,9 @@
   border: 1px solid rgba(255, 255, 255, 0.06);
   background-color: rgb(60, 60, 60);
   color: white;
-  font-size: 1.8rem;
+  font-size: clamp(1.5rem, 1vw, 1.8rem);
   border-radius: 1rem;
-  padding: 1rem 2rem;
+  padding: clamp(0.7rem, 1vw, 0.8rem) clamp(1.5rem, 2vw, 2rem);
   cursor: pointer;
   width: 100%;
   margin-bottom: 1rem;
@@ -156,12 +161,13 @@
   border: 1px solid rgba(255, 255, 255, 0.06);
   background-color: rgb(60, 60, 60);
   color: white;
-  font-size: 1.8rem;
+  font-size: clamp(1.5rem, 1vw, 1.8rem);
   border-radius: 1rem;
   cursor: pointer;
-  padding: 1rem 2rem;
+  padding: clamp(0.7rem, 2vw, 1rem) clamp(1.5rem, 2vw, 2rem);
   margin-right: 1rem;
   transition: 0.2s ease;
+  margin-bottom: 0.8rem;
 }
 
 .selected-exercise-buttons-wrapper {
@@ -175,7 +181,7 @@
   border: 1px solid rgba(255, 255, 255, 0.06);
   background-color: rgb(60, 60, 60);
   color: white;
-  font-size: 1.5rem;
+  font-size: clamp(1.3rem, 1vw, 1.5rem);
   border-radius: 1rem;
   cursor: pointer;
   padding: 0.8rem 1.3rem;
@@ -221,17 +227,18 @@
 .clicked-filter-button {
   background-color: rgb(59, 130, 246);
   color: white;
-  font-size: 2rem;
+  font-size: clamp(1.5rem, 1vw, 1.8rem);
   border: none;
   border-radius: 1rem;
   cursor: pointer;
   padding: 1rem 2rem;
-  transition: 0.3s ease;
+  transition: 0.2s ease;
+  margin-bottom: 0.5rem;
 }
 
 .selected-exercise-statistics-wrapper {
   background-color: rgb(41, 41, 41);
-  padding: 2rem 2rem;
+  padding: clamp(0.7rem, 2vw, 1rem) clamp(1.5rem, 2vw, 2rem);
   border-radius: 1rem;
 }
 
@@ -247,12 +254,12 @@
 .selected-exercise-statistics-history-button {
   background-color: rgb(60, 60, 60);
   color: white;
-  font-size: 1.8rem;
+  font-size: clamp(1.5rem, 1vw, 1.8rem);
   border: none;
   border-radius: 1rem;
   cursor: pointer;
-  padding: 1rem 2rem;
-  transition: 0.2s ease;
+  padding: clamp(0.7rem, 2vw, 1rem) clamp(1.5rem, 2vw, 2rem);
+  transition: 0.3s ease;
 }
 
 .selected-exercise-statistics-progress-button:hover,
@@ -268,11 +275,11 @@
 .clicked-statistics-button {
   background-color: rgb(120, 120, 120);
   color: white;
-  font-size: 1.8rem;
+  font-size: clamp(1.5rem, 1vw, 1.8rem);
   border: none;
   border-radius: 1rem;
   cursor: pointer;
-  padding: 1rem 2rem;
+  padding: clamp(0.7rem, 2vw, 1rem) clamp(1.5rem, 2vw, 2rem);
   margin-right: 1rem;
   transition: 0.3s ease;
 }
@@ -281,7 +288,7 @@
   background-color: rgb(58, 58, 58);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 1.2rem;
-  padding: 1.8rem 1.8rem 1.4rem;
+  padding:  clamp(1.4rem, 2vw, 1.8rem) clamp(1rem, 2vw, 1.4rem);
   margin-top: 1.6rem;
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
 }
@@ -299,13 +306,13 @@
 }
 
 .history-stat-label {
-  font-size: 1.5rem;
+  font-size: clamp(1.2rem, 2vw, 1.4rem);
   color: rgb(180, 180, 180);
   margin-bottom: 0.35rem;
 }
 
 .history-stat-value {
-  font-size: 2rem;
+  font-size: clamp(1.5rem, 2vw, 1.8rem);
   font-weight: 700;
   color: white;
 }
