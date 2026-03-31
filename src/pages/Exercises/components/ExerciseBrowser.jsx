@@ -1,9 +1,9 @@
 import styles from './ExerciseBrowser.module.css';
 import searchIcon from '../../../assets/searchIcon.png'
-import ExerciseList from './ExerciseList'
 import { exercises } from '../../../data/exercises'
 import { useState } from 'react';
 import closeX from '../../../assets/activeWorkout/x-close.png'
+import ExerciseItem from './ExerciseItem';
 
 
 export default function ExerciseBrowser({ isMobile, handleSelectExercise, handleCloseDialog }) {
@@ -15,9 +15,8 @@ export default function ExerciseBrowser({ isMobile, handleSelectExercise, handle
   const [selectedLowerBodyEx, setSelectedLowerBodyEx] = useState(false);
 
 
-  console.log(isMobile)
   const muscleGroupList = [];
-
+  
   const filteredExercises =
     searchText ? exercises.filter((ex) => ex.name.toLowerCase().includes(searchText)) :
       selectedMuscleOption ? exercises.filter((ex) => {
@@ -79,7 +78,7 @@ export default function ExerciseBrowser({ isMobile, handleSelectExercise, handle
 
       </section>
       <section aria-label='Exercise List' className={isMobile ? styles["dialog-exercise-list-wrapper"] : styles["exercise-list-wrapper"]}>
-        <ExerciseList filteredExercises={filteredExercises} handleSelectExercise={handleSelectExercise} />
+        <ExerciseItem filteredExercises={filteredExercises} handleSelectExercise={handleSelectExercise} />
       </section>
     </>
   )

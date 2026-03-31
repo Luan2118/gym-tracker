@@ -7,14 +7,14 @@ import { useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, LineElement, PointElement, CategoryScale, LinearScale, Title, Tooltip } from 'chart.js';
 ChartJS.register(LineElement, PointElement, CategoryScale, LinearScale, Title, Tooltip);
+import sortByNewest from '../../../utils/sortByNewest';
 
-export default function SelectedExercisePanel({ isMobile, selectedExerciseId, }) {
+export default function SelectedExercisePanel({ selectedExerciseId, }) {
 
   const { workoutHistory } = useOutletContext();
 
   const [clickedExImg, setClickedExImg] = useState(false);
   const [progressClicked, setProgressClicked] = useState(true);
-  const [historyClicked, setHistoryClicked] = useState(false);
   const [chartFilter, setChartFilter] = useState('last30');
 
 
@@ -34,12 +34,10 @@ export default function SelectedExercisePanel({ isMobile, selectedExerciseId, })
     workout.exercises.some(ex => ex.exerciseId === selectedExerciseId)
   );
 
-
   const filteredWorkoutsData =
     chartFilter === 'last30' ? filteredWorkouts.filter((w) => new Date(w.date) >= new Date(setPastDate(30))) :
       chartFilter === 'last60' ? filteredWorkouts.filter((w) => new Date(w.date) >= new Date(setPastDate(60))) :
         chartFilter === 'last90' ? filteredWorkouts.filter((w) => new Date(w.date) >= new Date(setPastDate(90))) : filteredWorkouts
-
 
   const data = {
     labels: filteredWorkoutsData.map((workout) =>
@@ -125,12 +123,10 @@ export default function SelectedExercisePanel({ isMobile, selectedExerciseId, })
 
   function handleProgressBtn() {
     setProgressClicked(true);
-    setHistoryClicked(false);
   }
 
   function handleHistoryBtn() {
     setProgressClicked(false);
-    setHistoryClicked(true);
   }
 
   const bestSets = filteredWorkouts.map((w) => {
@@ -147,9 +143,9 @@ export default function SelectedExercisePanel({ isMobile, selectedExerciseId, })
 
   const latestBestSet = bestSets.at(-1);
 
-  const firstLoggedSet = [...filteredWorkouts].sort((a, b) => new Date(a.date) - new Date(b.date))[0]?.exercises.find((ex) => ex.exerciseId === selectedExerciseId).sets[0]
+  const firstLoggedSet = filteredWorkouts[0]?.exercises.find((ex) => ex.exerciseId === selectedExerciseId).sets[0]
 
-  const latestSet = [...filteredWorkouts].sort((a, b) => new Date(b.date) - new Date(a.date))[0]?.exercises.find((ex) => ex.exerciseId === selectedExerciseId).sets[0]
+  const latestSet = sortByNewest(filteredWorkouts)[0]?.exercises.find((ex) => ex.exerciseId === selectedExerciseId).sets[0]
 
   return (
     <div className={styles["main-content-wrapper"]}>
@@ -170,7 +166,7 @@ export default function SelectedExercisePanel({ isMobile, selectedExerciseId, })
                     <span className={styles["selected-exercise-secondary-muscle-label"]}>Secondary Muscles:{' '}</span>
                     <span className={styles["selected-exercise-secondary-muscle-value"]}>{secondaryMuscles.join(', ')}</span>
                   </div> :
-                  ''
+                  null
                 }
               </div>
 
@@ -183,7 +179,7 @@ export default function SelectedExercisePanel({ isMobile, selectedExerciseId, })
           <div className={styles["selected-exercise-statistics-wrapper"]}>
             <div>
               <button className={progressClicked ? styles["clicked-statistics-button"] : styles["selected-exercise-statistics-progress-button"]} onClick={handleProgressBtn}>Progress</button>
-              <button className={historyClicked ? styles["clicked-statistics-button"] : styles["selected-exercise-statistics-history-button"]} onClick={handleHistoryBtn}>History</button>
+              <button className={!progressClicked ? styles["clicked-statistics-button"] : styles["selected-exercise-statistics-history-button"]} onClick={handleHistoryBtn}>History</button>
             </div>
 
             <hr className={styles["selected-exercise-statistics-hr"]} />
@@ -243,7 +239,7 @@ export default function SelectedExercisePanel({ isMobile, selectedExerciseId, })
           </div>
         </>
         :
-        ''}
+        null}
 
     </div>
   )

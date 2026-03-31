@@ -24,7 +24,6 @@ export default function Exercises() {
     };
   }, []);
 
-  console.log(isMobile)
 
   function handleSelectExercise(exerciseId) {
     setSelectedExerciseId(exerciseId)
