@@ -1,5 +1,5 @@
 import styles from './BodyWeight.module.css'
-import BodyWeightList from './components/BodyWeightList'
+import BodyWeightItem from './components/BodyWeightItem'
 import setPastDate from '../../utils/setPastDate';
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate, useOutletContext, useSearchParams } from 'react-router-dom';
@@ -32,7 +32,6 @@ export default function BodyWeight() {
     }
   }, [searchParams]);
 
-
   const sortedByDateBodyWeights = [...bodyWeights].sort((a, b) => {
     return new Date(b.date) - new Date(a.date)
   })
@@ -42,7 +41,6 @@ export default function BodyWeight() {
   const lastMonth = sortedByDateBodyWeights.filter((bw) => today > bw.date && lastMonthDate <= bw.date)
   const lastTwoMonths = sortedByDateBodyWeights.filter((bw) => today > bw.date && lastTwoMonthsDate <= bw.date)
   const customDate = sortedByDateBodyWeights.filter((bw) => dateFrom <= bw.date && dateTo >= bw.date)
-
 
   const visibleBodyWeights =
     filter === 'lastWeek' ? lastWeek :
@@ -135,7 +133,6 @@ export default function BodyWeight() {
     setEditBodyWeightInputText('');
   }
 
-  console.log(bodyWeights)
   return (
     <>
       <header>
@@ -171,7 +168,7 @@ export default function BodyWeight() {
           </section>
 
           <ul >
-            <BodyWeightList bodyWeights={paginatedBodyWeights} deleteBodyWeight={deleteBodyWeight} handleEditBodyWeight={handleEditBodyWeight} editBodyWeightId={editBodyWeightId} handleSaveBodyWeight={handleSaveBodyWeight} handleEditBwInput={handleEditBwInput} editBodyWeightInputText={editBodyWeightInputText} />
+            <BodyWeightItem bodyWeights={paginatedBodyWeights} deleteBodyWeight={deleteBodyWeight} handleEditBodyWeight={handleEditBodyWeight} editBodyWeightId={editBodyWeightId} handleSaveBodyWeight={handleSaveBodyWeight} handleEditBwInput={handleEditBwInput} editBodyWeightInputText={editBodyWeightInputText} />
           </ul>
 
           <div className={styles["pagination-wrapper"]}>
@@ -207,7 +204,7 @@ export default function BodyWeight() {
           <button className={styles["add-weight-button"]} onClick={addBodyWeight}>Add Weight</button>
           {feedback === 'added' ?
             <div className={styles["body-weight-added"]}><span className={styles["body-weight-added-icon"]}>&#9989;</span> Body weight added</div>
-            : ''}
+            : null}
         </div>
 
       </div>
