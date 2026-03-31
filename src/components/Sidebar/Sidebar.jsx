@@ -28,7 +28,7 @@ export default function Sidebar({ isSidebarOpen, setIsSidebarOpen }) {
 
   return (
     <>
-      <div className={isSidebarOpen ? styles['menu-button-wrapper-sidebar-open'] : styles['menu-button-wrapper']}>
+      <div className={styles['menu-button-wrapper']}>
         <button className={styles['menu-button']} onClick={handleMenuButton}>
           <img src={menuIcon} alt="Menu" className={styles['menu-button-icon']} />
         </button>
@@ -44,49 +44,49 @@ export default function Sidebar({ isSidebarOpen, setIsSidebarOpen }) {
             <img src={closeIcon} alt="Close Menu" className={styles['close-menu-icon']} />
           </button>
         </header>
-        <hr aria-hidden="true" />
+        <hr aria-hidden="true" className={styles['hr']}/>
 
         <nav>
-          <ul>
+          <ul className={styles['sidebar-nav-link-wrapper']}>
             <li>
               <Link to='/' className={styles['sidebar-nav-link']}>
                 <img src={dashboard} alt='' aria-hidden="true" />
-                <div>DashBoard</div>
+                <div className={styles['sidebar-nav-link-title']}>DashBoard</div>
               </Link>
             </li>
 
             <li>
               <Link to='/active-workout' className={styles['sidebar-nav-link']}>
                 <img src={active} alt='' aria-hidden="true" />
-                <div>Active Workout</div>
+                <div className={styles['sidebar-nav-link-title']}>Active Workout</div>
               </Link>
             </li>
 
             <li>
               <Link to='/workout-history' className={styles['sidebar-nav-link']}>
                 <img src={history} alt='' aria-hidden="true" />
-                <div>Workout History</div>
+                <div className={styles['sidebar-nav-link-title']}>Workout History</div>
               </Link>
             </li>
 
             <li>
               <Link className={styles['sidebar-nav-link']} to="/exercises">
                 <img src={exercisesPage} alt='' aria-hidden="true" />
-                <div>Exercises</div>
+                <div className={styles['sidebar-nav-link-title']}>Exercises</div>
               </Link>
             </li>
 
             <li>
               <Link className={styles['sidebar-nav-link']} to="/training-split">
                 <img src={trainingSplit} alt='' aria-hidden="true" />
-                <div>Training Split</div>
+                <div className={styles['sidebar-nav-link-title']}>Training Split</div>
               </Link>
             </li>
 
             <li>
               <Link className={styles['sidebar-nav-link']} to="/body-weight">
                 <img src={bodyweight} alt='' aria-hidden="true" />
-                <div>Body Weight</div>
+                <div className={styles['sidebar-nav-link-title']}>Body Weight</div>
               </Link>
             </li>
 

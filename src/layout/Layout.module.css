@@ -13,8 +13,7 @@
   padding: 0.5rem 1rem;
   border-radius: 0.25rem;
   border: none;
-  z-index: 1000;
-}
+fix: prevent sidebar from pushing main content}
 
 .layout {
   display: flex;
@@ -27,6 +26,7 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 2rem;
+
 }
 
 @media (max-width: 940px) {
@@ -42,8 +42,4 @@
   .main-content {
     max-width: 1000px;
   }
-}
-
-.layout-sidebar-open {
-  display: flex;
 }

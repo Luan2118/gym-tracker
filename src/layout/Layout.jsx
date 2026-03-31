@@ -45,7 +45,7 @@ export default function Layout() {
 
 
   return (
-    <div className={isSidebarOpen ? styles['layout-sidebar-open'] : styles['layout']}>
+    <div className={styles['layout']}>
 
       <a className={styles['skip-link']} href="#main">Skip to Content</a>
 
