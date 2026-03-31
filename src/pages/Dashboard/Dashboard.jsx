@@ -2,14 +2,14 @@ import { Link, useOutletContext } from 'react-router-dom'
 import styles from './Dashboard.module.css'
 import formatISODate from '../../utils/formatISODate';
 import setPastDate from '../../utils/setPastDate';
+import sortByNewest from '../../utils/sortByNewest';
 
 export default function Dashboard() {
 
   // Body Weight card
   const { bodyWeights, workoutHistory } = useOutletContext();
 
-  const sortedBodyWeights = [...bodyWeights].sort((a, b) => new Date(b.date) - new Date(a.date))
-
+  const sortedBodyWeights = sortByNewest(bodyWeights)
 
   const latestEntry = sortedBodyWeights.length > 0 ? sortedBodyWeights[0] : [];
 
@@ -20,9 +20,8 @@ export default function Dashboard() {
   const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
 
-
   // Last Workout card
-  const sortedWorkoutHistory = [...workoutHistory].sort((a, b) => new Date(b.date) - new Date(a.date))
+  const sortedWorkoutHistory = sortByNewest(workoutHistory)
 
   const lastWorkout = sortedWorkoutHistory.length > 0 ? sortedWorkoutHistory[0] : [];
 
