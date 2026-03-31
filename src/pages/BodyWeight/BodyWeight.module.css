@@ -21,6 +21,7 @@ h2 {
   flex-direction: column;
   gap: 2rem;
   border-radius: 1rem;
+  margin-top: 3rem;
 }
 
 .content-main-wrapper {
@@ -234,7 +235,7 @@ h2 {
 
 .pagination-button:hover,
 .page-button:hover {
-  background-color: rgb(70 ,70, 70);
+  background-color: rgb(70, 70, 70);
   border-color: rgb(102, 102, 102);
 }
 
@@ -267,9 +268,26 @@ h2 {
     order: 1;
   }
 
-  .weight-submit-wrapper  {
+  .weight-submit-wrapper {
     order: 2;
   }
+}
 
+@media (min-width: 500px) {
+  .content-wrapper {
+    flex-direction: row;
+    justify-content: center;
+  }
 
+  .weight-submit-wrapper {
+    align-self: flex-start;
+  }
+
+  .content-main-wrapper {
+    order: 1;
+  }
+
+  .weight-submit-wrapper {
+    order: 2;
+  }
 }
