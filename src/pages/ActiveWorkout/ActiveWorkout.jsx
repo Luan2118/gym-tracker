@@ -165,6 +165,7 @@ export default function ActiveWorkout() {
                 <ActiveExerciseCard
                   key={ex.exerciseId}
                   ex={ex}
+                  exerciseId={ex.exerciseId}
                   activeExercises={activeExercises}
                   workoutHistory={workoutHistory}
                   handleWeightSet={handleWeightSet}
