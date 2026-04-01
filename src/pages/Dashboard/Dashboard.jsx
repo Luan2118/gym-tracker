@@ -11,9 +11,9 @@ export default function Dashboard() {
 
   const sortedBodyWeights = sortByNewest(bodyWeights)
 
-  const latestEntry = sortedBodyWeights.length > 0 ? sortedBodyWeights[0] : [];
+  const latestEntry = sortedBodyWeights[0] ?? null;
 
-  const entryDate = new Date(latestEntry.date);
+  const entryDate = latestEntry ? new Date(latestEntry.date) : '-';
   const today = new Date();
 
   const diffMs = today - entryDate;
@@ -21,16 +21,16 @@ export default function Dashboard() {
 
 
   // Last Workout card
-  const sortedWorkoutHistory = sortByNewest(workoutHistory)
+  const sortedWorkoutHistory = sortByNewest(workoutHistory);
+  
+  const lastWorkout = sortedWorkoutHistory[0] ?? null;
 
-  const lastWorkout = sortedWorkoutHistory.length > 0 ? sortedWorkoutHistory[0] : [];
-
-  const lastWorkoutDate = formatISODate(lastWorkout.date)
+  const lastWorkoutDate =  lastWorkout ? formatISODate(lastWorkout.date) : '-'
 
 
   // This Week workouts count
-  const last7Days = new Date(setPastDate(7))
-  const thisWeekWorkouts = sortedWorkoutHistory.filter((w) => new Date(w.date) >= last7Days)
+  const last7Days = new Date(setPastDate(7));
+  const thisWeekWorkouts = getLast7DaysEntries(sortedWorkoutHistory);
 
   const subText =
     thisWeekWorkouts.length === 0 ? 'No workouts yet' :
@@ -67,7 +67,7 @@ export default function Dashboard() {
   }, 0)
 
   // total weight ins
-  const thisWeekBodyWeight = bodyWeights.filter((bw) => new Date(bw.date) >= last7Days)
+  const thisWeekBodyWeight = getLast7DaysEntries(bodyWeights);
 
   // avg weight
   const totalBodyWeight = thisWeekBodyWeight.reduce((bwAcc, bw) => {
@@ -79,13 +79,18 @@ export default function Dashboard() {
 
 
   //Weight summary
-  const previousEntry = sortedBodyWeights.length > 0 ? sortedBodyWeights[1] : [];
+  const previousEntry = sortedBodyWeights[1] ?? null;
 
-  const bwChange = latestEntry.bw - previousEntry.bw
+
+  const bwChange = previousEntry ? latestEntry.bw - previousEntry.bw : '-';
 
   // Weigh this week
+  const thisWeeksBodyWeight = getLast7DaysEntries(sortedBodyWeights);
 
-  const thisWeeksBodyWeight = sortedBodyWeights.filter((bw) => new Date(bw.date) > last7Days)
+  function getLast7DaysEntries (data) {
+    return data.filter((bw) => new Date(bw.date) > last7Days)
+  }
+
 
   return (
     <>
