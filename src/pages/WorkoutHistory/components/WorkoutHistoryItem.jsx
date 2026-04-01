@@ -3,27 +3,13 @@ import arrowDown from '../../../assets/workout-history/arrow-down.png'
 import formatISODate from '../../../utils/formatISODate';
 import { useState } from 'react';
 import { EXERCISE_BASE_PREFIX } from '../../../data/exercises';
-import ExerciseSetsStat from '../../../components/Exercises/ExerciseSetsStat';
 
 
-export default function WorkoutHistoryItem({ workoutHistory, filteredWorkoutHistory }) {
+export default function WorkoutHistoryItem({ filteredWorkoutHistory }) {
 
   const [selectedWorkoutHisId, setSelectedWorkoutHisId] = useState('');
 
   const selectedWorkoutHistItem = filteredWorkoutHistory.find((w) => w.id === selectedWorkoutHisId)
-
-  // ex, exerciseId, workoutHistory, activeExIds, lastWorkout
-
-  console.log(selectedWorkoutHistItem)
-
-  const activeExIds = new Set(selectedWorkoutHistItem?.exercises.map(e => e.exerciseId));
-
-
-  const lastWorkout = [...workoutHistory]
-    .sort((a, b) => new Date(b.date) - new Date(a.date))
-    .find(w => w.exercises?.some(ex => activeExIds.has(ex.exerciseId)));
-
-
 
   function displaySelectedWorkoutHist(workoutId) {
     if (selectedWorkoutHisId === workoutId) setSelectedWorkoutHisId('')
@@ -38,7 +24,7 @@ export default function WorkoutHistoryItem({ workoutHistory, filteredWorkoutHist
             <div className={styles["workout-history-item-names"]}>
 
               <div className={styles["workout-history-item-training-split-wrapper"]}>
-                <div  className={styles["workout-history-item-training-split-title"]}>Split: </div>
+                <div className={styles["workout-history-item-training-split-title"]}>Split: </div>
                 <div className={styles["workout-history-item-training-split-value"]}>{workout.trainingSplitName}</div>
               </div>
 

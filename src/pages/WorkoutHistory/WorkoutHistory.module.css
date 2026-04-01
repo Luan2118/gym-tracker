@@ -74,12 +74,7 @@ h2 {
   flex-direction: column;
 }
 
-.filter-button-wrapper {
-  display: flex;
-  align-items: center;
-}
 
-.filter-button,
 .clear-button {
   background-color: rgb(60, 60, 60);
   border: 1px solid rgba(255, 255, 255, 0.06);
@@ -93,20 +88,12 @@ h2 {
   font-size: clamp(1.5rem, 1vw, 1.8rem);
 }
 
-.filter-button:hover,
 .clear-button:hover {
   background-color: rgb(75, 75, 75);
 }
 
-.filter-button:active,
 .clear-button:active {
   background-color: rgb(85, 85, 85);
-}
-
-.filter-button:disabled {
-  background-color: rgb(55, 55, 55);
-  opacity: 0.45;
-  cursor: not-allowed;
 }
 
 .pagination-wrapper {

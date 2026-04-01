@@ -2,37 +2,47 @@ import styles from './WorkoutHistory.module.css'
 import { useOutletContext } from 'react-router-dom'
 import WorkoutHistoryItem from './components/WorkoutHistoryItem';
 import { useState } from 'react';
+import sortByNewest from '../../utils/sortByNewest';
+import sortByOldest from '../../utils/sortByOldest';
+import getPaginationData from '../../utils/getPaginationData';
 
 export default function WorkoutHistory() {
 
   const { workoutHistory } = useOutletContext();
   const [selectedSplitName, setSelectedSplitName] = useState('');
   const [selectedWorkoutDayName, setSelectedWorkoutDayName] = useState('');
-  const [selectedSort, setSelectedSort] = useState('');
+  const [selectedSort, setSelectedSort] = useState('newest');
   const [currentPage, setCurrentPage] = useState(1);
 
 
-  const sortedWorkoutHistory = [...workoutHistory].sort((a, b) => { return new Date(b.date) - new Date(a.date) })
-  const trainingSplitOptions = [];
+  // visible workout history data
+  let filteredWorkoutHistory = workoutHistory.filter((w) => {
 
-  const [filteredWorkoutHistory, setFilteredWorkoutHistory] = useState(sortedWorkoutHistory);
+    if (selectedSplitName && selectedWorkoutDayName) {
+      if (w.workoutDay !== selectedWorkoutDayName) return;
+      if (w.trainingSplitName !== selectedSplitName) return;
 
+      return w;
+    } else if (selectedSplitName) {
+      // if (w.workoutDay !== selectedWorkoutDayName) return;
+      return w.trainingSplitName === selectedSplitName
+    } else if (selectedWorkoutDayName) {
+      // if (w.trainingSplitName !== selectedSplitName) return
+      return (w.workoutDay === selectedWorkoutDayName)
+    } else return w;
+
+  })
+
+  if (selectedSort === 'newest') filteredWorkoutHistory = sortByNewest(filteredWorkoutHistory)
+  else filteredWorkoutHistory = sortByOldest(filteredWorkoutHistory)
+
+  // pagination
   const itemsPerPage = 5;
-
-  const totalPages = Math.max(1, Math.ceil(filteredWorkoutHistory.length / itemsPerPage))
-
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage
-
-  const paginatedFilteredWorkoutHistory = filteredWorkoutHistory.slice(startIndex, endIndex)
-
-  const startPage = Math.max(1, currentPage - 2);
-  const endPage = Math.min(totalPages, currentPage + 2)
+  const {pageNumbers, paginatedData, totalPages} = getPaginationData(itemsPerPage, filteredWorkoutHistory, currentPage )
 
 
-  const pageNumbers = Array.from({ length: endPage - startPage + 1 }, (_, index) => startPage + index);
-
-
+  // options
+  const trainingSplitOptions = [];
   workoutHistory.forEach((w) => {
     if (!trainingSplitOptions.some((split) => split.trainingSplitName === w.trainingSplitName)) {
       trainingSplitOptions.push({
@@ -43,7 +53,6 @@ export default function WorkoutHistory() {
   });
 
   const workoutDayOptions = [];
-
   workoutHistory.forEach((w) => {
     if (!workoutDayOptions.some((workout) => workout.workoutDay === w.workoutDay)) {
       workoutDayOptions.push({
@@ -53,55 +62,10 @@ export default function WorkoutHistory() {
     }
   });
 
-
-  function handleFilterForm(e) {
-    e.preventDefault();
-
-    let result = sortedWorkoutHistory.filter((w) => {
-
-
-      if (!selectedSplitName) {
-        if (w.workoutDay !== selectedWorkoutDayName) return;
-        return w;
-      }
-
-      if (!selectedWorkoutDayName) {
-        if (w.trainingSplitName !== selectedSplitName) return
-        return w
-      }
-
-      if (selectedSplitName || selectedWorkoutDayName) {
-        if (w.workoutDay !== selectedWorkoutDayName) return;
-        if (w.trainingSplitName !== selectedSplitName) return;
-
-        return w;
-      }
-    })
-
-    if (!selectedSplitName && !selectedWorkoutDayName && selectedSort) {
-      if (selectedSort === 'newest') sortedWorkoutHistory.sort((a, b) => { return new Date(b.date) - new Date(a.date) })
-
-      if (selectedSort === 'oldest') sortedWorkoutHistory.sort((a, b) => { return new Date(a.date) - new Date(b.date) })
-
-      setFilteredWorkoutHistory(sortedWorkoutHistory)
-      setCurrentPage(1);
-      return;
-    }
-
-    if (selectedSort === 'newest') result.sort((a, b) => { return new Date(b.date) - new Date(a.date) })
-
-    if (selectedSort === 'oldest') result.sort((a, b) => { return new Date(a.date) - new Date(b.date) })
-
-    setFilteredWorkoutHistory(result)
-    setCurrentPage(1);
-
-  }
-
   function clearFilters() {
-    setSelectedSort('')
+    setSelectedSort('newest')
     setSelectedSplitName('');
     setSelectedWorkoutDayName('');
-    setFilteredWorkoutHistory(sortedWorkoutHistory)
     setCurrentPage(1);
   }
   return (
@@ -111,10 +75,13 @@ export default function WorkoutHistory() {
       </header>
 
       <div className={styles["section-wrapper"]}>
-        <form className={styles["filter-wrapper"]} onSubmit={(e) => handleFilterForm(e)}>
+        <div className={styles["filter-wrapper"]}>
           <div className={styles["filter-input-wrapper"]}>
             <label htmlFor="training-split" className={styles["sr-only"]}>Training Split</label>
-            <select id="training-split" className={styles["filter-input"]} onChange={(e) => setSelectedSplitName(e.target.value)} value={selectedSplitName}>
+            <select id="training-split" className={styles["filter-input"]} onChange={(e) => {
+              setSelectedSplitName(e.target.value)
+              setCurrentPage(1)
+            }} value={selectedSplitName}>
               <option value="" disabled>Select Training Split</option>
               {trainingSplitOptions.map((w) => {
                 return (
@@ -124,7 +91,10 @@ export default function WorkoutHistory() {
             </select>
 
             <label htmlFor="workout-day" className={styles["sr-only"]}>Workout Day</label>
-            <select id="workout-day" className={styles["filter-input"]} onChange={(e) => setSelectedWorkoutDayName(e.target.value)} value={selectedWorkoutDayName}>
+            <select id="workout-day" className={styles["filter-input"]} onChange={(e) => {
+              setSelectedWorkoutDayName(e.target.value)
+              setCurrentPage(1)
+            }} value={selectedWorkoutDayName}>
               <option value="" disabled>Select Workout Day</option>
               {workoutDayOptions.map((w) => {
                 return (
@@ -134,19 +104,18 @@ export default function WorkoutHistory() {
             </select>
 
             <label htmlFor="sort" className={styles["sr-only"]}>Sort</label>
-            <select id="sort" className={styles["filter-input"]} onChange={(e) => setSelectedSort(e.target.value)} value={selectedSort}>
-              <option value="" disabled>Sort</option>
+            <select id="sort" className={styles["filter-input"]} onChange={(e) => {
+              setSelectedSort(e.target.value)
+              setCurrentPage(1)
+            }} value={selectedSort}>
               <option value="newest">Newest</option>
               <option value="oldest">Oldest</option>
             </select>
 
-          </div>
-
-          <div className={styles["filter-button-wrapper"]}>
-            <button type='submit' disabled={!selectedWorkoutDayName && !selectedSplitName && !selectedSort} className={styles["filter-button"]}>Filter</button>
             <button type='button' onClick={clearFilters} className={styles["clear-button"]}>Clear</button>
           </div>
-        </form>
+
+        </div>
 
         <div className={styles["content-main"]}>
           {
@@ -154,7 +123,7 @@ export default function WorkoutHistory() {
               <>
                 <WorkoutHistoryItem
                   workoutHistory={workoutHistory}
-                  filteredWorkoutHistory={paginatedFilteredWorkoutHistory}
+                  filteredWorkoutHistory={paginatedData}
                 />
                 <div className={styles["pagination-wrapper"]}>
                   <button type="button" className={styles["pagination-button"]} onClick={() => setCurrentPage((prev) => prev - 1)} disabled={currentPage === 1}>Prev</button>
