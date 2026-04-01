@@ -1,10 +1,9 @@
 import { useState, useRef, useEffect } from 'react'
 import { exercises } from '../../data/exercises'
-import TrainingSplitList from './components/TrainingSplitList'
-
 import { useNavigate, useOutletContext, useSearchParams } from 'react-router-dom'
 import styles from './TrainingSplit.module.css'
 import AddTrainingSplitDialog from './components/AddTrainingSplitDialog'
+import TrainingSplitItem from './components/TrainingSplitItem'
 
 export default function TrainingSplit() {
 
@@ -376,7 +375,7 @@ export default function TrainingSplit() {
 
         <section className={styles["content-main"]}>
 
-          <TrainingSplitList trainingSplits={trainingSplits.map((trainingsplit) => ({ name: trainingsplit.name, id: trainingsplit.id }))} editTrainingSplit={editTrainingSplit} deleteTrainingSplit={deleteTrainingSplit} />
+          <TrainingSplitItem trainingSplits={trainingSplits.map((trainingsplit) => ({ name: trainingsplit.name, id: trainingsplit.id }))} editTrainingSplit={editTrainingSplit} deleteTrainingSplit={deleteTrainingSplit} />
 
         </section>
 
