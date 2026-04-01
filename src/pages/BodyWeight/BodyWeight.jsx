@@ -3,6 +3,8 @@ import BodyWeightItem from './components/BodyWeightItem'
 import setPastDate from '../../utils/setPastDate';
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate, useOutletContext, useSearchParams } from 'react-router-dom';
+import sortByNewest from '../../utils/sortByNewest';
+import getPaginationData from '../../utils/getPaginationData';
 
 export default function BodyWeight() {
 
@@ -32,14 +34,16 @@ export default function BodyWeight() {
     }
   }, [searchParams]);
 
-  const sortedByDateBodyWeights = [...bodyWeights].sort((a, b) => {
-    return new Date(b.date) - new Date(a.date)
-  })
+  const sortedByDateBodyWeights = sortByNewest(bodyWeights)
 
-  const lastWeek = sortedByDateBodyWeights.filter((bw) => today > bw.date && lastWeekDate <= bw.date)
-  const lastTwoWeeks = sortedByDateBodyWeights.filter((bw) => today > bw.date && lastTwoWeeksDate <= bw.date)
-  const lastMonth = sortedByDateBodyWeights.filter((bw) => today > bw.date && lastMonthDate <= bw.date)
-  const lastTwoMonths = sortedByDateBodyWeights.filter((bw) => today > bw.date && lastTwoMonthsDate <= bw.date)
+  function getBodyWeightsInRange (bodyWeights, date) {
+    return bodyWeights.filter((bw) => today > bw.date && date <= bw.date)
+  }
+
+  const lastWeek = getBodyWeightsInRange(sortedByDateBodyWeights, lastWeekDate)
+  const lastTwoWeeks = getBodyWeightsInRange(sortedByDateBodyWeights, lastTwoWeeksDate)
+  const lastMonth = getBodyWeightsInRange(sortedByDateBodyWeights, lastMonthDate)
+  const lastTwoMonths = getBodyWeightsInRange(sortedByDateBodyWeights, lastTwoMonthsDate)
   const customDate = sortedByDateBodyWeights.filter((bw) => dateFrom <= bw.date && dateTo >= bw.date)
 
   const visibleBodyWeights =
@@ -54,21 +58,8 @@ export default function BodyWeight() {
   const [currentPage, setCurrentPage] = useState(1);
 
   const itemsPerPage = 10;
-  const totalPages = Math.max(1, Math.ceil(visibleBodyWeights.length / itemsPerPage));
 
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-
-  const paginatedBodyWeights = visibleBodyWeights.slice(startIndex, endIndex);
-
-  const startPage = Math.max(1, currentPage - 2);
-  const endPage = Math.min(totalPages, currentPage + 2);
-
-  const pageNumbers = Array.from(
-    { length: endPage - startPage + 1 },
-    (_, index) => startPage + index
-  );
-
+  const {pageNumbers, paginatedData, totalPages} = getPaginationData(itemsPerPage,visibleBodyWeights, currentPage )
 
   useEffect(() => {
     if (feedback !== 'added') return;
@@ -168,7 +159,7 @@ export default function BodyWeight() {
           </section>
 
           <ul >
-            <BodyWeightItem bodyWeights={paginatedBodyWeights} deleteBodyWeight={deleteBodyWeight} handleEditBodyWeight={handleEditBodyWeight} editBodyWeightId={editBodyWeightId} handleSaveBodyWeight={handleSaveBodyWeight} handleEditBwInput={handleEditBwInput} editBodyWeightInputText={editBodyWeightInputText} />
+            <BodyWeightItem bodyWeights={paginatedData} deleteBodyWeight={deleteBodyWeight} handleEditBodyWeight={handleEditBodyWeight} editBodyWeightId={editBodyWeightId} handleSaveBodyWeight={handleSaveBodyWeight} handleEditBwInput={handleEditBwInput} editBodyWeightInputText={editBodyWeightInputText} />
           </ul>
 
           <div className={styles["pagination-wrapper"]}>
