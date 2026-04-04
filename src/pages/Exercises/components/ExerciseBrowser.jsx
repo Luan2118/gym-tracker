@@ -10,7 +10,7 @@ export default function ExerciseBrowser({ isMobile, handleSelectExercise, handle
 
   const [searchText, setSearchText] = useState('');
   const [selectedMuscleOption, setSelectedMuscleOption] = useState('');
-
+  const [selectedEquipment, setSelectedEquipment] = useState('');
   const [selectedUpperBodyEx, setSelectedUpperBodyEx] = useState(false);
   const [selectedLowerBodyEx, setSelectedLowerBodyEx] = useState(false);
 
@@ -23,7 +23,16 @@ export default function ExerciseBrowser({ isMobile, handleSelectExercise, handle
     }
   })
 
+  const equipmentList = [];
+
+  exercises.forEach((ex) => {
+    if (!equipmentList.includes(ex.equipment)) {
+      equipmentList.push(ex.equipment)
+    }
+  })
+
   muscleGroupList.includes
+
   const filteredExercises =
     searchText ? exercises.filter((ex) => ex.name.toLowerCase().includes(searchText)) :
       selectedMuscleOption ? exercises.filter((ex) => {
@@ -33,10 +42,17 @@ export default function ExerciseBrowser({ isMobile, handleSelectExercise, handle
           return ex.muscleGroup === selectedMuscleOption
         }
       }) :
-        selectedUpperBodyEx ? exercises.filter((ex) => ex.bodyRegion === 'upper') :
-          selectedLowerBodyEx ? exercises.filter((ex) => ex.bodyRegion === 'lower')
-            :
-            exercises
+        selectedEquipment ? exercises.filter((ex) => {
+          if (selectedEquipment.toLocaleLowerCase() === 'all equipment') {
+            return ex;
+          } else {
+            return ex.equipment === selectedEquipment
+          }
+        }) :
+          selectedUpperBodyEx ? exercises.filter((ex) => ex.bodyRegion === 'upper') :
+            selectedLowerBodyEx ? exercises.filter((ex) => ex.bodyRegion === 'lower')
+              :
+              exercises
 
 
   return (
@@ -74,8 +90,17 @@ export default function ExerciseBrowser({ isMobile, handleSelectExercise, handle
         </select>
 
         <label htmlFor="equipment-category" className={styles["sr-only"]}>Category</label>
-        <select id="equipment-category" className={styles["equipment-category-select"]}>
+        <select id="equipment-category" className={styles["equipment-category-select"]} onChange={(e) => setSelectedEquipment(e.target.value)} value={selectedEquipment}>
           <option value="All Equipment">All Equipment</option>
+          {
+            equipmentList.map((equipment) => {
+              return (
+                <option value={equipment} key={equipment}>
+                  {equipment.charAt(0).toUpperCase() + equipment.slice(1)}
+                </option>
+              )
+            })
+          }
         </select>
 
         <div className={styles["filter-upper-lower-wrapper"]}>
