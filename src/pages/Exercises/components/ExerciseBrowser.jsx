@@ -16,7 +16,14 @@ export default function ExerciseBrowser({ isMobile, handleSelectExercise, handle
 
 
   const muscleGroupList = [];
-  
+
+  exercises.forEach((ex) => {
+    if (!muscleGroupList.includes(ex.muscleGroup)) {
+      muscleGroupList.push(ex.muscleGroup)
+    }
+  })
+
+  muscleGroupList.includes
   const filteredExercises =
     searchText ? exercises.filter((ex) => ex.name.toLowerCase().includes(searchText)) :
       selectedMuscleOption ? exercises.filter((ex) => {
