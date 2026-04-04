@@ -1,4 +1,4 @@
-import { Link, useOutletContext } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import dashboard from '../../assets/dashboard.png'
 import title from '../../assets/title.png'
 import active from '../../assets/active-workout.png'

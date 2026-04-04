@@ -3,7 +3,7 @@ import closeX from '../../../assets/activeWorkout/x-close.png'
 import { EXERCISE_BASE_PREFIX } from '../../../data/exercises'
 
 
-export default function StartWorkoutDialog({ dialogRef, handleSubmitStartWorkout, handleSelectTrainingSplit, selectedTrainingSplitId, trainingSplits, closeDialog, selectedWorkoutDayId, setSelectedWorkoutDayId, selectedWorkoutDay, handleSelectWorkoutDay }) {
+export default function StartWorkoutDialog({ dialogRef, handleSubmitStartWorkout, handleSelectTrainingSplit, selectedTrainingSplitId, trainingSplits, closeDialog, selectedWorkoutDayId, selectedWorkoutDay, handleSelectWorkoutDay }) {
 
   const selectedSplit = trainingSplits.find((trainingSplit) => trainingSplit.id === selectedTrainingSplitId)
 

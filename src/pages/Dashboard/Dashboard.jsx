@@ -199,7 +199,7 @@ export default function Dashboard() {
                       <div className={styles['recent-workout-workout-day-title']}>{w.workoutDay}</div>
                       <div className={styles['recent-workout-workout-day-date']}>{formatISODate(w.date)}</div>
                     </div>
-                    <div className={styles['recent-workout-workout-day-exercises']}>{w.exercises.reduce((exAcc, ex) => {
+                    <div className={styles['recent-workout-workout-day-exercises']}>{w.exercises.reduce((exAcc) => {
                       return exAcc + 1
                     }, 0)} exercises</div>
                   </div>
