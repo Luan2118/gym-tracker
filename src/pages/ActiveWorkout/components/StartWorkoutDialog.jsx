@@ -3,7 +3,7 @@ import closeX from '../../../assets/activeWorkout/x-close.png'
 import { EXERCISE_BASE_PREFIX } from '../../../data/exercises'
 
 
-export default function StartWorkoutDialog({ dialogRef, handleSubmitStartWorkout, handleSelectTrainingSplit, selectedTrainingSplitId, trainingSplits, closeDialog, selectedWorkoutDayId, setSelectedWorkoutDayId }) {
+export default function StartWorkoutDialog({ dialogRef, handleSubmitStartWorkout, handleSelectTrainingSplit, selectedTrainingSplitId, trainingSplits, closeDialog, selectedWorkoutDayId, setSelectedWorkoutDayId, selectedWorkoutDay, handleSelectWorkoutDay }) {
 
   const selectedSplit = trainingSplits.find((trainingSplit) => trainingSplit.id === selectedTrainingSplitId)
 
@@ -33,7 +33,7 @@ export default function StartWorkoutDialog({ dialogRef, handleSubmitStartWorkout
             <div key={workoutDay.id}>
               <div className={styles["workout-day-button-wrapper"]}>
                 <div className={styles["workout-day-text"]}>Workout Day: </div>
-                <button type='button' className={selectedWorkoutDayId === workoutDay.id ? styles["workout-day-button-active"] : styles["workout-day-button"]} onClick={() => setSelectedWorkoutDayId(workoutDay.id)}>{workoutDay.name}</button>
+                <button type='button' className={selectedWorkoutDayId === workoutDay.id ? styles["workout-day-button-active"] : styles["workout-day-button"]} onClick={() => handleSelectWorkoutDay(workoutDay.id)}>{workoutDay.name}</button>
               </div>
 
               <div>
@@ -73,7 +73,7 @@ export default function StartWorkoutDialog({ dialogRef, handleSubmitStartWorkout
           )
         })}
 
-        <button type='submit' className={styles["start-workout-confirm-button"]}>Start</button>
+        <button type='submit' className={styles["start-workout-confirm-button"]} disabled={!selectedWorkoutDay}>Start</button>
       </form>
     </dialog>
   )

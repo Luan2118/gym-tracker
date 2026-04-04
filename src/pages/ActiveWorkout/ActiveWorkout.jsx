@@ -72,6 +72,7 @@ export default function ActiveWorkout() {
     setSelectedTrainingSplitId(e.target.value)
   }
 
+
   function handleSubmitStartWorkout(e) {
     startTimeRef.current = Date.now() - elapsedTime;
     setTimerRunning(true);
@@ -91,6 +92,12 @@ export default function ActiveWorkout() {
       }
     }));
     closeDialog();
+  }
+
+  function handleSelectWorkoutDay(id) {
+    setSelectedWorkoutDayId((currentId) => {
+      return currentId === id ? null : id;
+    });
   }
 
   function handleWeightSet(e, setId, exerciseId) {
@@ -209,8 +216,8 @@ export default function ActiveWorkout() {
                 <div className={styles["active-workout-timer"]}>
                   <div className={styles["active-workout-timer-text"]}>{formatTimer(elapsedTime)}</div>
                   <div className={styles["active-workout-timer-buttons-wrapper"]}>
-                    <button  className={styles["active-workout-timer-reset-button"]} onClick={resetTimer} >Reset</button>
-                    <button  className={styles["active-workout-timer-toggle-button"]} onClick={handleToggleTimer}>{timerRunning ? 'Stop' : 'Start'}</button>
+                    <button className={styles["active-workout-timer-reset-button"]} onClick={resetTimer} >Reset</button>
+                    <button className={styles["active-workout-timer-toggle-button"]} onClick={handleToggleTimer}>{timerRunning ? 'Stop' : 'Start'}</button>
                   </div>
                 </div>
               </div>
@@ -249,6 +256,8 @@ export default function ActiveWorkout() {
             closeDialog={closeDialog}
             selectedWorkoutDayId={selectedWorkoutDayId}
             setSelectedWorkoutDayId={setSelectedWorkoutDayId}
+            selectedWorkoutDay={selectedWorkoutDay}
+            handleSelectWorkoutDay={handleSelectWorkoutDay}
           />
         </div>
       </div>
