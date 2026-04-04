@@ -8,7 +8,7 @@ import getPaginationData from '../../utils/getPaginationData';
 
 export default function WorkoutHistory() {
 
-  const { workoutHistory } = useOutletContext();
+  const { workoutHistory, setWorkoutHistory } = useOutletContext();
   const [selectedSplitName, setSelectedSplitName] = useState('');
   const [selectedWorkoutDayName, setSelectedWorkoutDayName] = useState('');
   const [selectedSort, setSelectedSort] = useState('newest');
@@ -68,6 +68,12 @@ export default function WorkoutHistory() {
     setSelectedWorkoutDayName('');
     setCurrentPage(1);
   }
+
+  function deleteWorkoutHistoryItem(id) {
+    setWorkoutHistory((prev) => {
+      return prev.filter((workout) => workout.id !== id)
+    })
+  }
   return (
     <>
       <header>
@@ -122,8 +128,8 @@ export default function WorkoutHistory() {
             filteredWorkoutHistory.length > 0 ?
               <>
                 <WorkoutHistoryItem
-                  workoutHistory={workoutHistory}
                   filteredWorkoutHistory={paginatedData}
+                  deleteWorkoutHistoryItem={deleteWorkoutHistoryItem}
                 />
                 <div className={styles["pagination-wrapper"]}>
                   <button type="button" className={styles["pagination-button"]} onClick={() => setCurrentPage((prev) => prev - 1)} disabled={currentPage === 1}>Prev</button>

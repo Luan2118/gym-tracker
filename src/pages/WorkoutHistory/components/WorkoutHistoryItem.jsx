@@ -4,9 +4,10 @@ import formatISODate from '../../../utils/formatISODate';
 import { useState } from 'react';
 import { EXERCISE_BASE_PREFIX } from '../../../data/exercises';
 import formatTimer from '../../../utils/formatTimer';
+import closeIcon from '../../../assets/training-split/delete-workout-day.png'
 
 
-export default function WorkoutHistoryItem({ filteredWorkoutHistory }) {
+export default function WorkoutHistoryItem({ filteredWorkoutHistory, deleteWorkoutHistoryItem }) {
 
   const [selectedWorkoutHisId, setSelectedWorkoutHisId] = useState('');
 
@@ -41,12 +42,16 @@ export default function WorkoutHistoryItem({ filteredWorkoutHistory }) {
             </div>
 
             <img src={arrowDown} alt="" className={workout.id === selectedWorkoutHisId ? styles["arrow-up-icon"] : styles["arrow-down-icon"]} />
+
+            <div onClick={() => deleteWorkoutHistoryItem(workout.id)} className={styles["workout-history-item-delete-button"]}>
+              <img src={closeIcon} alt="delete workout history item" className={styles["workout-history-item-delete-button-icon"]} />
+            </div>
           </button>
           {workout.id === selectedWorkoutHisId ?
             <>
               <div className={styles["workout-history-duration-wrapper"]}>
                 <div className={styles["workout-history-duration-title"]}>
-                  Duration: 
+                  Duration:
                 </div>
                 <div className={styles["workout-history-duration-value"]}>
                   {formatTimer(workout.duration)}

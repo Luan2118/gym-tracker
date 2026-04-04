@@ -19,7 +19,28 @@
   transition: 0.3s ease;
 }
 
+.workout-history-item-delete-button {
+  background-color: rgb(52, 52, 52);
+  border: none;
+  transition: 0.3s ease;
+  cursor: pointer;
+  margin-left: 1rem;
+}
+
+.workout-history-item-delete-button:hover {
+  opacity: 0.8;
+}
+
+.workout-history-item-delete-button:active {
+  opacity: 0.7;
+}
+
+
 .workout-history-item-button:hover {
+  background-color: rgb(62, 62, 62);
+}
+
+.workout-history-item-button:hover .workout-history-item-delete-button {
   background-color: rgb(62, 62, 62);
 }
 
@@ -35,8 +56,6 @@
   gap: 1rem;
 }
 
-
-
 .workout-history-item-training-split-wrapper,
 .workout-history-item-workout-day-wrapper,
 .workout-history-item-day-wrapper {
@@ -48,25 +67,6 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 1.2rem 1.5rem;
   border-radius: 10rem;
-}
-
-@media (min-width: 600px) {
-  .workout-history-item-names {
-    flex-direction: row;
-    justify-content: space-between;
-
-  }
-
-
-}
-
-@media (min-width: 400px) {
-  .workout-history-item-training-split-wrapper,
-  .workout-history-item-workout-day-wrapper,
-  .workout-history-item-day-wrapper {
-    width: 60%;
-    align-self: center;
-  }
 }
 
 .workout-history-item-training-split-title,
@@ -87,7 +87,7 @@
 .arrow-down-icon {
   width: clamp(3rem, 4vw, 4rem);
   height: clamp(3rem, 4vw, 4rem);
-
+  margin-left: 1rem;
 }
 
 .arrow-up-icon {
@@ -116,13 +116,6 @@
 
 .selected-workout-history-exercise-row>* {
   flex: 1;
-}
-
-@media (min-width: 450px) {
-  .selected-workout-history-exercise-row {
-    flex-direction: row;
-    align-items: center;
-  }
 }
 
 .selected-workout-history-left {
@@ -169,6 +162,7 @@
   font-size: clamp(1.4rem, 1vw, 1.6rem);
   color: white;
 }
+
 .workout-history-duration-wrapper {
   display: flex;
   align-items: center;
@@ -195,4 +189,37 @@
   font-weight: 800;
   letter-spacing: 0.04em;
   line-height: 1;
+}
+
+
+
+.workout-history-item-delete-button-icon {
+  width: 3rem;
+}
+
+@media (min-width: 450px) {
+  .selected-workout-history-exercise-row {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+@media (min-width: 600px) {
+  .workout-history-item-names {
+    flex-direction: row;
+    justify-content: space-between;
+
+  }
+
+
+}
+
+@media (min-width: 400px) {
+
+  .workout-history-item-training-split-wrapper,
+  .workout-history-item-workout-day-wrapper,
+  .workout-history-item-day-wrapper {
+    width: 60%;
+    align-self: center;
+  }
 }
