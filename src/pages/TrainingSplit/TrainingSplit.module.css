@@ -28,11 +28,16 @@
   flex-direction: column;
   flex: 1 1 auto;
   border-radius: 1rem;
-  padding: clamp(0.7rem, 2.5vw, 1rem) clamp(1.3rem, 2.5vw, 2rem);
+  padding: 2rem;
   background-color: rgb(41, 41, 41);
   border: 1px solid rgba(255, 255, 255, 0.05);
   width: 100%;
+  text-align: center;
+  box-shadow: 0 4px 50px rgba(0, 0, 0, 0.2);
+}
 
+.content-main-no-split-text {
+  font-size: 2rem;
 }
 
 hr {
