@@ -45,13 +45,13 @@ main {
   width: clamp(4.2rem, 4.2vw, 6.2rem)
 }
 
-
 .sidebar,
 .sidebar-is-open {
   display: flex;
   flex-direction: column;
   background-color: rgb(41, 41, 41);
-  padding: 1rem 1rem;
+  padding: 1rem 2rem;
+  width: 27rem;
 }
 
 .sidebar-is-open {
@@ -65,7 +65,7 @@ main {
 }
 
 .title {
-  font-size: clamp(2rem, 2vw, 2.5rem);
+  font-size: 2.5rem;
   text-wrap: nowrap;
 }
 
@@ -121,9 +121,8 @@ main {
   }
 
   .sidebar-is-open {
-    position:relative;
     height: 100vh;
-    width: 212px;
+    width: 27rem;
   }
 
   .menu-button-wrapper {
