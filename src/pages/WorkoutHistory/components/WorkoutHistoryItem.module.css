@@ -98,7 +98,7 @@
 
 .selected-workout-history-wrapper {
   width: 86%;
-  margin: 1rem auto 0;
+  margin: 0 auto 0;
   padding-top: 0.4rem;
 }
 
@@ -168,4 +168,31 @@
   font-weight: 700;
   font-size: clamp(1.4rem, 1vw, 1.6rem);
   color: white;
+}
+.workout-history-duration-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  align-self: center;
+  margin-top: 1rem;
+  padding: 0.8rem 1.2rem;
+  background-color: rgb(52, 52, 52);
+  border: 1px solid rgb(255, 255, 255, 0.06);
+  border-radius: 0.85rem;
+}
+
+.workout-history-duration-title {
+  font-size: clamp(1.35rem, 2vw, 1.6rem);
+  color: rgb(200, 200, 200);
+  font-weight: 600;
+}
+
+.workout-history-duration-value {
+  padding: 0.35rem 0.65rem;
+  border-radius: 0.55rem;
+  color: white;
+  font-size: clamp(1.35rem, 2vw, 1.6rem);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  line-height: 1;
 }

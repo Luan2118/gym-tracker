@@ -3,6 +3,7 @@ import { useNavigate, useOutletContext, useSearchParams } from 'react-router-dom
 import styles from './ActiveWorkout.module.css'
 import ActiveExerciseCard from './components/ActiveExerciseCard'
 import StartWorkoutDialog from './components/StartWorkoutDialog'
+import formatTimer from '../../utils/formatTimer'
 
 export default function ActiveWorkout() {
 
@@ -149,7 +150,8 @@ export default function ActiveWorkout() {
       trainingSplitName: selectedTrainingSplit.name,
       workoutDay: selectedWorkoutDay.name,
       date: new Date().toISOString(),
-      exercises: activeExercises
+      exercises: activeExercises,
+      duration: elapsedTime
     }
 
 
@@ -190,21 +192,6 @@ export default function ActiveWorkout() {
     startTimeRef.current = 0;
   }
 
-  function formatTimer() {
-    let minutes = Math.floor(elapsedTime / (1000 * 60) % 60);
-    let seconds = Math.floor(elapsedTime / (1000) % 60);
-    let milliSeconds = Math.floor((elapsedTime % 1000) / 10);
-
-
-    minutes = String(minutes).padStart(2, '0');
-    seconds = String(seconds).padStart(2, '0');
-    milliSeconds = String(milliSeconds).padStart(2, '0');
-
-    return `${minutes}:${seconds}:${milliSeconds}`
-  }
-
-  console.log(elapsedTime)
-
   return (
     <>
       <header>
@@ -220,7 +207,7 @@ export default function ActiveWorkout() {
                 <div className={styles["active-workout-split"]}>Split: {selectedTrainingSplit?.name}</div>
                 <div className={styles["active-workout-workout-day"]}>{selectedWorkoutDay?.name ?? '-'}</div>
                 <div className={styles["active-workout-timer"]}>
-                  <div className={styles["active-workout-timer-text"]}>{formatTimer()}</div>
+                  <div className={styles["active-workout-timer-text"]}>{formatTimer(elapsedTime)}</div>
                   <div className={styles["active-workout-timer-buttons-wrapper"]}>
                     <button  className={styles["active-workout-timer-reset-button"]} onClick={resetTimer} >Reset</button>
                     <button  className={styles["active-workout-timer-toggle-button"]} onClick={handleToggleTimer}>{timerRunning ? 'Stop' : 'Start'}</button>
