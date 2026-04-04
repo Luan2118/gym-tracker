@@ -62,17 +62,7 @@ hr {
 
 }
 
-.training-split-name-wrapper {
-  display: flex;
-  justify-content: space-between;
-}
 
-.training-split-name-add-workout-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-  max-width: 22rem;
-}
 
 @media (min-width: 940px) {
 
