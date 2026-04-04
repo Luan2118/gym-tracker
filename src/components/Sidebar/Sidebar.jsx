@@ -9,18 +9,14 @@ import trainingSplit from '../../assets/trainingSplit.png'
 import menuIcon from '../../assets/menu-icon.png'
 import closeIcon from '../../assets/x-close.png'
 import styles from './Sidebar.module.css'
-import { useRef } from 'react'
 
 
 export default function Sidebar({ isSidebarOpen, setIsSidebarOpen }) {
 
-  const sidebarRef = useRef(null);
 
   function handleMenuButton() {
     setIsSidebarOpen((prev) => !prev)
   }
-
-  console.log(isSidebarOpen)
 
   function handleCloseMenu() {
     setIsSidebarOpen((prev) => !prev)
