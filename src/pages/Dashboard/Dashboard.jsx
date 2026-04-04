@@ -13,20 +13,19 @@ export default function Dashboard() {
 
   const latestEntry = sortedBodyWeights[0] ?? null;
 
-  const entryDate = latestEntry ? new Date(latestEntry.date) : '-';
+  const entryDate = latestEntry ? new Date(latestEntry.date) : null;
   const today = new Date();
 
-  const diffMs = today - entryDate;
-  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-
+  
+  const diffMs = entryDate ? today - entryDate : null;
+  const diffDays = diffMs === null ?  null : Math.floor(diffMs / (1000 * 60 * 60 * 24)) ;
 
   // Last Workout card
   const sortedWorkoutHistory = sortByNewest(workoutHistory);
-  
+
   const lastWorkout = sortedWorkoutHistory[0] ?? null;
 
-  const lastWorkoutDate =  lastWorkout ? formatISODate(lastWorkout.date) : '-'
-
+  const lastWorkoutDate = lastWorkout ? formatISODate(lastWorkout.date) : '-'
 
   // This Week workouts count
   const last7Days = new Date(setPastDate(7));
@@ -82,15 +81,14 @@ export default function Dashboard() {
   const previousEntry = sortedBodyWeights[1] ?? null;
 
 
-  const bwChange = previousEntry ? latestEntry.bw - previousEntry.bw : '-';
+  const bwChange = previousEntry ? latestEntry.bw - previousEntry.bw : null;
 
   // Weigh this week
   const thisWeeksBodyWeight = getLast7DaysEntries(sortedBodyWeights);
 
-  function getLast7DaysEntries (data) {
-    return data.filter((bw) => new Date(bw.date) > last7Days)
+  function getLast7DaysEntries(data) {
+    return data.filter((data) => new Date(data.date) > last7Days)
   }
-
 
   return (
     <>
@@ -105,14 +103,16 @@ export default function Dashboard() {
           <div className={styles['overview-card-wrapper']}>
             <div className={styles['overview-card']}>
               <div className={styles['overview-card-text']}>Latest Weight:</div>
-              <div className={styles['overview-card-value']}>{latestEntry.bw} kg</div>
-              <div className={styles['overview-card-value-additional']}>Updated {diffDays !== 0 ? `${diffDays} days ago ` : 'today'}</div>
+              <div className={styles['overview-card-value']}>{latestEntry ? `${latestEntry.bw} kg` : '-'}</div>
+              <div className={styles['overview-card-value-additional']}>
+                {diffDays === null ? '-' : `Updated ${diffDays !== 0 ? `${diffDays} days ago` : 'today'}`}
+              </div>
 
             </div>
 
             <div className={styles['overview-card']}>
               <div className={styles['overview-card-text']}>Last Workout:</div>
-              <div className={styles['overview-card-value']}>{lastWorkout.workoutDay}</div>
+              <div className={styles['overview-card-value']}>{lastWorkout ? lastWorkout.workoutDay : '-'}</div>
               <div className={styles['overview-card-value-additional']}>{lastWorkoutDate}</div>
             </div>
 
@@ -234,18 +234,18 @@ export default function Dashboard() {
                   Current
                 </div>
                 <div className={styles['weight-summary-current-weight']}>
-                  {latestEntry.bw} kg
+                  {latestEntry ? `${latestEntry.bw} kg` : '-'}
                 </div>
 
                 <div className={styles['weight-summary-previous-info-wrapper']}>
                   <div className={styles['weight-summary-previous-text']}>Previous</div>
-                  <div className={styles['weight-summary-previous-weight']}>{previousEntry.bw} kg</div>
+                  <div className={styles['weight-summary-previous-weight']}>{previousEntry ? `${previousEntry.bw} kg`: '-'}</div>
                 </div>
 
                 <div className={styles['weight-summary-change-info-wrapper']}>
                   <div className={styles['weight-summary-change-text']}>Change</div>
                   <div className={styles['weight-summary-change-value']}>
-                    {bwChange > 0 ? `+${bwChange.toFixed(1)}` : bwChange.toFixed(1)} kg
+                    {bwChange === null ? '-' : `${bwChange > 0 ? `+${bwChange.toFixed(1)}` : bwChange.toFixed(1)} kg`}
                   </div>
                 </div>
               </div>
