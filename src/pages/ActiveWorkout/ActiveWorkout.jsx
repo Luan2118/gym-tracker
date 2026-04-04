@@ -16,25 +16,13 @@ export default function ActiveWorkout() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const dialogRef = useRef(null);
-
   useEffect(() => {
     if (searchParams.get('dialog') === 'open') {
       dialogRef.current.showModal()
     }
   }, [searchParams])
 
-  function handleStartWorkout() {
-    openDialog();
-    setSelectedTrainingSplitId('');
-    setSelectedWorkoutDayId('')
-    setActiveWorkout(false);
-  }
-
-  function handleCancelWorkout() {
-    setActiveWorkout(false);
-    setActiveExercises([]);
-  }
+  const dialogRef = useRef(null);
 
   const selectedTrainingSplit = trainingSplits
     .find((split) => split.id === selectedTrainingSplitId)
@@ -44,6 +32,31 @@ export default function ActiveWorkout() {
   const activeWorkoutData =
     selectedWorkoutDay
       ?.exercises ?? [];
+
+
+
+  const [timerRunning, setTimerRunning] = useState(false);
+  const startTimeRef = useRef(0);
+  const [elapsedTime, setElapsedTime] = useState(0);
+  const intervalIdRef = useRef(null);
+
+
+
+  function handleStartWorkout() {
+    openDialog();
+    setSelectedTrainingSplitId('');
+    setSelectedWorkoutDayId('');
+    setActiveWorkout(false);
+  }
+
+
+  function handleCancelWorkout() {
+    setActiveWorkout(false);
+    setActiveExercises([]);
+    setTimerRunning(false);
+    setElapsedTime(0);
+  }
+
 
   function openDialog() {
     dialogRef.current.showModal()
@@ -59,6 +72,8 @@ export default function ActiveWorkout() {
   }
 
   function handleSubmitStartWorkout(e) {
+    startTimeRef.current = Date.now() - elapsedTime;
+    setTimerRunning(true);
     e.preventDefault();
     setActiveWorkout(true)
     setActiveExercises(activeWorkoutData.map((ex) => {
@@ -125,7 +140,9 @@ export default function ActiveWorkout() {
   }
 
   function handleFinishworkout() {
-    setActiveWorkout(false)
+    setActiveWorkout(false);
+    setTimerRunning(false);
+    setElapsedTime(0);
 
     const newWorkoutHistory = {
       id: crypto.randomUUID(),
@@ -144,6 +161,50 @@ export default function ActiveWorkout() {
     });
   }
 
+  useEffect(() => {
+
+    if (timerRunning) {
+      intervalIdRef.current = setInterval(() => {
+        setElapsedTime(Date.now() - startTimeRef.current)
+      }, 10)
+    }
+
+    return () => {
+      clearInterval(intervalIdRef.current)
+    }
+  }, [timerRunning])
+
+
+  function handleToggleTimer() {
+    if (timerRunning) {
+      setTimerRunning(false);
+    } else {
+      startTimeRef.current = Date.now() - elapsedTime;
+      setTimerRunning(true);
+    }
+  }
+
+  function resetTimer() {
+    setElapsedTime(0);
+    setTimerRunning(false);
+    startTimeRef.current = 0;
+  }
+
+  function formatTimer() {
+    let minutes = Math.floor(elapsedTime / (1000 * 60) % 60);
+    let seconds = Math.floor(elapsedTime / (1000) % 60);
+    let milliSeconds = Math.floor((elapsedTime % 1000) / 10);
+
+
+    minutes = String(minutes).padStart(2, '0');
+    seconds = String(seconds).padStart(2, '0');
+    milliSeconds = String(milliSeconds).padStart(2, '0');
+
+    return `${minutes}:${seconds}:${milliSeconds}`
+  }
+
+  console.log(elapsedTime)
+
   return (
     <>
       <header>
@@ -158,7 +219,13 @@ export default function ActiveWorkout() {
               <div className={styles["active-workout-header"]}>
                 <div className={styles["active-workout-split"]}>Split: {selectedTrainingSplit?.name}</div>
                 <div className={styles["active-workout-workout-day"]}>{selectedWorkoutDay?.name ?? '-'}</div>
-                <div className={styles["active-workout-timer"]}>Timer: 00:00</div>
+                <div className={styles["active-workout-timer"]}>
+                  <div className={styles["active-workout-timer-text"]}>{formatTimer()}</div>
+                  <div className={styles["active-workout-timer-buttons-wrapper"]}>
+                    <button  className={styles["active-workout-timer-reset-button"]} onClick={resetTimer} >Reset</button>
+                    <button  className={styles["active-workout-timer-toggle-button"]} onClick={handleToggleTimer}>{timerRunning ? 'Stop' : 'Start'}</button>
+                  </div>
+                </div>
               </div>
 
               {activeWorkoutData.map((ex) =>

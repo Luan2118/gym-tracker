@@ -64,7 +64,7 @@
 }
 
 .cancel-workout-button:active {
-  opacity: 0.8;
+  background-color: rgb(155, 45, 45);
 }
 
 .content-main {
@@ -79,7 +79,9 @@
   align-self: center;
 }
 
-
+.active-workout-timer-buttons-wrapper {
+  display: flex;
+}
 
 .active-workout-header {
   display: grid;
@@ -100,6 +102,65 @@
   font-weight: 600;
 }
 
+.active-workout-timer {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1rem 2rem;
+}
+
+.active-workout-timer-buttons-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.active-workout-timer-text {
+  padding: 0.55rem 0.7rem;
+  background-color: rgb(37, 37, 37);
+  border: 1px solid rgb(255, 255, 255, 0.08);
+  border-radius: 0.7rem;
+  color: rgb(245, 245, 245);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.active-workout-timer-reset-button,
+.active-workout-timer-toggle-button {
+  font-size: 1.5rem;
+  padding: 0.7rem 1.2rem;
+  border: none;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.active-workout-timer-toggle-button {
+  background-color: rgb(185, 60, 60);
+  color: white;
+  margin-right: 0.5rem;
+}
+
+.active-workout-timer-toggle-button:hover {
+  background-color: rgb(205, 75, 75);
+}
+
+.active-workout-timer-toggle-button:active {
+  background-color: rgb(155, 45, 45);
+}
+
+.active-workout-timer-reset-button {
+  background-color: rgb(59, 130, 246);
+  color: white;
+  margin-right: 0.5rem;
+}
+
+.active-workout-timer-reset-button:hover {
+  background-color: rgb(74, 144, 248);
+}
+
+.active-workout-timer-reset-button:active {
+  background-color: rgb(45, 110, 220);
+}
 
 .finish-workout-button {
   background-color: rgb(39, 134, 56);
@@ -118,6 +179,10 @@
 
 .finish-workout-button:hover {
   background-color: rgb(52, 153, 71);
+}
+
+.finish-workout-button:active {
+  background-color: rgb(42, 130, 59);
 }
 
 @media (min-width: 1100px) {
