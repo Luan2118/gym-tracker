@@ -154,7 +154,7 @@ export default function WorkoutHistory() {
               </>
 
               :
-              <div>No matched workouts</div>
+              <div className={styles["no-matched-workouts-text"]}>No workouts yet</div>
           }
         </div>
       </div>
