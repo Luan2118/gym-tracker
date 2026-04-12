@@ -1,7 +1,19 @@
 import styles from './BodyWeightItem.module.css'
 import formatISODate from '../../../utils/formatISODate'
+import { BodyWeight } from '../../../types'
 
-export default function BodyWeightItem({ bodyWeights, deleteBodyWeight, handleEditBodyWeight, editBodyWeightId, handleEditBwInput, editBodyWeightInputText, handleSaveBodyWeight }) {
+type BodyWeightItemProps = {
+  bodyWeights: BodyWeight[]
+  deleteBodyWeight: (id: string) => void
+  handleEditBodyWeight: (id: string) => void
+  editBodyWeightId: string | null
+  handleEditBwInput: (e: React.ChangeEvent<HTMLInputElement>) => void
+  editBodyWeightInputText: string 
+  handleSaveBodyWeight: () => void
+}
+
+export default function BodyWeightItem({ bodyWeights, deleteBodyWeight, handleEditBodyWeight, editBodyWeightId, handleEditBwInput, editBodyWeightInputText, handleSaveBodyWeight }: BodyWeightItemProps) {
+
   return (
     <>
       {bodyWeights.map((bodyweight) => {
@@ -18,7 +30,7 @@ export default function BodyWeightItem({ bodyWeights, deleteBodyWeight, handleEd
               {editBodyWeightId === bodyweight.id ?
                 <div  >
                   <label htmlFor="edit-body-weight"></label>
-                  <input id="edit-body-weight" type="number" className={styles['edit-body-weight']}  onChange={handleEditBwInput} value={editBodyWeightInputText}/>
+                  <input id="edit-body-weight" type="number" className={styles['edit-body-weight']} onChange={handleEditBwInput} value={editBodyWeightInputText} />
                 </div> :
 
                 <div className={styles['body-weight']}>
