@@ -1,9 +1,13 @@
 import styles from './ExerciseItem.module.css'
 import { EXERCISE_BASE_PREFIX } from '../../../data/exercises'
+import {ExerciseMetaData} from '../../../types'
 
-export default function ExerciseItem({filteredExercises, handleSelectExercise}) {
-  console.log(filteredExercises)
-  console.log(handleSelectExercise)
+type ExerciseItemProps = {
+  filteredExercises: ExerciseMetaData[]
+  handleSelectExercise: (exerciseId: string) => void
+}
+
+export default function ExerciseItem({filteredExercises, handleSelectExercise}: ExerciseItemProps) {
   return (
     <>
       {filteredExercises.map((exercise) => {
