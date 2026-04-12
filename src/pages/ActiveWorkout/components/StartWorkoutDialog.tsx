@@ -1,9 +1,21 @@
 import styles from './StartWorkoutDialog.module.css'
 import closeX from '../../../assets/activeWorkout/x-close.png'
 import { EXERCISE_BASE_PREFIX } from '../../../data/exercises'
+import { TrainingSplit } from '../../../types'
 
+type StartWorkoutDialogProps = {
+  dialogRef: React.RefObject<HTMLDialogElement | null>
+  handleSubmitStartWorkout: (e: React.SubmitEvent<HTMLFormElement>) => void
+  handleSelectTrainingSplit: (e: React.ChangeEvent<HTMLSelectElement>) => void
+  selectedTrainingSplitId: string
+  trainingSplits: TrainingSplit[]
+  closeDialog: () => void
+  selectedWorkoutDayId: string
+  selectedWorkoutDay: string
+  handleSelectWorkoutDay: (id: string) => void
+}
 
-export default function StartWorkoutDialog({ dialogRef, handleSubmitStartWorkout, handleSelectTrainingSplit, selectedTrainingSplitId, trainingSplits, closeDialog, selectedWorkoutDayId, selectedWorkoutDay, handleSelectWorkoutDay }) {
+export default function StartWorkoutDialog({ dialogRef, handleSubmitStartWorkout, handleSelectTrainingSplit, selectedTrainingSplitId, trainingSplits, closeDialog, selectedWorkoutDayId, selectedWorkoutDay, handleSelectWorkoutDay }: StartWorkoutDialogProps) {
 
   const selectedSplit = trainingSplits.find((trainingSplit) => trainingSplit.id === selectedTrainingSplitId)
 
