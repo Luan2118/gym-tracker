@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import Dashboard from './pages/Dashboard/Dashboard'
-import Layout from './layout//Layout'
+import Layout from './layout/Layout'
 import ActiveWorkout from './pages/ActiveWorkout/ActiveWorkout'
 import TrainingSplit from './pages/TrainingSplit/TrainingSplit'
 import Exercises from './pages/Exercises/Exercises'
