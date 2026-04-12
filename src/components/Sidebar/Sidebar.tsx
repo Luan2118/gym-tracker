@@ -10,15 +10,14 @@ import menuIcon from '../../assets/menu-icon.png'
 import closeIcon from '../../assets/x-close.png'
 import styles from './Sidebar.module.css'
 
+type SidebarProps = {
+  isSidebarOpen: boolean
+  setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>
+}
 
-export default function Sidebar({ isSidebarOpen, setIsSidebarOpen }) {
-
+export default function Sidebar({ isSidebarOpen, setIsSidebarOpen }: SidebarProps) {
 
   function handleMenuButton() {
-    setIsSidebarOpen((prev) => !prev)
-  }
-
-  function handleCloseMenu() {
     setIsSidebarOpen((prev) => !prev)
   }
 
@@ -36,11 +35,11 @@ export default function Sidebar({ isSidebarOpen, setIsSidebarOpen }) {
           <img className={styles['title-img']} src={title} alt='' aria-hidden="true" />
           <div className={styles['title']}>Gym Tracker</div>
 
-          <button className={styles['close-menu-btn']} onClick={handleCloseMenu}>
+          <button className={styles['close-menu-btn']} onClick={handleMenuButton}>
             <img src={closeIcon} alt="Close Menu" className={styles['close-menu-icon']} />
           </button>
         </header>
-        <hr aria-hidden="true" className={styles['hr']}/>
+        <hr aria-hidden="true" className={styles['hr']} />
 
         <nav>
           <ul className={styles['sidebar-nav-link-wrapper']}>
