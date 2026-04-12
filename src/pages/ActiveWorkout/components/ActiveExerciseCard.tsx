@@ -1,21 +1,30 @@
 import styles from './ActiveExerciseCard.module.css'
 import { EXERCISE_BASE_PREFIX } from '../../../data/exercises';
+import { TrainingSplitExercise, WorkoutHistoryExercise, WorkoutHistory, WorkoutHistorySet } from '../../../types';
 
-export default function ActiveExerciseCard({ ex, exerciseId, activeExercises, workoutHistory, handleWeightSet, handleRepsSet }) {
+type ActiveExerciseCardProps = {
+  ex: TrainingSplitExercise
+  exerciseId: string
+  activeExercises: WorkoutHistoryExercise[]
+  workoutHistory: WorkoutHistory[]
+  handleWeightSet: (e: React.ChangeEvent<HTMLInputElement>, setId: string, exerciseId: string) => void
+  handleRepsSet: (e: React.ChangeEvent<HTMLInputElement>, setId: string, exerciseId: string) => void
+}
 
-  const activeExIds = new Set(activeExercises.map(e => e.exerciseId));
+export default function ActiveExerciseCard({ ex, exerciseId, activeExercises, workoutHistory, handleWeightSet, handleRepsSet }: ActiveExerciseCardProps) {
 
-  const lastWorkout = [...workoutHistory]
-    .sort((a, b) => new Date(b.date) - new Date(a.date))
+  console.log(ex)
+  const activeExIds: Set<string> = new Set(activeExercises.map(e => e.exerciseId));
+
+  const lastWorkout: WorkoutHistory | undefined = [...workoutHistory]
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .find(w => w.exercises?.some(ex => activeExIds.has(ex.exerciseId)));
 
-
-  function getBestSet(exerciseId, setId, activeExIds, workoutHistory) {
+  function getBestSet(exerciseId: string, setId: string, activeExIds: Set<string>, workoutHistory: WorkoutHistory[]): WorkoutHistorySet | undefined {
 
     const filteredHisWorkoutDays = workoutHistory?.filter((w) => w.exercises.some(ex => activeExIds.has(ex.exerciseId)))
 
-
-    let filteredExSets = []
+    let filteredExSets: WorkoutHistorySet[] = []
     let bestWeightNum = 0;
     let bestRepsNum = 0;
 
@@ -47,7 +56,7 @@ export default function ActiveExerciseCard({ ex, exerciseId, activeExercises, wo
   }
 
 
-  function getPrevSet(exerciseId, setId, lastWorkout) {
+  function getPrevSet(exerciseId: string, setId: string, lastWorkout: WorkoutHistory | undefined): WorkoutHistorySet | undefined {
 
     const prevExercise = lastWorkout?.exercises?.find(hEx => hEx.exerciseId === exerciseId);
     return prevExercise?.sets?.find(s => s.id === setId);

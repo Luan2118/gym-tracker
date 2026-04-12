@@ -41,6 +41,7 @@ export type TrainingSplitSet = BaseSet
 export type TrainingSplitExercise = BaseExercise<TrainingSplitSet> & {
   rowId: string
   searchText: string
+  confirm: boolean
 }
 
 export type TrainingSplitWorkoutDay = {

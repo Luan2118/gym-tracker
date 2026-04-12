@@ -35,7 +35,6 @@ export default function ActiveWorkout() {
       ?.exercises ?? [];
 
 
-
   const [timerRunning, setTimerRunning] = useState(false);
   const startTimeRef = useRef(0);
   const [elapsedTime, setElapsedTime] = useState(0);
