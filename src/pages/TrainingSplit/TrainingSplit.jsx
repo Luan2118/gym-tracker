@@ -377,7 +377,7 @@ export default function TrainingSplit() {
         <section className={styles["content-main"]}>
           {trainingSplits.length > 0 ?
 
-            <TrainingSplitItem trainingSplits={trainingSplits.map((trainingsplit) => ({ name: trainingsplit.name, id: trainingsplit.id }))} editTrainingSplit={editTrainingSplit} deleteTrainingSplit={deleteTrainingSplit} />
+            <TrainingSplitItem trainingSplits={trainingSplits} editTrainingSplit={editTrainingSplit} deleteTrainingSplit={deleteTrainingSplit} />
             :
             <h2 className={styles["content-main-no-split-text"]}>No training split yet</h2>
           }
