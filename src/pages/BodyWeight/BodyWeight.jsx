@@ -3,7 +3,7 @@ import BodyWeightItem from './components/BodyWeightItem'
 import setPastDate from '../../utils/setPastDate';
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate, useOutletContext, useSearchParams } from 'react-router-dom';
-import sortByNewest from '../../utils/sortByNewest';
+import {sortByNewest} from '../../utils/sortDate';
 import getPaginationData from '../../utils/getPaginationData';
 
 export default function BodyWeight() {

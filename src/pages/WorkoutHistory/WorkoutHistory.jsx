@@ -2,8 +2,7 @@ import styles from './WorkoutHistory.module.css'
 import { useOutletContext } from 'react-router-dom'
 import WorkoutHistoryItem from './components/WorkoutHistoryItem';
 import { useState } from 'react';
-import sortByNewest from '../../utils/sortByNewest';
-import sortByOldest from '../../utils/sortByOldest';
+import { sortByNewest, sortByOldest} from '../../utils/sortDate';
 import getPaginationData from '../../utils/getPaginationData';
 
 export default function WorkoutHistory() {

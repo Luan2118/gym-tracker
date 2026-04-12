@@ -2,7 +2,7 @@ import { Link, useOutletContext } from 'react-router-dom'
 import styles from './Dashboard.module.css'
 import formatISODate from '../../utils/formatISODate';
 import setPastDate from '../../utils/setPastDate';
-import sortByNewest from '../../utils/sortByNewest';
+import {sortByNewest} from '../../utils/sortDate';
 
 export default function Dashboard() {
 

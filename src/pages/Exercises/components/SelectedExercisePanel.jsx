@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, LineElement, PointElement, CategoryScale, LinearScale, Title, Tooltip } from 'chart.js';
 ChartJS.register(LineElement, PointElement, CategoryScale, LinearScale, Title, Tooltip);
-import sortByNewest from '../../../utils/sortByNewest';
+import {sortByNewest} from '../../../utils/sortDate';
 
 export default function SelectedExercisePanel({ selectedExerciseId, }) {
 
