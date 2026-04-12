@@ -24,7 +24,7 @@ export type WorkoutHistorySet = BaseSet & {
   sessionId: string
 }
 
-export type WorkoutHistoryExercise =  BaseExercise<WorkoutHistorySet>
+export type WorkoutHistoryExercise = BaseExercise<WorkoutHistorySet>
 
 export type WorkoutHistory = {
   id: string
@@ -38,7 +38,7 @@ export type WorkoutHistory = {
 // TrainingSplit types
 export type TrainingSplitSet = BaseSet
 
-export type TrainingSplitExercise =  BaseExercise<TrainingSplitSet> & {
+export type TrainingSplitExercise = BaseExercise<TrainingSplitSet> & {
   rowId: string
   searchText: string
 }
@@ -54,4 +54,19 @@ export type TrainingSplit = {
   id: string
   name: string
   workoutDays: TrainingSplitWorkoutDay[]
+}
+
+
+// Metadata Exercise
+export type ExerciseMetaData = {
+  id: string
+  name: string
+  video: string
+  images: string[]
+  muscleGroup: string
+  bodyRegion: string
+  equipment: string
+  primaryMuscles: string[]
+  secondaryMuscles: string[]
+  instructions: string[]
 }

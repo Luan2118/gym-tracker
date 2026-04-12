@@ -2,6 +2,8 @@ import styles from './ExerciseItem.module.css'
 import { EXERCISE_BASE_PREFIX } from '../../../data/exercises'
 
 export default function ExerciseItem({filteredExercises, handleSelectExercise}) {
+  console.log(filteredExercises)
+  console.log(handleSelectExercise)
   return (
     <>
       {filteredExercises.map((exercise) => {
