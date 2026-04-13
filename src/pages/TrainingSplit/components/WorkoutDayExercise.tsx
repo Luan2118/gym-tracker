@@ -2,8 +2,23 @@ import styles from './WorkoutDayExercise.module.css'
 import plusIcon from '../../../assets/training-split/plus-icon.png'
 import deleteWorkoutDayIcon from '../../../assets/training-split/delete-workout-day.png'
 import { exercises, EXERCISE_BASE_PREFIX } from '../../../data/exercises'
+import { TrainingSplitExercise } from '../../../types'
 
-export default function WorkoutDayExercise({ addedExercise, workoutDayId, selectExerciseAgain, handleSearchExerciseText, deleteExercise, handleWeightSet, handleRepsSet, deleteSet, addSet,selectExercise }) {
+type WorkoutDayExerciseProps = {
+  addedExercise: TrainingSplitExercise
+  workoutDayId: string
+  selectExerciseAgain: (rowId: string, workoutDayId: string) => void
+  handleSearchExerciseText: (e: React.ChangeEvent<HTMLInputElement>, workoutDayId: string, addedExerciseRowId: string) => void
+  deleteExercise: (workoutDayId: string, addedExerciseRowId: string) => void
+  handleWeightSet: (e: React.ChangeEvent<HTMLInputElement>, workoutDayId: string, addedExerciseRowId: string, setId: string) => void
+  handleRepsSet: (e: React.ChangeEvent<HTMLInputElement>, workoutDayId: string, addedExerciseRowId: string, setId: string) => void
+  deleteSet: (setId: string) => void
+  addSet: (workoutDayId: string, addedExerciseRowId: string) => void
+  selectExercise: (workoutDayId: string, selectedExerciseId: string, addedExerciseRowId: string) => void
+}
+
+export default function WorkoutDayExercise({ addedExercise, workoutDayId, selectExerciseAgain, handleSearchExerciseText, deleteExercise, handleWeightSet, handleRepsSet, deleteSet, addSet, selectExercise }: WorkoutDayExerciseProps) {
+
   return (
     <div className={styles["search-exercise-wrapper"]}>
 
@@ -62,7 +77,7 @@ export default function WorkoutDayExercise({ addedExercise, workoutDayId, select
                 return (
                   <li key={exer.id} className={styles["search-exercise-list"]}>
                     <button type='button' className={styles["search-exercise-list-button"]} onClick={() => selectExercise(workoutDayId, exer.id, addedExercise.rowId)}>
-                      <img className={styles["search-exercise-icon"]} src={`${EXERCISE_BASE_PREFIX}${exer.images[0]}`} />
+                      <img className={styles["search-exercise-icon"]} src={`${EXERCISE_BASE_PREFIX}${exer.images[0]}`} alt=''/>
                       <span className={styles["search-exercise-name"]}>{exer.name}</span>
                     </button>
                   </li>

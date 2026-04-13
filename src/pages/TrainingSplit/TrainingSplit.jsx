@@ -109,12 +109,12 @@ export default function TrainingSplit() {
   }
 
 
-  function deleteExercise(workoutDayId, exerciseId) {
+  function deleteExercise(workoutDayId, addedExerciseRowId) {
     setWorkoutDays((prev) =>
       prev.map((workoutday) => {
         if (workoutDayId !== workoutday.id) return workoutday;
 
-        const newExercisesArray = workoutday.exercises.filter((ex) => ex.rowId !== exerciseId)
+        const newExercisesArray = workoutday.exercises.filter((ex) => ex.rowId !== addedExerciseRowId)
 
         return {
           ...workoutday,
