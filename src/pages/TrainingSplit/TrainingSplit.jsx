@@ -84,12 +84,12 @@ export default function TrainingSplit() {
 
   }
 
-  function handleSearchExerciseText(e, workoutDayID, addedExerciseRowId) {
+  function handleSearchExerciseText(e, workoutDayId, addedExerciseRowId) {
     const value = e.target.value
 
     setWorkoutDays((prev) =>
       prev.map((workoutday) => {
-        if (workoutday.id !== workoutDayID) return workoutday;
+        if (workoutday.id !== workoutDayId) return workoutday;
 
         const newExercisesArray = workoutday.exercises.map((exercise) => {
           if (exercise.rowId !== addedExerciseRowId) return exercise;
@@ -109,12 +109,12 @@ export default function TrainingSplit() {
   }
 
 
-  function deleteExercise(workoutDayId, excerciseId) {
+  function deleteExercise(workoutDayId, exerciseId) {
     setWorkoutDays((prev) =>
       prev.map((workoutday) => {
         if (workoutDayId !== workoutday.id) return workoutday;
 
-        const newExercisesArray = workoutday.exercises.filter((ex) => ex.rowId !== excerciseId)
+        const newExercisesArray = workoutday.exercises.filter((ex) => ex.rowId !== exerciseId)
 
         return {
           ...workoutday,
@@ -125,12 +125,12 @@ export default function TrainingSplit() {
     )
   }
 
-  function selectExercise(workoutDayID, selectedExerciseId, addedExerciseRowId) {
+  function selectExercise(workoutDayId, selectedExerciseId, addedExerciseRowId) {
     const selectedExercise = exercises.find((exercise) => exercise.id === selectedExerciseId);
 
     setWorkoutDays((prev) =>
       prev.map((workoutday) => {
-        if (workoutday.id !== workoutDayID) return workoutday;
+        if (workoutday.id !== workoutDayId) return workoutday;
 
         const newExercisesArray = workoutday.exercises.map((ex) => {
           if (ex.rowId !== addedExerciseRowId) return ex
@@ -153,10 +153,10 @@ export default function TrainingSplit() {
 
   }
 
-  function selectExerciseAgain(rowId, workoutdayId) {
+  function selectExerciseAgain(rowId, workoutDayId) {
     setWorkoutDays((prev) =>
       prev.map((workoutday) => {
-        if (workoutday.id !== workoutdayId) return workoutday;
+        if (workoutday.id !== workoutDayId) return workoutday;
 
         const newExercisesArray = workoutday.exercises.map((ex) => {
           if (ex.rowId !== rowId) return ex;
@@ -178,11 +178,11 @@ export default function TrainingSplit() {
     )
   }
 
-  function addSet(workoutdayId, addedExerciseRowId) {
+  function addSet(workoutDayId, addedExerciseRowId) {
 
     setWorkoutDays((prev) =>
       prev.map((workoutday) => {
-        if (workoutday.id !== workoutdayId) return workoutday;
+        if (workoutday.id !== workoutDayId) return workoutday;
 
         const newExercisesArray = workoutday.exercises.map((ex) => {
           if (ex.rowId !== addedExerciseRowId) return ex;
@@ -278,8 +278,9 @@ export default function TrainingSplit() {
     setTrainingSplits((prev) => prev.filter((trainingsplit) => trainingsplit.id !== id))
   }
 
-  function handleWeightSet(e, workoutDayId, addedExerciseRowId, setId) {
+  function handleSet(e, workoutDayId, addedExerciseRowId, setId, property ) {
     const value = (e.target.value);
+    
 
     const newArray = workoutDays.map((workoutday) => {
       if (workoutday.id !== workoutDayId) return workoutday;
@@ -292,7 +293,7 @@ export default function TrainingSplit() {
 
           return {
             ...set,
-            weight: value
+            [property ]: value
           }
         })
 
@@ -311,37 +312,12 @@ export default function TrainingSplit() {
     setWorkoutDays(newArray);
   }
 
+  function handleWeightSet(e, workoutDayId, addedExerciseRowId, setId) {
+    handleSet(e, workoutDayId, addedExerciseRowId, setId, 'weight')
+  }
+
   function handleRepsSet(e, workoutDayId, addedExerciseRowId, setId) {
-    const value = (e.target.value);
-
-    const newArray = workoutDays.map((workoutday) => {
-      if (workoutday.id !== workoutDayId) return workoutday;
-
-      const newExerciseArray = workoutday.exercises.map((exercise) => {
-        if (exercise.rowId !== addedExerciseRowId) return exercise;
-
-        const newSetArray = exercise.sets.map((set) => {
-          if (set.id !== setId) return set;
-
-          return {
-            ...set,
-            reps: value
-          }
-        })
-
-        return {
-          ...exercise,
-          sets: newSetArray
-        }
-      })
-
-      return {
-        ...workoutday,
-        exercises: newExerciseArray
-      }
-    })
-
-    setWorkoutDays(newArray);
+    handleSet(e, workoutDayId, addedExerciseRowId, setId, 'reps')
   }
 
 

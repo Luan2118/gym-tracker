@@ -2,9 +2,32 @@ import styles from './AddTrainingSplitDialog.module.css'
 import deleteWorkoutDayIcon from '../../../assets/training-split/delete-workout-day.png'
 import close from '../../../assets/training-split/x-close.png'
 import WorkoutDayExercise from './WorkoutDayExercise'
+import { TrainingSplitWorkoutDay } from '../../../types'
 
 
-export default function AddTrainingSplitDialog({ dialogRef, submitTrainingSplit, trainingSplitInputText, setTrainingSplitInputText, addWorkoutDay, closeDialog, workoutDays, handleWorkoutDayInputText, deleteWorkoutDay, selectExerciseAgain, handleSearchExerciseText, deleteExercise, handleWeightSet, handleRepsSet, deleteSet, addSet, selectExercise, addExercise }) {
+type AddTrainingSplitDialogProps = {
+  dialogRef: React.RefObject<HTMLDialogElement | null>
+  submitTrainingSplit: (e: React.SubmitEvent<HTMLFormElement>) => void
+  trainingSplitInputText: string
+  setTrainingSplitInputText: React.Dispatch<React.SetStateAction<string>>
+  addWorkoutDay: () => void
+  closeDialog: () => void
+  workoutDays: TrainingSplitWorkoutDay[]
+  handleWorkoutDayInputText: (id: string, e: React.ChangeEvent<HTMLInputElement>) => void
+  deleteWorkoutDay: (id: string) => void
+  selectExerciseAgain: (rowId: string, workoutDayId: string) => void
+  handleSearchExerciseText: (e: React.ChangeEvent<HTMLInputElement>, workoutDayId: string, addedExerciseRowId: string) => void
+  deleteExercise: (workoutDayId: string, exerciseId: string) => void
+  handleWeightSet: (e: React.ChangeEvent<HTMLInputElement>, workoutDayId: string, addedExerciseRowId: string, setId: string) => void
+  handleRepsSet: (e: React.ChangeEvent<HTMLInputElement>, workoutDayId: string, addedExerciseRowId: string, setId: string) => void
+  deleteSet: (setId: string) => void
+  addSet: (workoutDayId: string, addedExerciseRowId: string) => void
+  selectExercise: (workoutDayId: string, selectedExerciseId: string, addedExerciseRowId: string) => void
+  addExercise: (id: string) => void
+}
+
+export default function AddTrainingSplitDialog({ dialogRef, submitTrainingSplit, trainingSplitInputText, setTrainingSplitInputText, addWorkoutDay, closeDialog, workoutDays, handleWorkoutDayInputText, deleteWorkoutDay, selectExerciseAgain, handleSearchExerciseText, deleteExercise, handleWeightSet, handleRepsSet, deleteSet, addSet, selectExercise, addExercise }: AddTrainingSplitDialogProps) {
+
   return (
     <dialog ref={dialogRef} className={styles["add-training-split-dialog"]}>
       <form className={styles["form-wrapper"]} onSubmit={submitTrainingSplit}>
