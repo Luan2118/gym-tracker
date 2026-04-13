@@ -5,15 +5,20 @@ import { useState } from 'react';
 import { EXERCISE_BASE_PREFIX } from '../../../data/exercises';
 import formatTimer from '../../../utils/formatTimer';
 import closeIcon from '../../../assets/training-split/delete-workout-day.png'
+import { WorkoutHistory } from '../../../types';
 
+type WorkoutHistoryItemProps = {
+  filteredWorkoutHistory: WorkoutHistory[]
+  deleteWorkoutHistoryItem: (id: string) => void
+}
 
-export default function WorkoutHistoryItem({ filteredWorkoutHistory, deleteWorkoutHistoryItem }) {
+export default function WorkoutHistoryItem({ filteredWorkoutHistory, deleteWorkoutHistoryItem }: WorkoutHistoryItemProps) {
 
   const [selectedWorkoutHisId, setSelectedWorkoutHisId] = useState('');
 
   const selectedWorkoutHistItem = filteredWorkoutHistory.find((w) => w.id === selectedWorkoutHisId)
 
-  function displaySelectedWorkoutHist(workoutId) {
+  function displaySelectedWorkoutHist(workoutId: string) {
     if (selectedWorkoutHisId === workoutId) setSelectedWorkoutHisId('')
     else setSelectedWorkoutHisId(workoutId)
   }
@@ -59,7 +64,7 @@ export default function WorkoutHistoryItem({ filteredWorkoutHistory, deleteWorko
               </div>
 
               <div className={styles["selected-workout-history-wrapper"]}>
-                {selectedWorkoutHistItem.exercises.map((ex) => {
+                {selectedWorkoutHistItem?.exercises.map((ex) => {
                   return (
                     <div key={ex.exerciseId} className={styles["selected-workout-history-exercise-row"]}>
                       <div className={styles["selected-workout-history-left"]}>
