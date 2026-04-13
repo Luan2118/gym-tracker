@@ -1,0 +1,83 @@
+import { Outlet } from "react-router-dom"
+import { useState, useEffect } from "react";
+import Sidebar from '../components/Sidebar/Sidebar'
+import styles from './Layout.module.css'
+import { TrainingSplit, WorkoutHistory, BodyWeight } from "../types";
+
+
+
+type LayoutContextType = {
+  trainingSplits: TrainingSplit[]
+  setTrainingSplits: React.Dispatch<React.SetStateAction<TrainingSplit[]>>
+  workoutHistory: WorkoutHistory[]
+  setWorkoutHistory: React.Dispatch<React.SetStateAction<WorkoutHistory[]>>
+  bodyWeights: BodyWeight[]
+  setBodyWeights: React.Dispatch<React.SetStateAction<BodyWeight[]>>
+}
+
+export default function Layout() {
+
+  const [trainingSplits, setTrainingSplits] = useState<TrainingSplit[]>(() => {
+    const stored = localStorage.getItem('trainingSplits');
+
+    return stored ? JSON.parse(stored) : []
+  });
+
+  useEffect(() => {
+    localStorage.setItem('trainingSplits', JSON.stringify(trainingSplits));
+  }, [trainingSplits])
+
+
+
+  const [workoutHistory, setWorkoutHistory] = useState<WorkoutHistory[]>(() => {
+    const stored = localStorage.getItem('workoutHistory');
+
+    return stored ? JSON.parse(stored) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem('workoutHistory', JSON.stringify(workoutHistory));
+  }, [workoutHistory]);
+
+
+  const [bodyWeights, setBodyWeights] = useState<BodyWeight[]>(() => {
+    const stored = localStorage.getItem('bodyWeights');
+
+    return stored ? JSON.parse(stored) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem('bodyWeights', JSON.stringify(bodyWeights))
+  }, [bodyWeights])
+
+
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+
+  const layoutContext: LayoutContextType = {
+    trainingSplits,
+    setTrainingSplits,
+    workoutHistory,
+    setWorkoutHistory,
+    bodyWeights,
+    setBodyWeights,
+  };
+
+  return (
+    <div className={styles['layout']}>
+
+      <a className={styles['skip-link']} href="#main">Skip to Content</a>
+
+      <Sidebar
+        isSidebarOpen={isSidebarOpen}
+        setIsSidebarOpen={setIsSidebarOpen}
+      />
+
+      <main id='main' className={styles['main-content']} tabIndex={-1}>
+        <Outlet context={layoutContext} />
+      </main>
+    </div>
+  )
+}
+
+
+
