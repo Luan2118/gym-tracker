@@ -3,8 +3,20 @@ import BodyWeightItem from './components/BodyWeightItem'
 import setPastDate from '../../utils/setPastDate';
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate, useOutletContext, useSearchParams } from 'react-router-dom';
-import {sortByNewest} from '../../utils/sortDate';
+import { sortByNewest } from '../../utils/sortDate';
 import getPaginationData from '../../utils/getPaginationData';
+import { BodyWeight as BodyWeightType, LayoutContextType } from '../../types';
+
+type BodyWeightFilter =
+  | 'lastWeek'
+  | 'lastTwoWeeks'
+  | 'lastMonth'
+  | 'lastTwoMonths'
+  | 'customDate'
+  | 'all'
+
+
+type ApplyPresetFilter = Exclude<BodyWeightFilter, 'customDate'>
 
 export default function BodyWeight() {
 
@@ -14,29 +26,29 @@ export default function BodyWeight() {
   const lastMonthDate = setPastDate(30);
   const lastTwoMonthsDate = setPastDate(60);
 
-  const { bodyWeights, setBodyWeights } = useOutletContext();
+  const { bodyWeights, setBodyWeights } = useOutletContext<LayoutContextType>();
 
   const [bodyWeightInputText, setBodyWeightInputText] = useState('');
-  const [feedback, setFeedback] = useState(null)
-  const [filter, setFilter] = useState(null);
+  const [feedback, setFeedback] = useState<'added' | null>(null)
+  const [filter, setFilter] = useState<BodyWeightFilter>('all');
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
-  const [editBodyWeightId, setEditBodyWeightId] = useState(null);
+  const [editBodyWeightId, setEditBodyWeightId] = useState<string | null>(null);
   const [editBodyWeightInputText, setEditBodyWeightInputText] = useState('');
 
-  const bwInputRef = useRef(null);
+  const bwInputRef = useRef<HTMLInputElement | null>(null);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (searchParams.get('log') === 'true') {
-      bwInputRef.current.focus()
+        bwInputRef.current?.focus();
     }
   }, [searchParams]);
 
   const sortedByDateBodyWeights = sortByNewest(bodyWeights)
 
-  function getBodyWeightsInRange (bodyWeights, date) {
+  function getBodyWeightsInRange(bodyWeights: BodyWeightType[], date: string): BodyWeightType[] {
     return bodyWeights.filter((bw) => today > bw.date && date <= bw.date)
   }
 
@@ -59,7 +71,7 @@ export default function BodyWeight() {
 
   const itemsPerPage = 10;
 
-  const {pageNumbers, paginatedData, totalPages} = getPaginationData(itemsPerPage,visibleBodyWeights, currentPage )
+  const { pageNumbers, paginatedData, totalPages } = getPaginationData(itemsPerPage, visibleBodyWeights, currentPage)
 
   useEffect(() => {
     if (feedback !== 'added') return;
@@ -84,28 +96,28 @@ export default function BodyWeight() {
     navigate('')
   }
 
-  function handleCustomDate(e) {
+  function handleCustomDate(e: React.ChangeEvent<HTMLInputElement>) {
     setDateTo(e.target.value);
     setFilter('customDate')
     setCurrentPage(1);
   }
 
-  function applyPreset(preset) {
+  function applyPreset(preset: ApplyPresetFilter) {
     setFilter(preset);
     setDateFrom('');
     setDateTo('')
     setCurrentPage(1);
   }
 
-  function deleteBodyWeight(id) {
+  function deleteBodyWeight(id: string) {
     setBodyWeights((prev) => prev.filter((bw) => bw.id !== id))
   }
 
-  function handleEditBodyWeight(id) {
+  function handleEditBodyWeight(id: string) {
     setEditBodyWeightId(id);
   }
 
-  function handleEditBwInput(e) {
+  function handleEditBwInput(e: React.ChangeEvent<HTMLInputElement>) {
     setEditBodyWeightInputText(e.target.value)
   }
 
@@ -116,7 +128,7 @@ export default function BodyWeight() {
 
         return {
           ...bw,
-          bw: editBodyWeightInputText
+          bw: Number(editBodyWeightInputText)
         }
       })
     )
@@ -147,6 +159,7 @@ export default function BodyWeight() {
                 <input type="date" id="date-to" className={styles["date-to-input"]} onChange={handleCustomDate} value={dateTo} />
               </div>
             </fieldset>
+
 
             <div className={styles["filter-buttons-wrapper"]}>
               <button type='button' className={filter === 'lastWeek' ? styles["clicked-filter-button"] : styles["last-week-button"]} onClick={() => applyPreset('lastWeek')}>Last Week</button>
