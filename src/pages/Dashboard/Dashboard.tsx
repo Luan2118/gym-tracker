@@ -2,15 +2,13 @@ import { Link, useOutletContext } from 'react-router-dom'
 import styles from './Dashboard.module.css'
 import formatISODate from '../../utils/formatISODate';
 import setPastDate from '../../utils/setPastDate';
-import {sortByNewest} from '../../utils/sortDate';
-import { WorkoutHistory, BodyWeight } from '../../types';
+import { sortByNewest } from '../../utils/sortDate';
+import { LayoutContextType, WorkoutHistory, BodyWeight, HasDate } from '../../types';
 
 export default function Dashboard() {
 
   // Body Weight card
-  const { bodyWeights, workoutHistory } = useOutletContext();
-
-  console.log(useOutletContext)
+  const { bodyWeights, workoutHistory } = useOutletContext<LayoutContextType>();
 
   const sortedBodyWeights = sortByNewest(bodyWeights)
 
@@ -19,9 +17,9 @@ export default function Dashboard() {
   const entryDate = latestEntry ? new Date(latestEntry.date) : null;
   const today = new Date();
 
-  
-  const diffMs = entryDate ? today - entryDate : null;
-  const diffDays = diffMs === null ?  null : Math.floor(diffMs / (1000 * 60 * 60 * 24)) ;
+
+  const diffMs = entryDate ? today.getTime() - entryDate.getTime() : null;
+  const diffDays = diffMs === null ? null : Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
   // Last Workout card
   const sortedWorkoutHistory = sortByNewest(workoutHistory);
@@ -32,7 +30,7 @@ export default function Dashboard() {
 
   // This Week workouts count
   const last7Days = new Date(setPastDate(7));
-  const thisWeekWorkouts = getLast7DaysEntries(sortedWorkoutHistory);
+  const thisWeekWorkouts  = getLast7DaysEntries(sortedWorkoutHistory);
 
   const subText =
     thisWeekWorkouts.length === 0 ? 'No workouts yet' :
@@ -89,7 +87,7 @@ export default function Dashboard() {
   // Weigh this week
   const thisWeeksBodyWeight = getLast7DaysEntries(sortedBodyWeights);
 
-  function getLast7DaysEntries(data) {
+  function getLast7DaysEntries<T extends HasDate>(data: T[]): T[] {
     return data.filter((data) => new Date(data.date) > last7Days)
   }
 
@@ -108,7 +106,7 @@ export default function Dashboard() {
               <div className={styles['overview-card-text']}>Latest Weight:</div>
               <div className={styles['overview-card-value']}>{latestEntry ? `${latestEntry.bw} kg` : '-'}</div>
               <div className={styles['overview-card-value-additional']}>
-                {diffDays === null ? '-' : `Updated ${diffDays !== 0 ? `${diffDays} days ago` : 'today'}`}
+                {diffDays === null ? '-' : `Updated ${diffDays === 0 ?  'today' : diffDays === 1 ?  `${diffDays} day ago` : `${diffDays} days ago`}`}
               </div>
 
             </div>
@@ -242,7 +240,7 @@ export default function Dashboard() {
 
                 <div className={styles['weight-summary-previous-info-wrapper']}>
                   <div className={styles['weight-summary-previous-text']}>Previous</div>
-                  <div className={styles['weight-summary-previous-weight']}>{previousEntry ? `${previousEntry.bw} kg`: '-'}</div>
+                  <div className={styles['weight-summary-previous-weight']}>{previousEntry ? `${previousEntry.bw} kg` : '-'}</div>
                 </div>
 
                 <div className={styles['weight-summary-change-info-wrapper']}>

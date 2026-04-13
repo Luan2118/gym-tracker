@@ -81,4 +81,11 @@ export type LayoutContextType = {
   setWorkoutHistory: React.Dispatch<React.SetStateAction<WorkoutHistory[]>>
   bodyWeights: BodyWeight[]
   setBodyWeights: React.Dispatch<React.SetStateAction<BodyWeight[]>>
+}¨
+
+
+
+// Base shape for data that include date field
+export type HasDate = {
+  date: string
 }
