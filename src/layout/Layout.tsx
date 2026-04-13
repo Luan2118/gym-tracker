@@ -2,18 +2,7 @@ import { Outlet } from "react-router-dom"
 import { useState, useEffect } from "react";
 import Sidebar from '../components/Sidebar/Sidebar'
 import styles from './Layout.module.css'
-import { TrainingSplit, WorkoutHistory, BodyWeight } from "../types";
-
-
-
-type LayoutContextType = {
-  trainingSplits: TrainingSplit[]
-  setTrainingSplits: React.Dispatch<React.SetStateAction<TrainingSplit[]>>
-  workoutHistory: WorkoutHistory[]
-  setWorkoutHistory: React.Dispatch<React.SetStateAction<WorkoutHistory[]>>
-  bodyWeights: BodyWeight[]
-  setBodyWeights: React.Dispatch<React.SetStateAction<BodyWeight[]>>
-}
+import { TrainingSplit, WorkoutHistory, BodyWeight, LayoutContextType } from "../types";
 
 export default function Layout() {
 

@@ -71,3 +71,14 @@ export type ExerciseMetaData = {
   secondaryMuscles: string[]
   instructions: string[]
 }
+
+
+// Outlet context
+export type LayoutContextType = {
+  trainingSplits: TrainingSplit[]
+  setTrainingSplits: React.Dispatch<React.SetStateAction<TrainingSplit[]>>
+  workoutHistory: WorkoutHistory[]
+  setWorkoutHistory: React.Dispatch<React.SetStateAction<WorkoutHistory[]>>
+  bodyWeights: BodyWeight[]
+  setBodyWeights: React.Dispatch<React.SetStateAction<BodyWeight[]>>
+}

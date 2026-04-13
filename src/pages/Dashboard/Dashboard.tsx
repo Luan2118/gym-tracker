@@ -3,11 +3,14 @@ import styles from './Dashboard.module.css'
 import formatISODate from '../../utils/formatISODate';
 import setPastDate from '../../utils/setPastDate';
 import {sortByNewest} from '../../utils/sortDate';
+import { WorkoutHistory, BodyWeight } from '../../types';
 
 export default function Dashboard() {
 
   // Body Weight card
   const { bodyWeights, workoutHistory } = useOutletContext();
+
+  console.log(useOutletContext)
 
   const sortedBodyWeights = sortByNewest(bodyWeights)
 
