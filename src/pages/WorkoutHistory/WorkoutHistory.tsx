@@ -4,15 +4,19 @@ import WorkoutHistoryItem from './components/WorkoutHistoryItem';
 import { useState } from 'react';
 import { sortByNewest, sortByOldest} from '../../utils/sortDate';
 import getPaginationData from '../../utils/getPaginationData';
+import { LayoutContextType, WorkoutHistory as WorkoutHistoryType  } from '../../types';
+
+type TrainingSplitOptionsType = Pick<WorkoutHistoryType, 'id' | 'trainingSplitName'>
+
+type WorkoutDayOptionsType = Pick<WorkoutHistoryType, 'id' | 'workoutDay'>
 
 export default function WorkoutHistory() {
 
-  const { workoutHistory, setWorkoutHistory } = useOutletContext();
+  const { workoutHistory, setWorkoutHistory } = useOutletContext<LayoutContextType>();
   const [selectedSplitName, setSelectedSplitName] = useState('');
   const [selectedWorkoutDayName, setSelectedWorkoutDayName] = useState('');
-  const [selectedSort, setSelectedSort] = useState('newest');
+  const [selectedSort, setSelectedSort] = useState<'newest' | 'oldest'>('newest');
   const [currentPage, setCurrentPage] = useState(1);
-
 
   // visible workout history data
   let filteredWorkoutHistory = workoutHistory.filter((w) => {
@@ -39,9 +43,8 @@ export default function WorkoutHistory() {
   const itemsPerPage = 5;
   const {pageNumbers, paginatedData, totalPages} = getPaginationData(itemsPerPage, filteredWorkoutHistory, currentPage )
 
-
   // options
-  const trainingSplitOptions = [];
+  const trainingSplitOptions: TrainingSplitOptionsType[] = [];
   workoutHistory.forEach((w) => {
     if (!trainingSplitOptions.some((split) => split.trainingSplitName === w.trainingSplitName)) {
       trainingSplitOptions.push({
@@ -51,7 +54,7 @@ export default function WorkoutHistory() {
     }
   });
 
-  const workoutDayOptions = [];
+  const workoutDayOptions: WorkoutDayOptionsType[] = [];
   workoutHistory.forEach((w) => {
     if (!workoutDayOptions.some((workout) => workout.workoutDay === w.workoutDay)) {
       workoutDayOptions.push({
@@ -68,7 +71,7 @@ export default function WorkoutHistory() {
     setCurrentPage(1);
   }
 
-  function deleteWorkoutHistoryItem(id) {
+  function deleteWorkoutHistoryItem(id: string) {
     setWorkoutHistory((prev) => {
       return prev.filter((workout) => workout.id !== id)
     })
@@ -110,7 +113,7 @@ export default function WorkoutHistory() {
 
             <label htmlFor="sort" className={styles["sr-only"]}>Sort</label>
             <select id="sort" className={styles["filter-input"]} onChange={(e) => {
-              setSelectedSort(e.target.value)
+              setSelectedSort(e.target.value as 'newest' | 'oldest')
               setCurrentPage(1)
             }} value={selectedSort}>
               <option value="newest">Newest</option>
