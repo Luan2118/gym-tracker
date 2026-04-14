@@ -4,22 +4,23 @@ import { useNavigate, useOutletContext, useSearchParams } from 'react-router-dom
 import styles from './TrainingSplit.module.css'
 import AddTrainingSplitDialog from './components/AddTrainingSplitDialog'
 import TrainingSplitItem from './components/TrainingSplitItem'
+import { LayoutContextType, TrainingSplitWorkoutDay } from '../../types'
 
 export default function TrainingSplit() {
 
-  const { trainingSplits, setTrainingSplits } = useOutletContext();
+  const { trainingSplits, setTrainingSplits } = useOutletContext<LayoutContextType>();
 
   const [trainingSplitInputText, setTrainingSplitInputText] = useState('')
-  const [workoutDays, setWorkoutDays] = useState([]);
-  const [editingSplitId, setEditingSplitId] = useState(null);
-  const dialogRef = useRef(null);
+  const [workoutDays, setWorkoutDays] = useState<TrainingSplitWorkoutDay[]>([]);
+  const [editingSplitId, setEditingSplitId] = useState<string | null>(null);
+  const dialogRef = useRef<HTMLDialogElement | null>(null);
 
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (searchParams.get('dialog') === 'open') {
-      dialogRef.current.showModal();
+      dialogRef.current?.showModal();
     }
   }, [searchParams])
 
@@ -27,7 +28,7 @@ export default function TrainingSplit() {
     setEditingSplitId(null);
     setTrainingSplitInputText('');
     setWorkoutDays([]);
-    dialogRef.current.showModal();
+    dialogRef.current?.showModal();
 
   }
 
@@ -35,7 +36,7 @@ export default function TrainingSplit() {
     setEditingSplitId(null);
     setTrainingSplitInputText('');
     setWorkoutDays([]);
-    dialogRef.current.close();
+    dialogRef.current?.close();
     navigate('')
   }
 
@@ -46,12 +47,12 @@ export default function TrainingSplit() {
     ])
   }
 
-  function deleteWorkoutDay(id) {
+  function deleteWorkoutDay(id: string) {
     const newArray = workoutDays.filter((workoutDay) => workoutDay.id !== id)
     setWorkoutDays(newArray)
   }
 
-  function handleWorkoutDayInputText(id, e) {
+  function handleWorkoutDayInputText(id: string, e: React.ChangeEvent<HTMLInputElement>) {
     const value = (e.target.value);
 
     setWorkoutDays(prev =>
@@ -67,7 +68,7 @@ export default function TrainingSplit() {
     )
   }
 
-  function addExercise(id) {
+  function addExercise(id: string) {
     setWorkoutDays((prev) =>
       prev.map((workoutDay) => {
         if (workoutDay.id !== id) return workoutDay;
@@ -84,7 +85,7 @@ export default function TrainingSplit() {
 
   }
 
-  function handleSearchExerciseText(e, workoutDayId, addedExerciseRowId) {
+  function handleSearchExerciseText(e: React.ChangeEvent<HTMLInputElement>, workoutDayId: string, addedExerciseRowId: string) {
     const value = e.target.value
 
     setWorkoutDays((prev) =>
@@ -109,7 +110,7 @@ export default function TrainingSplit() {
   }
 
 
-  function deleteExercise(workoutDayId, addedExerciseRowId) {
+  function deleteExercise(workoutDayId: string, addedExerciseRowId: string) {
     setWorkoutDays((prev) =>
       prev.map((workoutday) => {
         if (workoutDayId !== workoutday.id) return workoutday;
@@ -125,8 +126,10 @@ export default function TrainingSplit() {
     )
   }
 
-  function selectExercise(workoutDayId, selectedExerciseId, addedExerciseRowId) {
+  function selectExercise(workoutDayId: string, selectedExerciseId: string, addedExerciseRowId: string) {
     const selectedExercise = exercises.find((exercise) => exercise.id === selectedExerciseId);
+
+    if (!selectedExercise) return;
 
     setWorkoutDays((prev) =>
       prev.map((workoutday) => {
@@ -153,7 +156,7 @@ export default function TrainingSplit() {
 
   }
 
-  function selectExerciseAgain(rowId, workoutDayId) {
+  function selectExerciseAgain(rowId: string, workoutDayId: string) {
     setWorkoutDays((prev) =>
       prev.map((workoutday) => {
         if (workoutday.id !== workoutDayId) return workoutday;
@@ -178,7 +181,7 @@ export default function TrainingSplit() {
     )
   }
 
-  function addSet(workoutDayId, addedExerciseRowId) {
+  function addSet(workoutDayId: string, addedExerciseRowId: string) {
 
     setWorkoutDays((prev) =>
       prev.map((workoutday) => {
@@ -186,14 +189,14 @@ export default function TrainingSplit() {
 
         const newExercisesArray = workoutday.exercises.map((ex) => {
           if (ex.rowId !== addedExerciseRowId) return ex;
-
-
+          const weightValue: number | '' = ''
+          const repsValue: number | '' = ''
 
           return {
             ...ex,
             sets: [
               ...ex.sets,
-              { id: crypto.randomUUID(), reps: '', weight: '' }
+              { id: crypto.randomUUID(), weight: weightValue, reps: repsValue }
             ],
           }
         })
@@ -206,7 +209,7 @@ export default function TrainingSplit() {
     )
   }
 
-  function deleteSet(setId) {
+  function deleteSet(setId: string) {
 
     setWorkoutDays((prev) =>
       prev.map((workouday) => {
@@ -229,7 +232,7 @@ export default function TrainingSplit() {
     )
   }
 
-  function submitTrainingSplit(e) {
+  function submitTrainingSplit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
 
     const name = trainingSplitInputText.trim();
@@ -261,7 +264,7 @@ export default function TrainingSplit() {
     closeDialog();
   }
 
-  function editTrainingSplit(id) {
+  function editTrainingSplit(id: string) {
     const selectedSplit = trainingSplits.find((split) => split.id === id);
     if (!selectedSplit) return;
     const selectedSplitCopy = structuredClone(selectedSplit);
@@ -271,16 +274,16 @@ export default function TrainingSplit() {
     setTrainingSplitInputText(selectedSplitCopy.name);
 
 
-    dialogRef.current.showModal();
+    dialogRef.current?.showModal();
   }
 
-  function deleteTrainingSplit(id) {
+  function deleteTrainingSplit(id: string) {
     setTrainingSplits((prev) => prev.filter((trainingsplit) => trainingsplit.id !== id))
   }
 
-  function handleSet(e, workoutDayId, addedExerciseRowId, setId, property ) {
-    const value = (e.target.value);
-    
+  function handleSet(e: React.ChangeEvent<HTMLInputElement>, workoutDayId: string, addedExerciseRowId: string, setId: string, property: 'weight' | 'reps') {
+    const value: number | '' = e.target.value === '' ? '' : Number(e.target.value)
+
 
     const newArray = workoutDays.map((workoutday) => {
       if (workoutday.id !== workoutDayId) return workoutday;
@@ -293,7 +296,7 @@ export default function TrainingSplit() {
 
           return {
             ...set,
-            [property ]: value
+            [property]: value
           }
         })
 
@@ -312,11 +315,11 @@ export default function TrainingSplit() {
     setWorkoutDays(newArray);
   }
 
-  function handleWeightSet(e, workoutDayId, addedExerciseRowId, setId) {
+  function handleWeightSet(e: React.ChangeEvent<HTMLInputElement>, workoutDayId: string, addedExerciseRowId: string, setId: string) {
     handleSet(e, workoutDayId, addedExerciseRowId, setId, 'weight')
   }
 
-  function handleRepsSet(e, workoutDayId, addedExerciseRowId, setId) {
+  function handleRepsSet(e: React.ChangeEvent<HTMLInputElement>, workoutDayId: string, addedExerciseRowId: string, setId: string) {
     handleSet(e, workoutDayId, addedExerciseRowId, setId, 'reps')
   }
 

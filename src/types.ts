@@ -5,13 +5,6 @@ export type BodyWeight = {
   date: string
 }
 
-// Base types
-export type BaseSet = {
-  id: string
-  weight: number
-  reps: number
-}
-
 export type BaseExercise<TSet> = {
   exerciseName: string
   exerciseId: string
@@ -20,7 +13,10 @@ export type BaseExercise<TSet> = {
 }
 
 // WorkoutHistory types
-export type WorkoutHistorySet = BaseSet & {
+export type WorkoutHistorySet = {
+  id: string
+  weight: number
+  reps: number
   sessionId: string
 }
 
@@ -36,7 +32,11 @@ export type WorkoutHistory = {
 }
 
 // TrainingSplit types
-export type TrainingSplitSet = BaseSet
+export type TrainingSplitSet = {
+  id: string
+  weight: number | ''
+  reps: number | ''
+}
 
 export type TrainingSplitExercise = BaseExercise<TrainingSplitSet> & {
   rowId: string
