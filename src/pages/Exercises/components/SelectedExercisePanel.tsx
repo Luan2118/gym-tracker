@@ -8,29 +8,41 @@ import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, LineElement, PointElement, CategoryScale, LinearScale, Title, Tooltip } from 'chart.js';
 ChartJS.register(LineElement, PointElement, CategoryScale, LinearScale, Title, Tooltip);
 import {sortByNewest} from '../../../utils/sortDate';
+import { LayoutContextType } from '../../../types'
 
-export default function SelectedExercisePanel({ selectedExerciseId, }) {
+type SelectedExercisePanelProp = {
+  selectedExerciseId: string | null
+}
 
-  const { workoutHistory } = useOutletContext();
+type ChartFilters = 
+  | 'last30'
+  | 'last60'
+  | 'last90'
+  | 'all'
+
+
+export default function SelectedExercisePanel({ selectedExerciseId, }: SelectedExercisePanelProp) {
+
+  const { workoutHistory } = useOutletContext<LayoutContextType>();
 
   const [clickedExImg, setClickedExImg] = useState(false);
   const [progressClicked, setProgressClicked] = useState(true);
-  const [chartFilter, setChartFilter] = useState('last30');
+  const [chartFilter, setChartFilter] = useState<ChartFilters>('last30');
 
 
-  const selectedExercise = selectedExerciseId ? exercises.find((ex) => ex.id === selectedExerciseId) : null;
+  const selectedExercise = selectedExerciseId ? exercises.find((ex) => ex.id === selectedExerciseId) : undefined;
 
   const primaryMuscle = selectedExercise ? selectedExercise.primaryMuscles.map((muscle) => {
     return muscle.charAt(0).toUpperCase() + muscle.slice(1)
-  }) : '';
+  }) : [];
 
   const secondaryMuscles = selectedExercise ?
     selectedExercise.secondaryMuscles.map((muscle) => {
       return muscle.charAt(0).toUpperCase() + muscle.slice(1)
-    }) : ''
+    }) : [];
 
 
-  const filteredWorkouts = [...workoutHistory].sort((a, b) => new Date(a.date) - new Date(b.date)).filter(workout =>
+  const filteredWorkouts = [...workoutHistory].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()).filter(workout =>
     workout.exercises.some(ex => ex.exerciseId === selectedExerciseId)
   );
 
@@ -50,7 +62,7 @@ export default function SelectedExercisePanel({ selectedExerciseId, }) {
           const exercise = workout.exercises.find(
             (ex) => ex.exerciseId === selectedExerciseId
           );
-
+          if (!exercise) return;
           return Math.max(...exercise.sets.map((set) => set.weight));
         }),
         borderColor: 'rgb(200, 200, 200)',
@@ -74,7 +86,7 @@ export default function SelectedExercisePanel({ selectedExerciseId, }) {
         color: 'rgb(238, 238, 238)',
         font: {
           size: 20,
-          weight: '600',
+          weight: 600,
         },
         padding: {
           bottom: 18,
@@ -86,10 +98,10 @@ export default function SelectedExercisePanel({ selectedExerciseId, }) {
         titleColor: 'rgb(245, 245, 245)',
         bodyColor: 'rgb(245, 245, 245)',
         bodyFont: {
-          weight: 'bold',
+          weight: 600,
         },
         callbacks: {
-          label: (context) => {
+          label: (context: any) => {
             return `Weight: ${context.formattedValue} kg`;
           },
         },
@@ -132,6 +144,8 @@ export default function SelectedExercisePanel({ selectedExerciseId, }) {
   const bestSets = filteredWorkouts.map((w) => {
     const exercises = w.exercises.find((ex) => ex.exerciseId === selectedExerciseId)
 
+    if(!exercises) return;
+    
     const result = exercises.sets.reduce((best, current) => {
       if (current.weight > best.weight) return current;
       if (current.weight === best.weight && current.reps > best.reps) return current;
@@ -141,18 +155,19 @@ export default function SelectedExercisePanel({ selectedExerciseId, }) {
     return result
   })
 
-  const latestBestSet = bestSets.at(-1);
+  
+  const latestBestSet = bestSets ? bestSets.at(-1) : undefined;
+  
+  const firstLoggedSet = filteredWorkouts[0]? filteredWorkouts[0].exercises.find((ex) => ex.exerciseId === selectedExerciseId)?.sets[0] : undefined
 
-  const firstLoggedSet = filteredWorkouts[0]?.exercises.find((ex) => ex.exerciseId === selectedExerciseId).sets[0]
-
-  const latestSet = sortByNewest(filteredWorkouts)[0]?.exercises.find((ex) => ex.exerciseId === selectedExerciseId).sets[0]
+  const latestSet = filteredWorkouts[0] ? sortByNewest(filteredWorkouts)[0].exercises.find((ex) => ex.exerciseId === selectedExerciseId)?.sets[0] : undefined
 
   return (
     <div className={styles["main-content-wrapper"]}>
       {selectedExerciseId ?
         <>
           <div className={styles["selected-exercise-wrapper"]}>
-            <div className={styles["selected-exercise-name"]}>{selectedExercise.name}
+            <div className={styles["selected-exercise-name"]}>{selectedExercise ? selectedExercise.name : '-'}
             </div>
 
             <div className={styles["selected-exercise-content"]}>
@@ -171,7 +186,7 @@ export default function SelectedExercisePanel({ selectedExerciseId, }) {
               </div>
 
               <button onClick={() => setClickedExImg((prev) => !prev)} className={styles["selected-exercise-image-button"]}>
-                <img src={`${EXERCISE_BASE_PREFIX}${clickedExImg ? selectedExercise.images[0] : selectedExercise.images[1]}`} alt={selectedExercise.name} className={styles["selected-exercise-image"]} />
+                <img src={`${EXERCISE_BASE_PREFIX}${clickedExImg ? selectedExercise?.images[0] : selectedExercise?.images[1]}`} alt={selectedExercise?.name} className={styles["selected-exercise-image"]} />
               </button>
             </div>
           </div>
