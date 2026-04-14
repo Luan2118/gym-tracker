@@ -18,7 +18,7 @@ export default function SelectedExercisePanel({ selectedExerciseId, }) {
   const [chartFilter, setChartFilter] = useState('last30');
 
 
-  const selectedExercise = selectedExerciseId ? exercises.find((ex) => ex.id === selectedExerciseId) : '';
+  const selectedExercise = selectedExerciseId ? exercises.find((ex) => ex.id === selectedExerciseId) : null;
 
   const primaryMuscle = selectedExercise ? selectedExercise.primaryMuscles.map((muscle) => {
     return muscle.charAt(0).toUpperCase() + muscle.slice(1)

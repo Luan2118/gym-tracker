@@ -7,7 +7,7 @@ import SelectedExercisePanel from './components/SelectedExercisePanel';
 
 export default function Exercises() {
 
-  const [selectedExerciseId, setSelectedExerciseId] = useState('');
+  const [selectedExerciseId, setSelectedExerciseId] = useState<string | null>(null);
 
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 900);
 
@@ -25,20 +25,20 @@ export default function Exercises() {
   }, []);
 
 
-  function handleSelectExercise(exerciseId) {
+  function handleSelectExercise(exerciseId: string) {
     setSelectedExerciseId(exerciseId)
-    
-    if (isMobile) dialogRef.current.close();
+
+    if (isMobile) dialogRef.current?.close();
   }
 
-  const dialogRef = useRef(null);
+  const dialogRef = useRef<HTMLDialogElement | null>(null);
 
   function handleExercisesList() {
-    dialogRef.current.showModal();
+    dialogRef.current?.showModal();
   }
 
   function handleCloseDialog() {
-    dialogRef.current.close();
+    dialogRef.current?.close();
   }
 
   return (
@@ -60,9 +60,8 @@ export default function Exercises() {
               />
             </dialog>
           </div>
-          
+
           <SelectedExercisePanel
-            isMobile={isMobile}
             selectedExerciseId={selectedExerciseId}
           />
         </div>
@@ -76,7 +75,9 @@ export default function Exercises() {
 
           <div className={styles["filter-exercises-wrapper"]}>
             <ExerciseBrowser
+              isMobile={isMobile}
               handleSelectExercise={handleSelectExercise}
+              handleCloseDialog={handleCloseDialog}
             />
           </div>
 
