@@ -4,43 +4,44 @@ import styles from './ActiveWorkout.module.css'
 import ActiveExerciseCard from './components/ActiveExerciseCard'
 import StartWorkoutDialog from './components/StartWorkoutDialog'
 import formatTimer from '../../utils/formatTimer'
+import { LayoutContextType, WorkoutHistoryExercise, ActiveWorkoutExercise } from '../../types'
+
 
 export default function ActiveWorkout() {
 
-  const { trainingSplits, workoutHistory, setWorkoutHistory } = useOutletContext();
+  const { trainingSplits, workoutHistory, setWorkoutHistory } = useOutletContext<LayoutContextType>();
 
   const [activeWorkout, setActiveWorkout] = useState(false);
   const [selectedTrainingSplitId, setSelectedTrainingSplitId] = useState('');
   const [selectedWorkoutDayId, setSelectedWorkoutDayId] = useState('');
-  const [activeExercises, setActiveExercises] = useState([]);
+  const [activeExercises, setActiveExercises] = useState<ActiveWorkoutExercise[]>([]);
 
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (searchParams.get('dialog') === 'open') {
-      dialogRef.current.showModal()
+      dialogRef.current?.showModal()
     }
   }, [searchParams])
 
-  const dialogRef = useRef(null);
+  const dialogRef = useRef<HTMLDialogElement | null>(null);
 
   const selectedTrainingSplit = trainingSplits
     .find((split) => split.id === selectedTrainingSplitId)
 
   const selectedWorkoutDay = selectedTrainingSplit?.workoutDays.find((workoutday) => workoutday.id === selectedWorkoutDayId)
 
+  console.log(selectedWorkoutDay)
+
   const activeWorkoutData =
     selectedWorkoutDay
       ?.exercises ?? [];
 
-
   const [timerRunning, setTimerRunning] = useState(false);
   const startTimeRef = useRef(0);
   const [elapsedTime, setElapsedTime] = useState(0);
-  const intervalIdRef = useRef(null);
-
-
+  const intervalIdRef = useRef<number | undefined>(undefined);
 
   function handleStartWorkout() {
     openDialog();
@@ -48,7 +49,6 @@ export default function ActiveWorkout() {
     setSelectedWorkoutDayId('');
     setActiveWorkout(false);
   }
-
 
   function handleCancelWorkout() {
     setActiveWorkout(false);
@@ -59,20 +59,20 @@ export default function ActiveWorkout() {
 
 
   function openDialog() {
-    dialogRef.current.showModal()
+    dialogRef.current?.showModal()
   }
 
   function closeDialog() {
     navigate('');
-    dialogRef.current.close()
+    dialogRef.current?.close()
   }
 
-  function handleSelectTrainingSplit(e) {
+  function handleSelectTrainingSplit(e: React.ChangeEvent<HTMLSelectElement>) {
     setSelectedTrainingSplitId(e.target.value)
   }
 
 
-  function handleSubmitStartWorkout(e) {
+  function handleSubmitStartWorkout(e: React.SubmitEvent<HTMLFormElement>) {
     startTimeRef.current = Date.now() - elapsedTime;
     setTimerRunning(true);
     e.preventDefault();
@@ -85,7 +85,9 @@ export default function ActiveWorkout() {
         sets: ex.sets.map((set) => {
           return {
             id: set.id,
-            sessionId: crypto.randomUUID()
+            sessionId: crypto.randomUUID(),
+            weight: '',
+            reps: ''
           }
         })
       }
@@ -93,14 +95,14 @@ export default function ActiveWorkout() {
     closeDialog();
   }
 
-  function handleSelectWorkoutDay(id) {
-    setSelectedWorkoutDayId((currentId) => {
-      return currentId === id ? null : id;
+  function handleSelectWorkoutDay(id: string) {
+    setSelectedWorkoutDayId((prev) => {
+      return prev === id ? '' : id;
     });
   }
 
-  function handleWeightSet(e, setId, exerciseId) {
-    const weightInputValue = e.target.value === '' ? '' : Number(e.target.value);
+  function handleWeightSet(e: React.ChangeEvent<HTMLInputElement>, setId: string, exerciseId: string) {
+    const weightInputValue: number | '' = e.target.value === '' ? '' : Number(e.target.value);
 
     const newExerciseList = activeExercises.map((ex) => {
       if (ex.exerciseId !== exerciseId) return ex;
@@ -120,11 +122,14 @@ export default function ActiveWorkout() {
       }
     })
 
+
     setActiveExercises(newExerciseList)
   }
 
-  function handleRepsSet(e, setId, exerciseId) {
-    const repstInputValue = e.target.value === '' ? '' : Number(e.target.value);
+
+
+  function handleRepsSet(e: React.ChangeEvent<HTMLInputElement>, setId: string, exerciseId: string) {
+    const repstInputValue: number | '' = e.target.value === '' ? '' : Number(e.target.value);
     const newExerciseList = activeExercises.map((ex) => {
       if (ex.exerciseId !== exerciseId) return ex;
 
@@ -151,12 +156,27 @@ export default function ActiveWorkout() {
     setTimerRunning(false);
     setElapsedTime(0);
 
+    const workoutExercises: WorkoutHistoryExercise[] = activeExercises.map((ex) => ({
+      exerciseName: ex.exerciseName,
+      exerciseId: ex.exerciseId,
+      images: ex.images,
+      sets: ex.sets.map((set) => {
+
+        return {
+          id: set.id,
+          sessionId: set.sessionId,
+          weight: Number(set.weight),
+          reps: Number(set.reps),
+        };
+      }),
+    }));
+
     const newWorkoutHistory = {
       id: crypto.randomUUID(),
-      trainingSplitName: selectedTrainingSplit.name,
-      workoutDay: selectedWorkoutDay.name,
+      trainingSplitName: selectedTrainingSplit ? selectedTrainingSplit.name : '',
+      workoutDay: selectedWorkoutDay ? selectedWorkoutDay.name : '',
       date: new Date().toISOString(),
-      exercises: activeExercises,
+      exercises: workoutExercises,
       duration: elapsedTime
     }
 
@@ -254,7 +274,6 @@ export default function ActiveWorkout() {
             trainingSplits={trainingSplits}
             closeDialog={closeDialog}
             selectedWorkoutDayId={selectedWorkoutDayId}
-            setSelectedWorkoutDayId={setSelectedWorkoutDayId}
             selectedWorkoutDay={selectedWorkoutDay}
             handleSelectWorkoutDay={handleSelectWorkoutDay}
           />

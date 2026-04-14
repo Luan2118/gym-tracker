@@ -89,3 +89,16 @@ export type LayoutContextType = {
 export type HasDate = {
   date: string
 }
+
+
+// Active Workout
+
+export type ActiveWorkoutSet = {
+  id: string
+  sessionId: string
+  weight: number | ''
+  reps: number | ''
+}
+
+export type ActiveWorkoutExercise = BaseExercise<ActiveWorkoutSet>
+

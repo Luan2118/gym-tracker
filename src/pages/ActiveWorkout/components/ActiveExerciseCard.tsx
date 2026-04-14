@@ -1,11 +1,11 @@
 import styles from './ActiveExerciseCard.module.css'
 import { EXERCISE_BASE_PREFIX } from '../../../data/exercises';
-import { TrainingSplitExercise, WorkoutHistoryExercise, WorkoutHistory, WorkoutHistorySet } from '../../../types';
+import { TrainingSplitExercise, WorkoutHistory, WorkoutHistorySet, ActiveWorkoutExercise } from '../../../types';
 
 type ActiveExerciseCardProps = {
   ex: TrainingSplitExercise
   exerciseId: string
-  activeExercises: WorkoutHistoryExercise[]
+  activeExercises: ActiveWorkoutExercise[]
   workoutHistory: WorkoutHistory[]
   handleWeightSet: (e: React.ChangeEvent<HTMLInputElement>, setId: string, exerciseId: string) => void
   handleRepsSet: (e: React.ChangeEvent<HTMLInputElement>, setId: string, exerciseId: string) => void
@@ -13,7 +13,6 @@ type ActiveExerciseCardProps = {
 
 export default function ActiveExerciseCard({ ex, exerciseId, activeExercises, workoutHistory, handleWeightSet, handleRepsSet }: ActiveExerciseCardProps) {
 
-  console.log(ex)
   const activeExIds: Set<string> = new Set(activeExercises.map(e => e.exerciseId));
 
   const lastWorkout: WorkoutHistory | undefined = [...workoutHistory]

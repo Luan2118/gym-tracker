@@ -1,7 +1,7 @@
 import styles from './StartWorkoutDialog.module.css'
 import closeX from '../../../assets/activeWorkout/x-close.png'
 import { EXERCISE_BASE_PREFIX } from '../../../data/exercises'
-import { TrainingSplit } from '../../../types'
+import { TrainingSplit, TrainingSplitWorkoutDay } from '../../../types'
 
 type StartWorkoutDialogProps = {
   dialogRef: React.RefObject<HTMLDialogElement | null>
@@ -11,7 +11,7 @@ type StartWorkoutDialogProps = {
   trainingSplits: TrainingSplit[]
   closeDialog: () => void
   selectedWorkoutDayId: string
-  selectedWorkoutDay: string
+  selectedWorkoutDay: TrainingSplitWorkoutDay |  undefined
   handleSelectWorkoutDay: (id: string) => void
 }
 
