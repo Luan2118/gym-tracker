@@ -5,8 +5,14 @@ import { useState } from 'react';
 import closeX from '../../../assets/activeWorkout/x-close.png'
 import ExerciseItem from './ExerciseItem';
 
+type ExerciseBrowserProps = {
+  isMobile: boolean
+  handleSelectExercise: (exerciseId: string) => void
+  handleCloseDialog: () => void
+}
 
-export default function ExerciseBrowser({ isMobile, handleSelectExercise, handleCloseDialog }) {
+
+export default function ExerciseBrowser({ isMobile, handleSelectExercise, handleCloseDialog }: ExerciseBrowserProps) {
 
   const [searchText, setSearchText] = useState('');
   const [selectedMuscleOption, setSelectedMuscleOption] = useState('');
@@ -15,7 +21,7 @@ export default function ExerciseBrowser({ isMobile, handleSelectExercise, handle
   const [selectedLowerBodyEx, setSelectedLowerBodyEx] = useState(false);
 
 
-  const muscleGroupList = [];
+  const muscleGroupList: string[] = [];
 
   exercises.forEach((ex) => {
     if (!muscleGroupList.includes(ex.muscleGroup)) {
@@ -23,15 +29,13 @@ export default function ExerciseBrowser({ isMobile, handleSelectExercise, handle
     }
   })
 
-  const equipmentList = [];
+  const equipmentList: string[] = [];
 
   exercises.forEach((ex) => {
     if (!equipmentList.includes(ex.equipment)) {
       equipmentList.push(ex.equipment)
     }
   })
-
-  muscleGroupList.includes
 
   const filteredExercises =
     searchText ? exercises.filter((ex) => ex.name.toLowerCase().includes(searchText)) :
