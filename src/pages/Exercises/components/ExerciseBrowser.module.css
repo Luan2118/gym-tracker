@@ -81,12 +81,13 @@
 
 .clicked-filter-button {
   background-color: rgb(59, 130, 246);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   color: white;
   font-size: clamp(1.5rem, 1vw, 1.8rem);
-  border: none;
   border-radius: 1rem;
   cursor: pointer;
-  padding: 1rem 2rem;
+  padding: clamp(0.7rem, 2vw, 1rem) clamp(1.5rem, 2vw, 2rem);
+  margin-right: 1rem;
   transition: 0.2s ease;
   margin-bottom: 0.8rem;
 }
