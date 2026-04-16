@@ -24,9 +24,10 @@ type AddTrainingSplitDialogProps = {
   addSet: (workoutDayId: string, addedExerciseRowId: string) => void
   selectExercise: (workoutDayId: string, selectedExerciseId: string, addedExerciseRowId: string) => void
   addExercise: (id: string) => void
+  duplicatedExerciseId:  string
 }
 
-export default function AddTrainingSplitDialog({ dialogRef, submitTrainingSplit, trainingSplitInputText, setTrainingSplitInputText, addWorkoutDay, closeDialog, workoutDays, handleWorkoutDayInputText, deleteWorkoutDay, selectExerciseAgain, handleSearchExerciseText, deleteExercise, handleWeightSet, handleRepsSet, deleteSet, addSet, selectExercise, addExercise }: AddTrainingSplitDialogProps) {
+export default function AddTrainingSplitDialog({ dialogRef, submitTrainingSplit, trainingSplitInputText, setTrainingSplitInputText, addWorkoutDay, closeDialog, workoutDays, handleWorkoutDayInputText, deleteWorkoutDay, selectExerciseAgain, handleSearchExerciseText, deleteExercise, handleWeightSet, handleRepsSet, deleteSet, addSet, selectExercise, addExercise, duplicatedExerciseId }: AddTrainingSplitDialogProps) {
 
   return (
     <dialog ref={dialogRef} className={styles["add-training-split-dialog"]}>
@@ -77,6 +78,7 @@ export default function AddTrainingSplitDialog({ dialogRef, submitTrainingSplit,
                   deleteSet={deleteSet}
                   addSet={addSet}
                   selectExercise={selectExercise}
+                  duplicatedExerciseId={duplicatedExerciseId}
                 />
               )}
 

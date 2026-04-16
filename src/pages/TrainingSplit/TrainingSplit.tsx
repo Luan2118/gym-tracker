@@ -14,6 +14,7 @@ export default function TrainingSplit() {
   const [workoutDays, setWorkoutDays] = useState<TrainingSplitWorkoutDay[]>([]);
   const [editingSplitId, setEditingSplitId] = useState<string | null>(null);
   const dialogRef = useRef<HTMLDialogElement | null>(null);
+  const [duplicatedExerciseId, setDuplicatedExercise] = useState('');
 
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -128,16 +129,26 @@ export default function TrainingSplit() {
 
   function selectExercise(workoutDayId: string, selectedExerciseId: string, addedExerciseRowId: string) {
     const selectedExercise = exercises.find((exercise) => exercise.id === selectedExerciseId);
-
     if (!selectedExercise) return;
 
-    setWorkoutDays((prev) =>
-      prev.map((workoutday) => {
-        if (workoutday.id !== workoutDayId) return workoutday;
+    setWorkoutDays((prev) => {
+      setDuplicatedExercise('');
+      const selectedWorkoutDay = prev.find((workoutDay) => workoutDay.id === workoutDayId);
+      if (!selectedWorkoutDay) return prev;
 
-        const newExercisesArray = workoutday.exercises.map((ex) => {
+      const isDuplicate = selectedWorkoutDay.exercises.some((ex) => {
+       return  ex.exerciseId === selectedExerciseId;
+      });
+
+      if (isDuplicate) {
+        setDuplicatedExercise(addedExerciseRowId);
+        return prev;
+      }
+      return prev.map((workoutDay) => {
+
+        const newExercisesArray = workoutDay.exercises.map((ex) => {
+
           if (ex.rowId !== addedExerciseRowId) return ex
-
           return {
             ...ex,
             exerciseName: selectedExercise.name,
@@ -148,13 +159,16 @@ export default function TrainingSplit() {
         })
 
         return {
-          ...workoutday,
+          ...workoutDay,
           exercises: newExercisesArray
         }
       })
+    }
+
     )
 
   }
+
 
   function selectExerciseAgain(rowId: string, workoutDayId: string) {
     setWorkoutDays((prev) =>
@@ -351,6 +365,7 @@ export default function TrainingSplit() {
           addSet={addSet}
           selectExercise={selectExercise}
           addExercise={addExercise}
+          duplicatedExerciseId={duplicatedExerciseId}
         />
 
         <section className={styles["content-main"]}>

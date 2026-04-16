@@ -3,6 +3,7 @@ import plusIcon from '../../../assets/training-split/plus-icon.png'
 import deleteWorkoutDayIcon from '../../../assets/training-split/delete-workout-day.png'
 import { exercises, EXERCISE_BASE_PREFIX } from '../../../data/exercises'
 import { TrainingSplitExercise } from '../../../types'
+import { useState } from 'react'
 
 type WorkoutDayExerciseProps = {
   addedExercise: TrainingSplitExercise
@@ -15,10 +16,10 @@ type WorkoutDayExerciseProps = {
   deleteSet: (setId: string) => void
   addSet: (workoutDayId: string, addedExerciseRowId: string) => void
   selectExercise: (workoutDayId: string, selectedExerciseId: string, addedExerciseRowId: string) => void
+  duplicatedExerciseId: string
 }
 
-export default function WorkoutDayExercise({ addedExercise, workoutDayId, selectExerciseAgain, handleSearchExerciseText, deleteExercise, handleWeightSet, handleRepsSet, deleteSet, addSet, selectExercise }: WorkoutDayExerciseProps) {
-
+export default function WorkoutDayExercise({ addedExercise, workoutDayId, selectExerciseAgain, handleSearchExerciseText, deleteExercise, handleWeightSet, handleRepsSet, deleteSet, addSet, selectExercise, duplicatedExerciseId }: WorkoutDayExerciseProps) {
   return (
     <div className={styles["search-exercise-wrapper"]}>
 
@@ -28,16 +29,19 @@ export default function WorkoutDayExercise({ addedExercise, workoutDayId, select
             <img className={styles["added-exercise-icon"]} src={`${EXERCISE_BASE_PREFIX}${addedExercise.images[0]}`} alt="" />
             <span className={styles["added-exercise-name"]}>{addedExercise.exerciseName}</span>
           </button> :
-          <>
+
+          <div className={styles["search-exercise-input-wrapper-inner"]}>
             <label htmlFor={addedExercise.rowId} className={styles["sr-only"]}>Search exercise</label>
             <input className={styles["search-exercise-input"]} type="text" id={addedExercise.rowId} placeholder='Search exercise' onChange={(e) => handleSearchExerciseText(e, workoutDayId, addedExercise.rowId)} value={addedExercise.searchText} />
-          </>
+          </div>
         }
 
         <button type='button' className={styles["search-exercise-delete-button"]} aria-label='Delete Exercise' onClick={() => deleteExercise(workoutDayId, addedExercise.rowId)} >
           <img className={styles["search-exercise-delete-icon"]} src={deleteWorkoutDayIcon} alt='' />
         </button>
+
       </div>
+      {addedExercise.rowId === duplicatedExerciseId ? <div className={styles["duplicated-exercise-text"]}>Already added</div> : null}
 
       {addedExercise.sets.map((set, index) => {
         return (
@@ -77,13 +81,14 @@ export default function WorkoutDayExercise({ addedExercise, workoutDayId, select
                 return (
                   <li key={exer.id} className={styles["search-exercise-list"]}>
                     <button type='button' className={styles["search-exercise-list-button"]} onClick={() => selectExercise(workoutDayId, exer.id, addedExercise.rowId)}>
-                      <img className={styles["search-exercise-icon"]} src={`${EXERCISE_BASE_PREFIX}${exer.images[0]}`} alt=''/>
+                      <img className={styles["search-exercise-icon"]} src={`${EXERCISE_BASE_PREFIX}${exer.images[0]}`} alt='' />
                       <span className={styles["search-exercise-name"]}>{exer.name}</span>
                     </button>
                   </li>
                 )
               })
           }
+
         </ul>
       }
     </div>
