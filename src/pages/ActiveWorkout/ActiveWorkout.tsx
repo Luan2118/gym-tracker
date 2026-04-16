@@ -9,7 +9,7 @@ import { LayoutContextType, WorkoutHistoryExercise, ActiveWorkoutExercise } from
 
 export default function ActiveWorkout() {
 
-  const { trainingSplits, workoutHistory, setWorkoutHistory } = useOutletContext<LayoutContextType>();
+  const { trainingSplits, setTrainingSplits, workoutHistory, setWorkoutHistory } = useOutletContext<LayoutContextType>();
 
   const [activeWorkout, setActiveWorkout] = useState(false);
   const [selectedTrainingSplitId, setSelectedTrainingSplitId] = useState('');
@@ -31,8 +31,6 @@ export default function ActiveWorkout() {
     .find((split) => split.id === selectedTrainingSplitId)
 
   const selectedWorkoutDay = selectedTrainingSplit?.workoutDays.find((workoutday) => workoutday.id === selectedWorkoutDayId)
-
-  console.log(selectedWorkoutDay)
 
   const activeWorkoutData =
     selectedWorkoutDay
@@ -126,8 +124,6 @@ export default function ActiveWorkout() {
     setActiveExercises(newExerciseList)
   }
 
-
-
   function handleRepsSet(e: React.ChangeEvent<HTMLInputElement>, setId: string, exerciseId: string) {
     const repstInputValue: number | '' = e.target.value === '' ? '' : Number(e.target.value);
     const newExerciseList = activeExercises.map((ex) => {
@@ -180,13 +176,50 @@ export default function ActiveWorkout() {
       duration: elapsedTime
     }
 
-
     setWorkoutHistory((prev) => {
       return [
         ...prev,
         newWorkoutHistory
       ]
     });
+
+    setTrainingSplits((prev) => 
+      prev.map((split) => {
+        if (split.id !== selectedTrainingSplitId) return split;
+
+        return {
+          ...split,
+          workoutDays: split.workoutDays.map((workoutDay) => {
+            if (workoutDay.id !== selectedWorkoutDayId) return workoutDay;
+
+            return {
+              ...workoutDay,
+              exercises: workoutDay.exercises.map((ex) => {
+                const activeExercise = activeExercises.find((activeEx) => activeEx.exerciseId === ex.exerciseId)
+
+                if (!activeExercise) return ex;
+
+                return {
+                  ...ex,
+                  sets: ex.sets.map((set) => {
+                    console.log(activeExercise)
+                    const activeSet = activeExercise.sets.find((activeSet) => activeSet.id === set.id);
+
+                    if (!activeSet) return set
+
+                    return {
+                      ...set,
+                      weight: activeSet.weight,
+                      reps: activeSet.reps
+                    }
+                  })
+                }
+              })
+            }
+          })
+        }
+      })
+    )
   }
 
   useEffect(() => {
