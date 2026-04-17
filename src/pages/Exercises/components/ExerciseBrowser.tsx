@@ -29,6 +29,9 @@ export default function ExerciseBrowser({ isMobile, handleSelectExercise, handle
     }
   })
 
+  const isMuscleGroupSelected = muscleGroupList.includes(selectedMuscleOption);
+
+
   const equipmentList: string[] = [];
 
   exercises.forEach((ex) => {
@@ -108,8 +111,8 @@ export default function ExerciseBrowser({ isMobile, handleSelectExercise, handle
         </select>
 
         <div className={styles["filter-upper-lower-wrapper"]}>
-          <button className={selectedUpperBodyEx ? styles["clicked-filter-button"] : styles["upper-body-exercises-button"]} onClick={() => setSelectedUpperBodyEx((prev) => !prev)}>Upper Body Exercises</button>
-          <button className={selectedLowerBodyEx ? styles["clicked-filter-button"] : styles["lower-body-exercises-button"]} onClick={() => setSelectedLowerBodyEx((prev) => !prev)}>Lower Body Exercises</button>
+          <button className={selectedUpperBodyEx ? styles["clicked-filter-button"] : styles["upper-body-exercises-button"]} onClick={() => setSelectedUpperBodyEx((prev) => !prev)} disabled={isMuscleGroupSelected}>Upper Body Exercises</button>
+          <button className={selectedLowerBodyEx ? styles["clicked-filter-button"] : styles["lower-body-exercises-button"]} onClick={() => setSelectedLowerBodyEx((prev) => !prev)} disabled={isMuscleGroupSelected}>Lower Body Exercises</button>
         </div>
 
       </section>

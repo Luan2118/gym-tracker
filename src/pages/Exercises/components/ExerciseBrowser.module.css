@@ -110,6 +110,12 @@
   margin-bottom: 0.8rem;
 }
 
+.upper-body-exercises-button:disabled,
+.lower-body-exercises-button:disabled{
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
 .selected-exercise-buttons-wrapper {
   margin: 1rem 0;
 }
