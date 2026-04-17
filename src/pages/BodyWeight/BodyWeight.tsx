@@ -35,6 +35,8 @@ export default function BodyWeight() {
   const [dateTo, setDateTo] = useState('');
   const [editBodyWeightId, setEditBodyWeightId] = useState<string | null>(null);
   const [editBodyWeightInputText, setEditBodyWeightInputText] = useState('');
+  const [bwInputValidation, setBwInputValidation] = useState(false);
+  const [editBwInputValidation, setEditBwInputValidation] = useState(false);
 
   const bwInputRef = useRef<HTMLInputElement | null>(null);
   const [searchParams] = useSearchParams();
@@ -42,7 +44,7 @@ export default function BodyWeight() {
 
   useEffect(() => {
     if (searchParams.get('log') === 'true') {
-        bwInputRef.current?.focus();
+      bwInputRef.current?.focus();
     }
   }, [searchParams]);
 
@@ -83,7 +85,38 @@ export default function BodyWeight() {
     return () => clearTimeout(addedID)
   }, [feedback])
 
+
+  useEffect(() => {
+    if (bwInputValidation === false) return;
+
+    const bwInputId = setTimeout(() => {
+      setBwInputValidation(false)
+    }, 4000)
+
+    return () => clearTimeout(bwInputId)
+  }, [bwInputValidation])
+
+  useEffect(() => {
+    if (editBwInputValidation === false) return;
+
+    const editBBwInputId = setTimeout(() => {
+      setEditBwInputValidation(false)
+    }, 4000)
+
+    return () => clearTimeout(editBBwInputId)
+  }, [editBwInputValidation])
+
   function addBodyWeight() {
+    const isBodyWeightInvalid =
+      bodyWeightInputText === '' || Number(bodyWeightInputText) <= 0;
+
+    if (isBodyWeightInvalid) {
+      setBwInputValidation(true);
+      return;
+    }
+
+    setBwInputValidation(false);
+
     setBodyWeights((prev) => {
       return [
         ...prev,
@@ -114,6 +147,7 @@ export default function BodyWeight() {
   }
 
   function handleEditBodyWeight(id: string) {
+    setEditBwInputValidation(false);
     setEditBodyWeightId(id);
   }
 
@@ -122,6 +156,15 @@ export default function BodyWeight() {
   }
 
   function handleSaveBodyWeight() {
+    const isBodyWeightInvalid =
+      editBodyWeightInputText === '' || Number(editBodyWeightInputText) <= 0;
+
+    if (isBodyWeightInvalid) {
+      setEditBwInputValidation(true);
+      return;
+    }
+
+    setEditBwInputValidation(false);
     setBodyWeights((prev) =>
       prev.map((bw) => {
         if (bw.id !== editBodyWeightId) return bw;
@@ -172,7 +215,7 @@ export default function BodyWeight() {
           </section>
 
           <ul >
-            <BodyWeightItem bodyWeights={paginatedData} deleteBodyWeight={deleteBodyWeight} handleEditBodyWeight={handleEditBodyWeight} editBodyWeightId={editBodyWeightId} handleSaveBodyWeight={handleSaveBodyWeight} handleEditBwInput={handleEditBwInput} editBodyWeightInputText={editBodyWeightInputText} />
+            <BodyWeightItem bodyWeights={paginatedData} deleteBodyWeight={deleteBodyWeight} handleEditBodyWeight={handleEditBodyWeight} editBodyWeightId={editBodyWeightId} handleSaveBodyWeight={handleSaveBodyWeight} handleEditBwInput={handleEditBwInput} editBodyWeightInputText={editBodyWeightInputText} editBwInputValidation={editBwInputValidation} />
           </ul>
 
           <div className={styles["pagination-wrapper"]}>
@@ -209,6 +252,7 @@ export default function BodyWeight() {
           {feedback === 'added' ?
             <div className={styles["body-weight-added"]}><span className={styles["body-weight-added-icon"]}>&#9989;</span> Body weight added</div>
             : null}
+          {bwInputValidation && <div className={styles["weight-validation-text"]}>Please enter a valid weight</div>}
         </div>
 
       </div>

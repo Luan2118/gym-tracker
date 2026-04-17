@@ -1,7 +1,6 @@
 .body-weight-item-wrapper {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
   background-color: rgb(41, 41, 41);
   border: 1px solid rgb(255, 255, 255, 0.06);
   padding: clamp(1.2rem, 2vw, 1.8rem) clamp(1.2rem, 2vw, 2.2rem);
@@ -15,6 +14,11 @@
   align-items: center;
   gap: 0.5rem;
   min-width: 20rem;
+}
+
+.body-weight-content-wrapper {
+  display: flex;
+  justify-content: space-between;
 }
 
 
@@ -64,6 +68,17 @@
   background-color: rgb(85, 85, 85);
 
 }
+
+.weight-validation-text-wrapper {
+  min-height: 2rem;
+}
+
+.weight-validation-text {
+  font-size: 1.4rem;
+  color: red;
+  text-align: center;
+}
+
 
 .body-weight-delete-button {
   transition: 0.2s ease;
@@ -117,6 +132,7 @@
   max-width: clamp(5rem, 2vw, 12rem);
   border: none;
 }
+
 
 .edit-body-weight::-webkit-outer-spin-button,
 .edit-body-weight::-webkit-inner-spin-button {

@@ -253,6 +253,12 @@ h2 {
   cursor: not-allowed;
 }
 
+.weight-validation-text {
+  margin-top: 1em;
+  font-size: 1.4rem;
+  color: red;
+}
+
 
 @media (min-width: 940px) {
 
