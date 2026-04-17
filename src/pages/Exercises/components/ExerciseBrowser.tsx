@@ -47,28 +47,33 @@ export default function ExerciseBrowser({ isMobile, handleSelectExercise, handle
       selectedMuscleOption && selectedEquipment ? exercises.filter((ex) => {
         if (selectedMuscleOption.toLocaleLowerCase() === 'all muscles' && selectedEquipment.toLocaleLowerCase() === 'all equipment') {
           return ex;
-        } else {
+        } else if (selectedEquipment.toLocaleLowerCase() === 'all equipment') {
+          return ex.muscleGroup === selectedMuscleOption 
+        }else if(selectedMuscleOption.toLocaleLowerCase() === 'all muscles') {
+          return  ex.equipment === selectedEquipment
+        }
+        else {
           return ex.muscleGroup === selectedMuscleOption && ex.equipment === selectedEquipment
         }
       }) :
-      selectedMuscleOption ? exercises.filter((ex) => {
-        if (selectedMuscleOption.toLocaleLowerCase() === 'all muscles') {
-          return ex;
-        } else {
-          return ex.muscleGroup === selectedMuscleOption
-        }
-      }) :
-    selectedEquipment ? exercises.filter((ex) => {
-      if (selectedEquipment.toLocaleLowerCase() === 'all equipment') {
-        return ex;
-      } else {
-        return ex.equipment === selectedEquipment
-      }
-    }) :
-      selectedUpperBodyEx ? exercises.filter((ex) => ex.bodyRegion === 'upper') :
-        selectedLowerBodyEx ? exercises.filter((ex) => ex.bodyRegion === 'lower')
-          :
-          exercises
+        selectedMuscleOption ? exercises.filter((ex) => {
+          if (selectedMuscleOption.toLocaleLowerCase() === 'all muscles') {
+            return ex;
+          } else {
+            return ex.muscleGroup === selectedMuscleOption
+          }
+        }) :
+          selectedEquipment ? exercises.filter((ex) => {
+            if (selectedEquipment.toLocaleLowerCase() === 'all equipment') {
+              return ex;
+            } else {
+              return ex.equipment === selectedEquipment
+            }
+          }) :
+            selectedUpperBodyEx ? exercises.filter((ex) => ex.bodyRegion === 'upper') :
+              selectedLowerBodyEx ? exercises.filter((ex) => ex.bodyRegion === 'lower')
+                :
+                exercises
 
 
   return (
