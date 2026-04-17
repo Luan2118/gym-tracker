@@ -6,6 +6,7 @@ import { useNavigate, useOutletContext, useSearchParams } from 'react-router-dom
 import { sortByNewest } from '../../utils/sortDate';
 import getPaginationData from '../../utils/getPaginationData';
 import { BodyWeight as BodyWeightType, LayoutContextType } from '../../types';
+import formatISODate from '../../utils/formatISODate';
 
 type BodyWeightFilter =
   | 'lastWeek'
@@ -58,7 +59,14 @@ export default function BodyWeight() {
   const lastTwoWeeks = getBodyWeightsInRange(sortedByDateBodyWeights, lastTwoWeeksDate)
   const lastMonth = getBodyWeightsInRange(sortedByDateBodyWeights, lastMonthDate)
   const lastTwoMonths = getBodyWeightsInRange(sortedByDateBodyWeights, lastTwoMonthsDate)
-  const customDate = sortedByDateBodyWeights.filter((bw) => dateFrom <= bw.date && dateTo >= bw.date)
+  const customDate = sortedByDateBodyWeights.filter((bw) => {
+  const bwDate = bw.date.slice(0, 10);
+  const from = dateFrom || '0000-01-01';
+  const to = dateTo || '9999-12-31';
+
+
+  return from <= bwDate && to >= bwDate;
+});
 
   const visibleBodyWeights =
     filter === 'lastWeek' ? lastWeek :
@@ -129,7 +137,13 @@ export default function BodyWeight() {
     navigate('')
   }
 
-  function handleCustomDate(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleCustomDateFrom(e: React.ChangeEvent<HTMLInputElement>) {
+    setDateFrom(e.target.value);
+    setFilter('customDate')
+    setCurrentPage(1);
+  }
+
+  function handleCustomDateTo(e: React.ChangeEvent<HTMLInputElement>) {
     setDateTo(e.target.value);
     setFilter('customDate')
     setCurrentPage(1);
@@ -194,12 +208,12 @@ export default function BodyWeight() {
 
               <div className={styles["date-from-wrapper"]}>
                 <label htmlFor="date-from" className={styles["date-from-label"]}>From</label>
-                <input type="date" id="date-from" className={styles["date-from-input"]} onChange={(e) => setDateFrom(e.target.value)} value={dateFrom} />
+                <input type="date" id="date-from" className={styles["date-from-input"]} onChange={handleCustomDateFrom} value={dateFrom} />
               </div>
 
               <div className={styles["date-to-wrapper"]}>
                 <label htmlFor="date-to" className={styles["date-to-label"]}>To</label>
-                <input type="date" id="date-to" className={styles["date-to-input"]} onChange={handleCustomDate} value={dateTo} />
+                <input type="date" id="date-to" className={styles["date-to-input"]} onChange={handleCustomDateTo} value={dateTo} />
               </div>
             </fieldset>
 
