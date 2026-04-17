@@ -1,6 +1,6 @@
 import styles from './ActiveExerciseCard.module.css'
 import { EXERCISE_BASE_PREFIX } from '../../../data/exercises';
-import { TrainingSplitExercise, WorkoutHistory, WorkoutHistorySet, ActiveWorkoutExercise } from '../../../types';
+import { TrainingSplitExercise, WorkoutHistory, WorkoutHistorySet, ActiveWorkoutExercise, TrainingSplit } from '../../../types';
 
 type ActiveExerciseCardProps = {
   ex: TrainingSplitExercise
@@ -11,7 +11,7 @@ type ActiveExerciseCardProps = {
   handleRepsSet: (e: React.ChangeEvent<HTMLInputElement>, setId: string, exerciseId: string) => void
 }
 
-export default function ActiveExerciseCard({ ex, exerciseId, activeExercises, workoutHistory, handleWeightSet, handleRepsSet }: ActiveExerciseCardProps) {
+export default function ActiveExerciseCard({ ex, exerciseId, activeExercises, workoutHistory, handleWeightSet, handleRepsSet}: ActiveExerciseCardProps) {
 
   const activeExIds: Set<string> = new Set(activeExercises.map(e => e.exerciseId));
 
@@ -58,9 +58,10 @@ export default function ActiveExerciseCard({ ex, exerciseId, activeExercises, wo
   function getPrevSet(exerciseId: string, setId: string, lastWorkout: WorkoutHistory | undefined): WorkoutHistorySet | undefined {
 
     const prevExercise = lastWorkout?.exercises?.find(hEx => hEx.exerciseId === exerciseId);
+
+
     return prevExercise?.sets?.find(s => s.id === setId);
   }
-
 
   return (
     <div className={styles["active-workout-wrapper"]}>
@@ -90,10 +91,11 @@ export default function ActiveExerciseCard({ ex, exerciseId, activeExercises, wo
             <div className={styles["active-workout-previous-set-title"]}>Previous set</div>
             {ex.sets.map((set, index) => {
               const prevSet = getPrevSet(exerciseId, set.id, lastWorkout)
+              console.log(set)
               return (
                 <div key={set.id} className={styles["active-workout-b-p-set-wrapper"]}>
                   <div className={styles["active-workout-b-p-set"]}>Set {index + 1}:</div>
-                  <span className={styles["active-workout-b-p-set-value"]}>{prevSet ? `${prevSet.weight} × ${prevSet.reps}` : "-"}</span>
+                  <span className={styles["active-workout-b-p-set-value"]}>{prevSet ? `${prevSet.weight} × ${prevSet.reps}` :  `${set.weight} × ${set.reps}`}</span>
                 </div>
               )
             })}

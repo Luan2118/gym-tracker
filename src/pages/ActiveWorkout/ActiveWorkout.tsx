@@ -183,7 +183,7 @@ export default function ActiveWorkout() {
       ]
     });
 
-    setTrainingSplits((prev) => 
+    setTrainingSplits((prev) =>
       prev.map((split) => {
         if (split.id !== selectedTrainingSplitId) return split;
 
