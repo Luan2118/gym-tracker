@@ -11,28 +11,40 @@ type ExerciseBrowserProps = {
   handleCloseDialog: () => void
 }
 
+type Exercise = {
+  id: string;
+  name: string;
+  video: string;
+  images: string[];
+  muscleGroup: string;
+  bodyRegion: string;
+  equipment: string;
+  primaryMuscles: string[];
+  secondaryMuscles: string[];
+  instructions: string[];
+}
+
+
 
 export default function ExerciseBrowser({ isMobile, handleSelectExercise, handleCloseDialog }: ExerciseBrowserProps) {
 
   const [searchText, setSearchText] = useState('');
-  const [selectedMuscleOption, setSelectedMuscleOption] = useState('');
-  const [selectedEquipment, setSelectedEquipment] = useState('');
+  const [selectedMuscleOption, setSelectedMuscleOption] = useState('all muscles');
+  const [selectedEquipment, setSelectedEquipment] = useState('all equipment');
   const [selectedUpperBodyEx, setSelectedUpperBodyEx] = useState(false);
   const [selectedLowerBodyEx, setSelectedLowerBodyEx] = useState(false);
 
-  console.log(selectedEquipment)
-
-
   const muscleGroupList: string[] = [];
 
+  
   exercises.forEach((ex) => {
     if (!muscleGroupList.includes(ex.muscleGroup)) {
       muscleGroupList.push(ex.muscleGroup)
     }
   })
-
-  const isMuscleGroupSelected = muscleGroupList.includes(selectedMuscleOption);
-
+  
+  
+  console.log(muscleGroupList)
 
   const equipmentList: string[] = [];
 
@@ -43,38 +55,60 @@ export default function ExerciseBrowser({ isMobile, handleSelectExercise, handle
   })
 
   const filteredExercises =
-    searchText ? exercises.filter((ex) => ex.name.toLowerCase().includes(searchText)) :
-      selectedMuscleOption && selectedEquipment ? exercises.filter((ex) => {
-        if (selectedMuscleOption.toLocaleLowerCase() === 'all muscles' && selectedEquipment.toLocaleLowerCase() === 'all equipment') {
-          return ex;
-        } else if (selectedEquipment.toLocaleLowerCase() === 'all equipment') {
-          return ex.muscleGroup === selectedMuscleOption 
-        }else if(selectedMuscleOption.toLocaleLowerCase() === 'all muscles') {
-          return  ex.equipment === selectedEquipment
-        }
-        else {
-          return ex.muscleGroup === selectedMuscleOption && ex.equipment === selectedEquipment
-        }
-      }) :
-        selectedMuscleOption ? exercises.filter((ex) => {
-          if (selectedMuscleOption.toLocaleLowerCase() === 'all muscles') {
-            return ex;
-          } else {
-            return ex.muscleGroup === selectedMuscleOption
-          }
-        }) :
-          selectedEquipment ? exercises.filter((ex) => {
-            if (selectedEquipment.toLocaleLowerCase() === 'all equipment') {
-              return ex;
-            } else {
-              return ex.equipment === selectedEquipment
-            }
-          }) :
-            selectedUpperBodyEx ? exercises.filter((ex) => ex.bodyRegion === 'upper') :
-              selectedLowerBodyEx ? exercises.filter((ex) => ex.bodyRegion === 'lower')
-                :
-                exercises
+    exercises.filter((ex) => {
 
+      // upper body filter logic  
+      if (selectedUpperBodyEx) {
+        return muscleGroupEquipmentFilter(ex, 'upper')
+      }
+
+      // lower body filter logic
+      if (selectedLowerBodyEx) {
+        return muscleGroupEquipmentFilter(ex, 'lower')
+      }
+
+      return muscleGroupEquipmentFilter(ex)
+    })
+
+  function muscleGroupEquipmentFilter(ex: Exercise, bodyPart?: string) {
+
+    // all muscle group and all equipment
+    if (selectedMuscleOption.toLocaleLowerCase() === 'all muscles' && selectedEquipment.toLocaleLowerCase() === 'all equipment') {
+      if (bodyPart) {
+        return ex.name.toLowerCase().includes(searchText) && ex.bodyRegion === bodyPart
+      }
+
+      return ex.name.toLowerCase().includes(searchText)
+    }
+
+    // selected muscle group & all equipment
+    if (selectedMuscleOption.toLocaleLowerCase() !== 'all muscles' && selectedEquipment.toLocaleLowerCase() === 'all equipment') {
+      if (bodyPart) {
+        return ex.muscleGroup === selectedMuscleOption && ex.name.toLowerCase().includes(searchText) && ex.bodyRegion === bodyPart
+      }
+      return ex.muscleGroup === selectedMuscleOption && ex.name.toLowerCase().includes(searchText)
+
+    }
+
+    // selected equipment & all muscle group
+    if (selectedMuscleOption.toLocaleLowerCase() === 'all muscles' && selectedEquipment.toLocaleLowerCase() !== 'all equipment') {
+      if (bodyPart) {
+        return ex.equipment === selectedEquipment && ex.name.toLowerCase().includes(searchText) && ex.bodyRegion === bodyPart
+      }
+      return ex.equipment === selectedEquipment && ex.name.toLowerCase().includes(searchText)
+    }
+
+    // selected equipment & selected muscle group
+    if (selectedMuscleOption.toLocaleLowerCase() !== 'all muscles' && selectedEquipment.toLocaleLowerCase() !== 'all equipment') {
+      if (bodyPart) {
+        return ex.muscleGroup === selectedMuscleOption && ex.name.toLowerCase().includes(searchText) && ex.equipment === selectedEquipment && ex.bodyRegion === bodyPart
+      }
+        return ex.muscleGroup === selectedMuscleOption && ex.name.toLowerCase().includes(searchText) && ex.equipment === selectedEquipment
+    }
+
+    if (bodyPart) return ex.bodyRegion === bodyPart
+
+  }
 
   return (
     <>
@@ -125,8 +159,8 @@ export default function ExerciseBrowser({ isMobile, handleSelectExercise, handle
         </select>
 
         <div className={styles["filter-upper-lower-wrapper"]}>
-          <button className={selectedUpperBodyEx ? styles["clicked-filter-button"] : styles["upper-body-exercises-button"]} onClick={() => setSelectedUpperBodyEx((prev) => !prev)} disabled={isMuscleGroupSelected}>Upper Body Exercises</button>
-          <button className={selectedLowerBodyEx ? styles["clicked-filter-button"] : styles["lower-body-exercises-button"]} onClick={() => setSelectedLowerBodyEx((prev) => !prev)} disabled={isMuscleGroupSelected}>Lower Body Exercises</button>
+          <button className={selectedUpperBodyEx ? styles["clicked-filter-button"] : styles["upper-body-exercises-button"]} onClick={() => setSelectedUpperBodyEx((prev) => !prev)} disabled={selectedLowerBodyEx}>Upper Body Exercises</button>
+          <button className={selectedLowerBodyEx ? styles["clicked-filter-button"] : styles["lower-body-exercises-button"]} onClick={() => setSelectedLowerBodyEx((prev) => !prev)} disabled={selectedUpperBodyEx}>Lower Body Exercises</button>
         </div>
 
       </section>
