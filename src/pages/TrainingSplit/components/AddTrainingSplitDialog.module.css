@@ -18,7 +18,7 @@
   border-radius: 1rem;
   padding: clamp(0.7rem, 2.5vw, 1rem) clamp(1.5rem, 2.5vw, 2rem);
   width: clamp(30rem, 55vw, 51.5rem);
-  height: clamp(60rem, 70vh, 80rem);
+  max-height: clamp(60rem, 70vh, 80rem); 
   scrollbar-width: thin;
   scrollbar-color: #6f6f6f #222;
 }

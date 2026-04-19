@@ -18,7 +18,7 @@
   padding: 1rem 2rem;
   box-shadow: 0 4px 50px rgba(0, 0, 0, 0.4);
   width: clamp(30rem, 55vw, 51.5rem);
-  height: clamp(60rem, 70vh, 80rem);
+  max-height: clamp(60rem, 70vh, 80rem);
   scrollbar-width: thin;
   scrollbar-color: #6f6f6f #222;
 }
