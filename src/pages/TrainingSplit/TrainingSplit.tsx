@@ -4,7 +4,7 @@ import { useNavigate, useOutletContext, useSearchParams } from 'react-router-dom
 import styles from './TrainingSplit.module.css'
 import AddTrainingSplitDialog from './components/AddTrainingSplitDialog'
 import TrainingSplitItem from './components/TrainingSplitItem'
-import { LayoutContextType, TrainingSplitWorkoutDay } from '../../types'
+import { LayoutContextType, TrainingSplitWorkoutDay,  } from '../../types'
 
 export default function TrainingSplit() {
 
@@ -15,6 +15,9 @@ export default function TrainingSplit() {
   const [editingSplitId, setEditingSplitId] = useState<string | null>(null);
   const dialogRef = useRef<HTMLDialogElement | null>(null);
   const [duplicatedExerciseId, setDuplicatedExercise] = useState('');
+  const [emptyTrainingSplitName, setEmptyTrainingSplitName] = useState(false);
+  const [emptyWorkoutDayName, setEmptyWorkoutDayName] = useState<TrainingSplitWorkoutDay[]>([]);
+  const [hasSubmitted, setHasSubmitted] = useState(false);
 
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -29,14 +32,19 @@ export default function TrainingSplit() {
     setEditingSplitId(null);
     setTrainingSplitInputText('');
     setWorkoutDays([]);
+    setEmptyTrainingSplitName(false);
+    setEmptyWorkoutDayName([])
+    setHasSubmitted(false);
     dialogRef.current?.showModal();
-
   }
 
   function closeDialog() {
     setEditingSplitId(null);
     setTrainingSplitInputText('');
     setWorkoutDays([]);
+    setEmptyTrainingSplitName(false);
+    setEmptyWorkoutDayName([])
+    setHasSubmitted(false);
     dialogRef.current?.close();
     navigate('')
   }
@@ -137,7 +145,7 @@ export default function TrainingSplit() {
       if (!selectedWorkoutDay) return prev;
 
       const isDuplicate = selectedWorkoutDay.exercises.some((ex) => {
-       return  ex.exerciseId === selectedExerciseId;
+        return ex.exerciseId === selectedExerciseId;
       });
 
       if (isDuplicate) {
@@ -248,12 +256,26 @@ export default function TrainingSplit() {
 
   function submitTrainingSplit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
+    setHasSubmitted(true);
 
     const name = trainingSplitInputText.trim();
-
-    if (!name) return;
-
     const snapshotWorkoutDays = structuredClone(workoutDays);
+    const hasEmptyWorkoutDayName = snapshotWorkoutDays.filter((workoutDay) => workoutDay.name.trim() === '')
+
+    if (!name) {
+      setEmptyTrainingSplitName(true);
+      return;
+    }
+    setEmptyTrainingSplitName(false);
+
+    if (hasEmptyWorkoutDayName.length > 0)  {
+      setEmptyWorkoutDayName(hasEmptyWorkoutDayName)
+      return;
+    }
+    setEmptyWorkoutDayName([])
+
+
+    if (snapshotWorkoutDays.length === 0) return;
 
     setTrainingSplits((prev) => {
       if (editingSplitId === null) {
@@ -262,20 +284,21 @@ export default function TrainingSplit() {
           { name, id: crypto.randomUUID(), workoutDays: snapshotWorkoutDays }
         ]
       }
-
+      
       return prev.map((trainingSplit) => {
         if (trainingSplit.id !== editingSplitId) return trainingSplit;
-
+        
         return {
           ...trainingSplit,
           name,
           workoutDays: snapshotWorkoutDays
         }
       })
-
+      
     })
-
+    
     closeDialog();
+    setHasSubmitted(false);
   }
 
   function editTrainingSplit(id: string) {
@@ -286,8 +309,9 @@ export default function TrainingSplit() {
     setEditingSplitId(selectedSplitCopy.id);
     setWorkoutDays(selectedSplitCopy.workoutDays);
     setTrainingSplitInputText(selectedSplitCopy.name);
-
-
+    setEmptyTrainingSplitName(false);
+    setEmptyWorkoutDayName([]);
+    setHasSubmitted(false);
     dialogRef.current?.showModal();
   }
 
@@ -366,6 +390,9 @@ export default function TrainingSplit() {
           selectExercise={selectExercise}
           addExercise={addExercise}
           duplicatedExerciseId={duplicatedExerciseId}
+          emptyTrainingSplitName={emptyTrainingSplitName}
+          emptyWorkoutDayName={emptyWorkoutDayName}
+          hasSubmitted={hasSubmitted}
         />
 
         <section className={styles["content-main"]}>

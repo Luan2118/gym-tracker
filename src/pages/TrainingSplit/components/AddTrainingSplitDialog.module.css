@@ -23,6 +23,20 @@
   scrollbar-color: #6f6f6f #222;
 }
 
+.title-validation {
+  color: red;
+  font-size: clamp(1.4rem, 1vw, 1.7rem);
+  margin-left: 1rem;
+  margin-top: 1rem;
+}
+
+.workout-day-required-text {
+  font-weight: 600;
+  color: rgb(255, 0, 0);
+  text-align: center;
+  font-size: clamp(1.5rem, 2vw, 1.8rem);
+}
+
 .training-split-name-wrapper {
   display: flex;
   justify-content: space-between;

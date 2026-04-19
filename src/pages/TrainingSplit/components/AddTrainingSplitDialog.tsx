@@ -24,10 +24,13 @@ type AddTrainingSplitDialogProps = {
   addSet: (workoutDayId: string, addedExerciseRowId: string) => void
   selectExercise: (workoutDayId: string, selectedExerciseId: string, addedExerciseRowId: string) => void
   addExercise: (id: string) => void
-  duplicatedExerciseId:  string
+  duplicatedExerciseId: string
+  emptyTrainingSplitName: boolean
+  emptyWorkoutDayName: TrainingSplitWorkoutDay[]
+  hasSubmitted: boolean
 }
 
-export default function AddTrainingSplitDialog({ dialogRef, submitTrainingSplit, trainingSplitInputText, setTrainingSplitInputText, addWorkoutDay, closeDialog, workoutDays, handleWorkoutDayInputText, deleteWorkoutDay, selectExerciseAgain, handleSearchExerciseText, deleteExercise, handleWeightSet, handleRepsSet, deleteSet, addSet, selectExercise, addExercise, duplicatedExerciseId }: AddTrainingSplitDialogProps) {
+export default function AddTrainingSplitDialog({ dialogRef, submitTrainingSplit, trainingSplitInputText, setTrainingSplitInputText, addWorkoutDay, closeDialog, workoutDays, handleWorkoutDayInputText, deleteWorkoutDay, selectExerciseAgain, handleSearchExerciseText, deleteExercise, handleWeightSet, handleRepsSet, deleteSet, addSet, selectExercise, addExercise, duplicatedExerciseId, emptyTrainingSplitName, emptyWorkoutDayName, hasSubmitted }: AddTrainingSplitDialogProps) {
 
   return (
     <dialog ref={dialogRef} className={styles["add-training-split-dialog"]}>
@@ -44,10 +47,11 @@ export default function AddTrainingSplitDialog({ dialogRef, submitTrainingSplit,
             <img className={styles["close-dialog-img"]} src={close} alt='' />
           </button>
         </div>
+        {emptyTrainingSplitName && <div className={styles["title-validation"]}>Enter a split name</div>}
 
         <hr aria-hidden="true" />
 
-        {workoutDays.map((workoutDay) => {
+        {workoutDays.map((workoutDay, i) => {
           return (
             <div key={workoutDay.id} className={styles["workout-day-wrapper"]} >
               <div className={styles["workout-day-inner-wrapper"]} >
@@ -57,6 +61,7 @@ export default function AddTrainingSplitDialog({ dialogRef, submitTrainingSplit,
                     <>
                       <label htmlFor={workoutDay.id} className={styles["sr-only"]}>Workout day</label>
                       <input type="text" id={workoutDay.id} placeholder='Upper, Push, Legs' className={styles["workout-day-input"]} onChange={(e) => handleWorkoutDayInputText(workoutDay.id, e)} value={workoutDay.name} />
+
                     </>
                 }
 
@@ -64,6 +69,7 @@ export default function AddTrainingSplitDialog({ dialogRef, submitTrainingSplit,
                   <img className={styles["delete-workout-day-icon"]} src={deleteWorkoutDayIcon} alt='' />
                 </button>
               </div>
+              {emptyWorkoutDayName.some((day) => day.id === workoutDay.id) ? <div className={styles["title-validation"]}>Enter workout day name</div> : null}
 
               {workoutDay.exercises.map((addedExercise) =>
                 <WorkoutDayExercise
@@ -87,6 +93,8 @@ export default function AddTrainingSplitDialog({ dialogRef, submitTrainingSplit,
             </div>
           )
         })}
+
+        {hasSubmitted && workoutDays.length === 0 && <div className={styles["workout-day-required-text"]}>Add a workout day</div>}
 
         <button type='submit' className={styles["confirm-button"]} >Confirm</button>
       </form>
