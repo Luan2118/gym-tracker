@@ -5,7 +5,7 @@ import { BodyWeight } from '../../../types'
 type BodyWeightItemProps = {
   bodyWeights: BodyWeight[]
   deleteBodyWeight: (id: string) => void
-  handleEditBodyWeight: (id: string) => void
+  handleEditBodyWeight: (id: string, bodyweight: string) => void
   editBodyWeightId: string | null
   handleEditBwInput: (e: React.ChangeEvent<HTMLInputElement>) => void
   editBodyWeightInputText: string
