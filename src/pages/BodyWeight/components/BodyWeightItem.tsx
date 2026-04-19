@@ -48,7 +48,7 @@ export default function BodyWeightItem({ bodyWeights, deleteBodyWeight, handleEd
               <div className={styles['body-weight-buttons-wrapper']}>
                 {editBodyWeightId === bodyweight.id ?
                   <button type='button' className={styles['body-weight-save-button']} onClick={handleSaveBodyWeight}>Save</button> :
-                  <button type='button' className={styles['body-weight-edit-button']} onClick={() => handleEditBodyWeight(bodyweight.id, bodyweight.bw)}>Edit</button>
+                  <button type='button' className={styles['body-weight-edit-button']} onClick={() => handleEditBodyWeight(bodyweight.id, String(bodyweight.bw))}>Edit</button>
                 }
                 <button type='button' className={styles['body-weight-delete-button']} onClick={() => deleteBodyWeight(bodyweight.id)}>Delete</button>
               </div>
