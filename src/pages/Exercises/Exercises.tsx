@@ -50,7 +50,7 @@ export default function Exercises() {
       {isMobile ?
         <div className={styles["select-exercise-content-wrapper"]}>
           <div className={styles["select-exercise-wrapper"]}>
-            <button onClick={handleExercisesList} className={styles["select-exercise-button"]}>Select Exercise</button>
+            <button type="button" onClick={handleExercisesList} className={styles["select-exercise-button"]}>Select Exercise</button>
 
             <dialog ref={dialogRef} className={styles["dialog-popup"]}>
               <ExerciseBrowser

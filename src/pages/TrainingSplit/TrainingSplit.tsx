@@ -404,7 +404,7 @@ export default function TrainingSplit() {
           }
         </section>
         <div className={styles["add-training-wrapper"]}>
-          <button className={styles["add-training-button"]} onClick={openDialog}>Add Training Split</button>
+          <button type="button" className={styles["add-training-button"]} onClick={openDialog}>Add Training Split</button>
         </div>
       </div>
     </>

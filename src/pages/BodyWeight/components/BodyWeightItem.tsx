@@ -15,7 +15,6 @@ type BodyWeightItemProps = {
 
 export default function BodyWeightItem({ bodyWeights, deleteBodyWeight, handleEditBodyWeight, editBodyWeightId, handleEditBwInput, editBodyWeightInputText, handleSaveBodyWeight, editBwInputValidation }: BodyWeightItemProps) {
 
-  console.log(bodyWeights)
   return (
     <>
       {bodyWeights.map((bodyweight) => {

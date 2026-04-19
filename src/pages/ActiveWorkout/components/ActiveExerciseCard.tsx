@@ -91,7 +91,6 @@ export default function ActiveExerciseCard({ ex, exerciseId, activeExercises, wo
             <div className={styles["active-workout-previous-set-title"]}>Previous set</div>
             {ex.sets.map((set, index) => {
               const prevSet = getPrevSet(exerciseId, set.id, lastWorkout)
-              console.log(set)
               return (
                 <div key={set.id} className={styles["active-workout-b-p-set-wrapper"]}>
                   <div className={styles["active-workout-b-p-set"]}>Set {index + 1}:</div>

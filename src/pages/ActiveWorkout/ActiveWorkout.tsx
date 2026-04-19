@@ -160,7 +160,6 @@ export default function ActiveWorkout() {
       )
     );
 
-    console.log(incompleteSet)
 
     if (incompleteSet) {
       setHasIncompleteSet(true);
@@ -217,7 +216,6 @@ export default function ActiveWorkout() {
                 return {
                   ...ex,
                   sets: ex.sets.map((set) => {
-                    console.log(activeExercise)
                     const activeSet = activeExercise.sets.find((activeSet) => activeSet.id === set.id);
 
                     if (!activeSet) return set
@@ -287,8 +285,8 @@ export default function ActiveWorkout() {
                 <div className={styles["active-workout-timer"]}>
                   <div className={styles["active-workout-timer-text"]}>{formatTimer(elapsedTime)}</div>
                   <div className={styles["active-workout-timer-buttons-wrapper"]}>
-                    <button className={styles["active-workout-timer-reset-button"]} onClick={resetTimer} >Reset</button>
-                    <button className={styles["active-workout-timer-toggle-button"]} onClick={handleToggleTimer}>{timerRunning ? 'Stop' : 'Start'}</button>
+                    <button type="button" className={styles["active-workout-timer-reset-button"]} onClick={resetTimer} >Reset</button>
+                    <button type="button" className={styles["active-workout-timer-toggle-button"]} onClick={handleToggleTimer}>{timerRunning ? 'Stop' : 'Start'}</button>
                   </div>
                 </div>
               </div>

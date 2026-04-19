@@ -113,7 +113,7 @@ export default function ExerciseBrowser({ isMobile, handleSelectExercise, handle
         {isMobile ?
           <div className={styles["select-exercise-title-wrapper"]}>
             <h2 className={styles["select-exercise-title"]}>Select Exercise</h2>
-            <button className={styles["close-dialog-button"]} onClick={handleCloseDialog}>
+            <button type="button" className={styles["close-dialog-button"]} onClick={handleCloseDialog}>
               <img src={closeX} aria-label='Close dialog' className={styles["close-dialog-img"]} />
             </button>
           </div> :
@@ -156,8 +156,8 @@ export default function ExerciseBrowser({ isMobile, handleSelectExercise, handle
         </select>
 
         <div className={styles["filter-upper-lower-wrapper"]}>
-          <button className={selectedUpperBodyEx ? styles["clicked-filter-button"] : styles["upper-body-exercises-button"]} onClick={() => setSelectedUpperBodyEx((prev) => !prev)} disabled={selectedLowerBodyEx}>Upper Body Exercises</button>
-          <button className={selectedLowerBodyEx ? styles["clicked-filter-button"] : styles["lower-body-exercises-button"]} onClick={() => setSelectedLowerBodyEx((prev) => !prev)} disabled={selectedUpperBodyEx}>Lower Body Exercises</button>
+          <button type="button" className={selectedUpperBodyEx ? styles["clicked-filter-button"] : styles["upper-body-exercises-button"]} onClick={() => setSelectedUpperBodyEx((prev) => !prev)} disabled={selectedLowerBodyEx}>Upper Body Exercises</button>
+          <button type="button" className={selectedLowerBodyEx ? styles["clicked-filter-button"] : styles["lower-body-exercises-button"]} onClick={() => setSelectedLowerBodyEx((prev) => !prev)} disabled={selectedUpperBodyEx}>Lower Body Exercises</button>
         </div>
 
       </section>

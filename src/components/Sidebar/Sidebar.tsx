@@ -24,7 +24,7 @@ export default function Sidebar({ isSidebarOpen, setIsSidebarOpen }: SidebarProp
   return (
     <>
       <div className={styles['menu-button-wrapper']}>
-        <button className={styles['menu-button']} onClick={handleMenuButton}>
+        <button type="button" className={styles['menu-button']} onClick={handleMenuButton}>
           <img src={menuIcon} alt="Menu" className={styles['menu-button-icon']} />
         </button>
       </div>
@@ -35,7 +35,7 @@ export default function Sidebar({ isSidebarOpen, setIsSidebarOpen }: SidebarProp
           <img className={styles['title-img']} src={title} alt='' aria-hidden="true" />
           <div className={styles['title']}>Gym Tracker</div>
 
-          <button className={styles['close-menu-btn']} onClick={handleMenuButton}>
+          <button type="button" className={styles['close-menu-btn']} onClick={handleMenuButton}>
             <img src={closeIcon} alt="Close Menu" className={styles['close-menu-icon']} />
           </button>
         </header>

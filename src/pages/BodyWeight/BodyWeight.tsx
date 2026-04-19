@@ -265,7 +265,7 @@ export default function BodyWeight() {
             <input type="number" id="body-weight" className={styles["weight-input"]} value={bodyWeightInputText} onChange={(e) => setBodyWeightInputText(e.target.value)} ref={bwInputRef} />
           </div>
 
-          <button className={styles["add-weight-button"]} onClick={addBodyWeight}>Add Weight</button>
+          <button  type="button" className={styles["add-weight-button"]} onClick={addBodyWeight}>Add Weight</button>
           {feedback === 'added' ?
             <div className={styles["body-weight-added"]}><span className={styles["body-weight-added-icon"]}>&#9989;</span> Body weight added</div>
             : null}

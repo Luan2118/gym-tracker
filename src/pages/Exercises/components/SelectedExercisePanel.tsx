@@ -185,7 +185,7 @@ export default function SelectedExercisePanel({ selectedExerciseId, }: SelectedE
                 }
               </div>
 
-              <button onClick={() => setClickedExImg((prev) => !prev)} className={styles["selected-exercise-image-button"]}>
+              <button type="button" onClick={() => setClickedExImg((prev) => !prev)} className={styles["selected-exercise-image-button"]}>
                 <img src={`${EXERCISE_BASE_PREFIX}${clickedExImg ? selectedExercise?.images[0] : selectedExercise?.images[1]}`} alt={selectedExercise?.name} className={styles["selected-exercise-image"]} />
               </button>
             </div>
@@ -193,8 +193,8 @@ export default function SelectedExercisePanel({ selectedExerciseId, }: SelectedE
 
           <div className={styles["selected-exercise-statistics-wrapper"]}>
             <div>
-              <button className={progressClicked ? styles["clicked-statistics-button"] : styles["selected-exercise-statistics-progress-button"]} onClick={handleProgressBtn}>Progress</button>
-              <button className={!progressClicked ? styles["clicked-statistics-button"] : styles["selected-exercise-statistics-history-button"]} onClick={handleHistoryBtn}>History</button>
+              <button type="button" className={progressClicked ? styles["clicked-statistics-button"] : styles["selected-exercise-statistics-progress-button"]} onClick={handleProgressBtn}>Progress</button>
+              <button type="button" className={!progressClicked ? styles["clicked-statistics-button"] : styles["selected-exercise-statistics-history-button"]} onClick={handleHistoryBtn}>History</button>
             </div>
 
             <hr className={styles["selected-exercise-statistics-hr"]} />
@@ -203,10 +203,10 @@ export default function SelectedExercisePanel({ selectedExerciseId, }: SelectedE
               <>
 
                 <div className={styles["selected-exercise-buttons-wrapper"]}>
-                  <button className={styles["selected-exercise-last-30-btn"]} onClick={() => setChartFilter('last30')}>Last 30 Days</button>
-                  <button className={styles["selected-exercise-last-60-btn"]} onClick={() => setChartFilter('last60')}>Last 60 Days</button>
-                  <button className={styles["selected-exercise-last-90-btn"]} onClick={() => setChartFilter('last90')}>Last 90 Days</button>
-                  <button className={styles["selected-exercise-all-btn"]} onClick={() => setChartFilter('all')}>All</button>
+                  <button type="button" className={styles["selected-exercise-last-30-btn"]} onClick={() => setChartFilter('last30')}>Last 30 Days</button>
+                  <button type="button" className={styles["selected-exercise-last-60-btn"]} onClick={() => setChartFilter('last60')}>Last 60 Days</button>
+                  <button type="button" className={styles["selected-exercise-last-90-btn"]} onClick={() => setChartFilter('last90')}>Last 90 Days</button>
+                  <button type="button" className={styles["selected-exercise-all-btn"]} onClick={() => setChartFilter('all')}>All</button>
                 </div>
                 <div className={styles["heaviest-weight-chart-wrapper"]}>
                   <Line
