@@ -31,3 +31,9 @@
   font-size: clamp(1.4rem, 1vw, 1.8rem);
   font-weight: 600;
 }
+
+.no-exercises-found-text {
+  text-align: center;
+  font-weight: 600;
+   font-size: clamp(1.5rem, 2vw, 1.8rem);
+}

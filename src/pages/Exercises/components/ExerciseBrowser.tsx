@@ -43,9 +43,6 @@ export default function ExerciseBrowser({ isMobile, handleSelectExercise, handle
     }
   })
   
-  
-  console.log(muscleGroupList)
-
   const equipmentList: string[] = [];
 
   exercises.forEach((ex) => {

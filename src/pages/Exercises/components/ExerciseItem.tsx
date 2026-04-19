@@ -18,6 +18,8 @@ export default function ExerciseItem({filteredExercises, handleSelectExercise}: 
           </button>
         )
       })}
+
+      {filteredExercises.length === 0 && <div className={styles["no-exercises-found-text"]} >No exercises found</div>}
     </>
   )
 }
