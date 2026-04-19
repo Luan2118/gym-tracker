@@ -65,6 +65,8 @@ export default function BodyWeightItem({ bodyWeights, deleteBodyWeight, handleEd
           </li>
         )
       })}
+
+      {bodyWeights.length === 0 && <div className={styles['no-body-weight-logs-yet-text']}>No body weight logs yet</div>}
     </>
   )
 }

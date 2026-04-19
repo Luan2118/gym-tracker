@@ -60,13 +60,13 @@ export default function BodyWeight() {
   const lastMonth = getBodyWeightsInRange(sortedByDateBodyWeights, lastMonthDate)
   const lastTwoMonths = getBodyWeightsInRange(sortedByDateBodyWeights, lastTwoMonthsDate)
   const customDate = sortedByDateBodyWeights.filter((bw) => {
-  const bwDate = bw.date.slice(0, 10);
-  const from = dateFrom || '0000-01-01';
-  const to = dateTo || '9999-12-31';
+    const bwDate = bw.date.slice(0, 10);
+    const from = dateFrom || '0000-01-01';
+    const to = dateTo || '9999-12-31';
 
 
-  return from <= bwDate && to >= bwDate;
-});
+    return from <= bwDate && to >= bwDate;
+  });
 
   const visibleBodyWeights =
     filter === 'lastWeek' ? lastWeek :
@@ -232,26 +232,28 @@ export default function BodyWeight() {
             <BodyWeightItem bodyWeights={paginatedData} deleteBodyWeight={deleteBodyWeight} handleEditBodyWeight={handleEditBodyWeight} editBodyWeightId={editBodyWeightId} handleSaveBodyWeight={handleSaveBodyWeight} handleEditBwInput={handleEditBwInput} editBodyWeightInputText={editBodyWeightInputText} editBwInputValidation={editBwInputValidation} />
           </ul>
 
-          <div className={styles["pagination-wrapper"]}>
-            <button type="button" className={styles["pagination-button"]} onClick={() => setCurrentPage((prev) => prev - 1)} disabled={currentPage === 1}>Prev</button>
+          {bodyWeights.length > 0 &&
+            <div className={styles["pagination-wrapper"]}>
+              <button type="button" className={styles["pagination-button"]} onClick={() => setCurrentPage((prev) => prev - 1)} disabled={currentPage === 1}>Prev</button>
 
-            {pageNumbers.map((page) => (
-              <button
-                key={page}
-                type="button"
-                className={
-                  currentPage === page
-                    ? styles["active-page-button"]
-                    : styles["page-button"]
-                }
-                onClick={() => setCurrentPage(page)}
-              >
-                {page}
-              </button>
-            ))}
+              {pageNumbers.map((page) => (
+                <button
+                  key={page}
+                  type="button"
+                  className={
+                    currentPage === page
+                      ? styles["active-page-button"]
+                      : styles["page-button"]
+                  }
+                  onClick={() => setCurrentPage(page)}
+                >
+                  {page}
+                </button>
+              ))}
 
-            <button type="button" className={styles["pagination-button"]} onClick={() => setCurrentPage((prev) => prev + 1)} disabled={currentPage === totalPages}>Next</button>
-          </div>
+              <button type="button" className={styles["pagination-button"]} onClick={() => setCurrentPage((prev) => prev + 1)} disabled={currentPage === totalPages}>Next</button>
+            </div>
+          }
         </div>
 
 
