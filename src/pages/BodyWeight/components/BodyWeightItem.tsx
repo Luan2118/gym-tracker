@@ -15,6 +15,7 @@ type BodyWeightItemProps = {
 
 export default function BodyWeightItem({ bodyWeights, deleteBodyWeight, handleEditBodyWeight, editBodyWeightId, handleEditBwInput, editBodyWeightInputText, handleSaveBodyWeight, editBwInputValidation }: BodyWeightItemProps) {
 
+  console.log(bodyWeights)
   return (
     <>
       {bodyWeights.map((bodyweight) => {
@@ -33,7 +34,7 @@ export default function BodyWeightItem({ bodyWeights, deleteBodyWeight, handleEd
                   <div>
                     <div className={styles["edit-body-weight-input-wrapper"]}>
                       <label htmlFor="edit-body-weight"></label>
-                      <input id="edit-body-weight" type="number" className={styles['edit-body-weight']} onChange={handleEditBwInput} value={editBodyWeightInputText} />
+                      <input id="edit-body-weight" type="number" className={styles['edit-body-weight']} onChange={handleEditBwInput} value={editBodyWeightInputText}/>
                     </div>
                   </div>
                   :
@@ -48,7 +49,7 @@ export default function BodyWeightItem({ bodyWeights, deleteBodyWeight, handleEd
               <div className={styles['body-weight-buttons-wrapper']}>
                 {editBodyWeightId === bodyweight.id ?
                   <button type='button' className={styles['body-weight-save-button']} onClick={handleSaveBodyWeight}>Save</button> :
-                  <button type='button' className={styles['body-weight-edit-button']} onClick={() => handleEditBodyWeight(bodyweight.id)}>Edit</button>
+                  <button type='button' className={styles['body-weight-edit-button']} onClick={() => handleEditBodyWeight(bodyweight.id, bodyweight.bw)}>Edit</button>
                 }
                 <button type='button' className={styles['body-weight-delete-button']} onClick={() => deleteBodyWeight(bodyweight.id)}>Delete</button>
               </div>
