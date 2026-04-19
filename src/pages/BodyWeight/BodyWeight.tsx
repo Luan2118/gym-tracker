@@ -35,7 +35,7 @@ export default function BodyWeight() {
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
   const [editBodyWeightId, setEditBodyWeightId] = useState<string | null>(null);
-  const [editBodyWeightInputText, setEditBodyWeightInputText] = useState<number | null>(null);
+  const [editBodyWeightInputText, setEditBodyWeightInputText] = useState('');
   const [bwInputValidation, setBwInputValidation] = useState(false);
   const [editBwInputValidation, setEditBwInputValidation] = useState(false);
 
@@ -160,7 +160,7 @@ export default function BodyWeight() {
     setBodyWeights((prev) => prev.filter((bw) => bw.id !== id))
   }
 
-  function handleEditBodyWeight(id: string, bodyweight: number) {
+  function handleEditBodyWeight(id: string, bodyweight: string) {
     setEditBodyWeightInputText(bodyweight)
     setEditBwInputValidation(false);
     setEditBodyWeightId(id);
