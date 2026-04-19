@@ -39,7 +39,6 @@ export default function Layout() {
     localStorage.setItem('bodyWeights', JSON.stringify(bodyWeights))
   }, [bodyWeights])
 
-
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
 
   const layoutContext: LayoutContextType = {

@@ -15,6 +15,7 @@ export default function ActiveWorkout() {
   const [selectedTrainingSplitId, setSelectedTrainingSplitId] = useState('');
   const [selectedWorkoutDayId, setSelectedWorkoutDayId] = useState('');
   const [activeExercises, setActiveExercises] = useState<ActiveWorkoutExercise[]>([]);
+  const [hasIncompleteSet, setHasIncompleteSet] = useState(false);
 
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -53,6 +54,7 @@ export default function ActiveWorkout() {
     setActiveExercises([]);
     setTimerRunning(false);
     setElapsedTime(0);
+    setHasIncompleteSet(false);
   }
 
 
@@ -62,6 +64,7 @@ export default function ActiveWorkout() {
 
   function closeDialog() {
     navigate('');
+    setHasIncompleteSet(false);
     dialogRef.current?.close()
   }
 
@@ -148,24 +151,36 @@ export default function ActiveWorkout() {
   }
 
   function handleFinishworkout() {
-    setActiveWorkout(false);
-    setTimerRunning(false);
-    setElapsedTime(0);
+
+    const incompleteSet = activeExercises.some((ex) =>
+      ex.sets.some((set) =>
+        (set.weight === '' && set.reps !== '') ||
+        (set.weight !== '' && set.reps === '') ||
+        (set.weight === '' && set.reps === '')
+      )
+    );
+
+    console.log(incompleteSet)
+
+    if (incompleteSet) {
+      setHasIncompleteSet(true);
+      return;
+    }
+
+    setHasIncompleteSet(false);
 
     const workoutExercises: WorkoutHistoryExercise[] = activeExercises.map((ex) => ({
       exerciseName: ex.exerciseName,
       exerciseId: ex.exerciseId,
       images: ex.images,
-      sets: ex.sets.map((set) => {
-
-        return {
-          id: set.id,
-          sessionId: set.sessionId,
-          weight: Number(set.weight),
-          reps: Number(set.reps),
-        };
-      }),
+      sets: ex.sets.map((set) => ({
+        id: set.id,
+        sessionId: set.sessionId,
+        weight: Number(set.weight),
+        reps: Number(set.reps),
+      })),
     }));
+
 
     const newWorkoutHistory = {
       id: crypto.randomUUID(),
@@ -220,6 +235,10 @@ export default function ActiveWorkout() {
         }
       })
     )
+
+    setActiveWorkout(false);
+    setTimerRunning(false);
+    setElapsedTime(0);
   }
 
   useEffect(() => {
@@ -287,6 +306,7 @@ export default function ActiveWorkout() {
               )}
 
               <button type='button' onClick={() => handleFinishworkout()} className={styles["finish-workout-button"]} >Finish Workout</button>
+              {hasIncompleteSet && <div className={styles["incomplete-sets-text"]}>Incomplete sets.</div>}
             </>
             : <h2 className={styles["no-active-workout-text"]}>No Active Workout</h2>}
         </section>
