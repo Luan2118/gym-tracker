@@ -3,7 +3,6 @@ import plusIcon from '../../../assets/training-split/plus-icon.png'
 import deleteWorkoutDayIcon from '../../../assets/training-split/delete-workout-day.png'
 import { exercises, EXERCISE_BASE_PREFIX } from '../../../data/exercises'
 import { TrainingSplitExercise } from '../../../types'
-import { useState } from 'react'
 
 type WorkoutDayExerciseProps = {
   addedExercise: TrainingSplitExercise

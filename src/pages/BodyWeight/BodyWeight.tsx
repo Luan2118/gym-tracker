@@ -6,7 +6,6 @@ import { useNavigate, useOutletContext, useSearchParams } from 'react-router-dom
 import { sortByNewest } from '../../utils/sortDate';
 import getPaginationData from '../../utils/getPaginationData';
 import { BodyWeight as BodyWeightType, LayoutContextType } from '../../types';
-import formatISODate from '../../utils/formatISODate';
 
 type BodyWeightFilter =
   | 'lastWeek'
