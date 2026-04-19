@@ -35,8 +35,8 @@ export default function Sidebar({ isSidebarOpen, setIsSidebarOpen }: SidebarProp
           <img className={styles['title-img']} src={title} alt='' aria-hidden="true" />
           <div className={styles['title']}>Gym Tracker</div>
 
-          <button type="button" className={styles['close-menu-btn']} onClick={handleMenuButton}>
-            <img src={closeIcon} alt="Close Menu" className={styles['close-menu-icon']} />
+          <button type="button" aria-label='Close menu' className={styles['close-menu-btn']} onClick={handleMenuButton}>
+            <img src={closeIcon} alt="" className={styles['close-menu-icon']} />
           </button>
         </header>
         <hr aria-hidden="true" className={styles['hr']} />

@@ -185,8 +185,8 @@ export default function SelectedExercisePanel({ selectedExerciseId, }: SelectedE
                 }
               </div>
 
-              <button type="button" onClick={() => setClickedExImg((prev) => !prev)} className={styles["selected-exercise-image-button"]}>
-                <img src={`${EXERCISE_BASE_PREFIX}${clickedExImg ? selectedExercise?.images[0] : selectedExercise?.images[1]}`} alt={selectedExercise?.name} className={styles["selected-exercise-image"]} />
+              <button type="button" aria-label={selectedExercise?.name} onClick={() => setClickedExImg((prev) => !prev)} className={styles["selected-exercise-image-button"]}>
+                <img src={`${EXERCISE_BASE_PREFIX}${clickedExImg ? selectedExercise?.images[0] : selectedExercise?.images[1]}`} alt='' className={styles["selected-exercise-image"]} />
               </button>
             </div>
           </div>

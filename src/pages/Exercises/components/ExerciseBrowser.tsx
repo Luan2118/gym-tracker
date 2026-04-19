@@ -113,8 +113,8 @@ export default function ExerciseBrowser({ isMobile, handleSelectExercise, handle
         {isMobile ?
           <div className={styles["select-exercise-title-wrapper"]}>
             <h2 className={styles["select-exercise-title"]}>Select Exercise</h2>
-            <button type="button" className={styles["close-dialog-button"]} onClick={handleCloseDialog}>
-              <img src={closeX} aria-label='Close dialog' className={styles["close-dialog-img"]} />
+            <button type="button" aria-label='Close dialog' className={styles["close-dialog-button"]} onClick={handleCloseDialog}>
+              <img src={closeX} aria-label='Close dialog' className={styles["close-dialog-img"]} alt=''/>
             </button>
           </div> :
           ''
