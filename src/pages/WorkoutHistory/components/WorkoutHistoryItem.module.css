@@ -4,6 +4,10 @@
   margin-top: 2rem;
 }
 
+.workout-history-item-inner-wrapper {
+  display: flex;
+  align-items: center;
+}
 
 .workout-history-item-button {
   display: flex;
@@ -21,11 +25,12 @@
 }
 
 .workout-history-item-delete-button {
-  background-color: rgb(52, 52, 52);
+  background-color: rgb(41, 41, 41);
   border: none;
   transition: 0.3s ease;
   cursor: pointer;
   margin-left: 1rem;
+  margin-top: 1rem;
 }
 
 .workout-history-item-delete-button:hover {

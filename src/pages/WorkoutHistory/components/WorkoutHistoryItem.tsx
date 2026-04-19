@@ -27,31 +27,33 @@ export default function WorkoutHistoryItem({ filteredWorkoutHistory, deleteWorko
     filteredWorkoutHistory.map((workout) => {
       return (
         <div key={workout.id} className={styles["workout-history-item-wrapper"]}>
-          <button className={styles["workout-history-item-button"]} onClick={() => displaySelectedWorkoutHist(workout.id)}>
-            <div className={styles["workout-history-item-names"]}>
+          <div className={styles["workout-history-item-inner-wrapper"]}>
+            <button type='button' className={styles["workout-history-item-button"]} onClick={() => displaySelectedWorkoutHist(workout.id)}>
+              <div className={styles["workout-history-item-names"]}>
 
-              <div className={styles["workout-history-item-training-split-wrapper"]}>
-                <div className={styles["workout-history-item-training-split-title"]}>Split: </div>
-                <div className={styles["workout-history-item-training-split-value"]}>{workout.trainingSplitName}</div>
+                <div className={styles["workout-history-item-training-split-wrapper"]}>
+                  <div className={styles["workout-history-item-training-split-title"]}>Split: </div>
+                  <div className={styles["workout-history-item-training-split-value"]}>{workout.trainingSplitName}</div>
+                </div>
+
+                <div className={styles["workout-history-item-workout-day-wrapper"]}>
+                  <div className={styles["workout-history-item-workout-day-title"]}>Workout Day: </div>
+                  <div className={styles["workout-history-item-workout-day-value"]}> {workout.workoutDay}</div>
+                </div>
+
+                <div className={styles["workout-history-item-day-wrapper"]}>
+                  <div className={styles["workout-history-item-day-title"]}>Date:</div>
+                  <div className={styles["workout-history-item-day-value"]}> {formatISODate(workout.date)}</div>
+                </div>
               </div>
 
-              <div className={styles["workout-history-item-workout-day-wrapper"]}>
-                <div className={styles["workout-history-item-workout-day-title"]}>Workout Day: </div>
-                <div className={styles["workout-history-item-workout-day-value"]}> {workout.workoutDay}</div>
-              </div>
+              <img src={arrowDown} alt="" className={workout.id === selectedWorkoutHisId ? styles["arrow-up-icon"] : styles["arrow-down-icon"]} />
 
-              <div className={styles["workout-history-item-day-wrapper"]}>
-                <div className={styles["workout-history-item-day-title"]}>Date:</div>
-                <div className={styles["workout-history-item-day-value"]}> {formatISODate(workout.date)}</div>
-              </div>
-            </div>
-
-            <img src={arrowDown} alt="" className={workout.id === selectedWorkoutHisId ? styles["arrow-up-icon"] : styles["arrow-down-icon"]} />
-
-            <div onClick={() => deleteWorkoutHistoryItem(workout.id)} className={styles["workout-history-item-delete-button"]}>
+            </button>
+            <button type='button' onClick={() => deleteWorkoutHistoryItem(workout.id)} className={styles["workout-history-item-delete-button"]}>
               <img src={closeIcon} alt="delete workout history item" className={styles["workout-history-item-delete-button-icon"]} />
-            </div>
-          </button>
+            </button>
+          </div>
           {workout.id === selectedWorkoutHisId ?
             <>
               <div className={styles["workout-history-duration-wrapper"]}>
