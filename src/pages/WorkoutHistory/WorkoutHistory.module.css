@@ -34,7 +34,7 @@ h2 {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
 }
 
 .filter-input-wrapper {
@@ -138,8 +138,6 @@ h2 {
 }
 
 .no-matched-workouts-text {
-  background-color: rgb(52, 52, 52);
-  border: 1px solid rgba(255, 255, 255, 0.06);
   padding: 1rem 2rem;
   border-radius: 1rem;
   font-weight: 600;
