@@ -3,7 +3,7 @@ import styles from './Dashboard.module.css'
 import formatISODate from '../../utils/formatISODate';
 import setPastDate from '../../utils/setPastDate';
 import { sortByNewest } from '../../utils/sortDate';
-import { LayoutContextType,  HasDate } from '../../types';
+import { LayoutContextType, HasDate } from '../../types';
 
 export default function Dashboard() {
 
@@ -30,7 +30,7 @@ export default function Dashboard() {
 
   // This Week workouts count
   const last7Days = new Date(setPastDate(7));
-  const thisWeekWorkouts  = getLast7DaysEntries(sortedWorkoutHistory);
+  const thisWeekWorkouts = getLast7DaysEntries(sortedWorkoutHistory);
 
   const subText =
     thisWeekWorkouts.length === 0 ? 'No workouts yet' :
@@ -106,7 +106,7 @@ export default function Dashboard() {
               <div className={styles['overview-card-text']}>Latest Weight:</div>
               <div className={styles['overview-card-value']}>{latestEntry ? `${latestEntry.bw} kg` : '-'}</div>
               <div className={styles['overview-card-value-additional']}>
-                {diffDays === null ? '-' : `Updated ${diffDays === 0 ?  'today' : diffDays === 1 ?  `${diffDays} day ago` : `${diffDays} days ago`}`}
+                {diffDays === null ? '-' : `Updated ${diffDays === 0 ? 'today' : diffDays === 1 ? `${diffDays} day ago` : `${diffDays} days ago`}`}
               </div>
 
             </div>
@@ -209,6 +209,9 @@ export default function Dashboard() {
 
             </div>
 
+            {thisWeekWorkouts.length === 0 &&
+              <div className={styles['no-workouts-this-week-text']}>No workouts this week</div>
+            }
           </section>
 
           <section className={styles['panel-wrapper']}>
@@ -228,6 +231,10 @@ export default function Dashboard() {
                     </div>
                   )
                 })}
+
+                {thisWeeksBodyWeight.length === 0 &&
+                  <div className={styles['no-weight-logs-this-week-text']}>No weight logs this week</div>
+                }
               </div>
 
               <div className={styles['weight-this-week-summary']}>
