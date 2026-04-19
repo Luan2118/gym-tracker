@@ -35,5 +35,6 @@
 .no-exercises-found-text {
   text-align: center;
   font-weight: 600;
-   font-size: clamp(1.5rem, 2vw, 1.8rem);
+  font-size: clamp(1.5rem, 2vw, 1.8rem);
+  color: rgb(200, 200, 200);
 }

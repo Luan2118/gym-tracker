@@ -37,7 +37,9 @@
 }
 
 .content-main-no-split-text {
-  font-size: 2rem;
+  font-size: clamp(1.5rem, 1vw, 1.8rem);
+  font-weight: 600;
+  color: rgb(200, 200, 200);
 }
 
 hr {

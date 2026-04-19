@@ -137,10 +137,11 @@ h2 {
   cursor: not-allowed;
 }
 
-.no-matched-workouts-text {
+.no-workouts-yet {
   padding: 1rem 2rem;
   border-radius: 1rem;
   font-weight: 600;
   align-self: center;
-
+  color: rgb(200, 200, 200);
+  font-size: clamp(1,4rem, 1vw, 1.8rem);
 }
