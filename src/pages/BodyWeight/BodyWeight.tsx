@@ -203,31 +203,65 @@ export default function BodyWeight() {
       <div className={styles["content-wrapper"]}>
         <div className={styles["content-main-wrapper"]}>
           <section className={styles["filter-section-wrapper"]}>
+            <h2 className={styles["sr-only"]}>Filters</h2>
             <fieldset className={styles["fieldset-wrapper"]}>
               <legend className={styles["sr-only"]}>Date:</legend>
 
               <div className={styles["date-from-wrapper"]}>
-                <label htmlFor="date-from" className={styles["date-from-label"]}>From</label>
+                <label htmlFor="date-from" className={styles["date-from-label"]}>
+                  From
+                </label>
                 <input type="date" id="date-from" className={styles["date-from-input"]} onChange={handleCustomDateFrom} value={dateFrom} />
               </div>
 
               <div className={styles["date-to-wrapper"]}>
-                <label htmlFor="date-to" className={styles["date-to-label"]}>To</label>
+                <label htmlFor="date-to" className={styles["date-to-label"]}>
+                  To
+                </label>
                 <input type="date" id="date-to" className={styles["date-to-input"]} onChange={handleCustomDateTo} value={dateTo} />
               </div>
             </fieldset>
 
 
             <div className={styles["filter-buttons-wrapper"]}>
-              <button type='button' className={filter === 'lastWeek' ? styles["clicked-filter-button"] : styles["last-week-button"]} onClick={() => applyPreset('lastWeek')}>Last Week</button>
-              <button type='button' className={filter === 'lastTwoWeeks' ? styles["clicked-filter-button"] : styles["last-2-weeks-button"]} onClick={() => applyPreset('lastTwoWeeks')}>Last 2 Weeks</button>
-              <button type='button' className={filter === 'lastMonth' ? styles["clicked-filter-button"] : styles["last-month-button"]} onClick={() => applyPreset('lastMonth')}>Last Month</button>
-              <button type='button' className={filter === 'lastTwoMonths' ? styles["clicked-filter-button"] : styles["last-2-months-button"]} onClick={() => applyPreset('lastTwoMonths')}>Last 2 Months</button>
-              <button type='button' className={filter === 'all' ? styles["clicked-filter-button"] : styles["show-all-button"]} onClick={() => applyPreset('all')}>All</button>
-            </div>
+              <button
+                aria-pressed={filter === 'lastWeek'}
+                type='button'
+                className={filter === 'lastWeek' ? styles["clicked-filter-button"] : styles["last-week-button"]} onClick={() => applyPreset('lastWeek')}>
+                Last Week
+              </button>
 
+              <button
+                aria-pressed={filter === 'lastTwoWeeks'}
+                type='button'
+                className={filter === 'lastTwoWeeks' ? styles["clicked-filter-button"] : styles["last-2-weeks-button"]} onClick={() => applyPreset('lastTwoWeeks')}>
+                Last 2 Weeks
+              </button>
+
+              <button
+                aria-pressed={filter === 'lastMonth'}
+                type='button'
+                className={filter === 'lastMonth' ? styles["clicked-filter-button"] : styles["last-month-button"]} onClick={() => applyPreset('lastMonth')}>
+                Last Month
+              </button>
+
+              <button
+                aria-pressed={filter === 'lastTwoMonths'}
+                type='button'
+                className={filter === 'lastTwoMonths' ? styles["clicked-filter-button"] : styles["last-2-months-button"]} onClick={() => applyPreset('lastTwoMonths')}>
+                Last 2 Months
+              </button>
+
+              <button
+                aria-pressed={filter === 'all'}
+                type='button'
+                className={filter === 'all' ? styles["clicked-filter-button"] : styles["show-all-button"]} onClick={() => applyPreset('all')}>
+                All
+              </button>
+            </div>
           </section>
 
+          <h2 className={styles["sr-only"]}>Body weight entries</h2>
           <ul >
             <BodyWeightItem bodyWeights={paginatedData} deleteBodyWeight={deleteBodyWeight} handleEditBodyWeight={handleEditBodyWeight} editBodyWeightId={editBodyWeightId} handleSaveBodyWeight={handleSaveBodyWeight} handleEditBwInput={handleEditBwInput} editBodyWeightInputText={editBodyWeightInputText} editBwInputValidation={editBwInputValidation} />
           </ul>
@@ -260,15 +294,20 @@ export default function BodyWeight() {
         <div className={styles["weight-submit-wrapper"]}>
 
           <div className={styles["weight-input-wrapper"]}>
-            <label htmlFor="body-weight" className={styles["weight-input-label"]}>Weight: </label>
+            <label htmlFor="body-weight" className={styles["weight-input-label"]}>
+              Weight:
+            </label>
             <input type="number" id="body-weight" className={styles["weight-input"]} value={bodyWeightInputText} onChange={(e) => setBodyWeightInputText(e.target.value)} ref={bwInputRef} />
           </div>
 
-          <button  type="button" className={styles["add-weight-button"]} onClick={addBodyWeight}>Add Weight</button>
+          <button type="button" className={styles["add-weight-button"]} onClick={addBodyWeight}>Add Weight</button>
           {feedback === 'added' ?
-            <div className={styles["body-weight-added"]}><span className={styles["body-weight-added-icon"]}>&#9989;</span> Body weight added</div>
+            <div role='status' className={styles["body-weight-added"]}>
+              <span className={styles["body-weight-added-icon"]}>&#9989;</span>
+              Body weight added
+            </div>
             : null}
-          {bwInputValidation && <div className={styles["weight-validation-text"]}>Please enter a valid weight</div>}
+          {bwInputValidation && <div role='alert' className={styles["weight-validation-text"]}>Please enter a valid weight</div>}
         </div>
 
       </div>
