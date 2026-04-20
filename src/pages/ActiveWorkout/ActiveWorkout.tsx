@@ -291,7 +291,7 @@ export default function ActiveWorkout() {
                 </div>
               </div>
 
-              {activeWorkoutData.map((ex) =>
+              {activeExercises.map((ex) =>
                 <ActiveExerciseCard
                   key={ex.exerciseId}
                   ex={ex}
@@ -304,17 +304,17 @@ export default function ActiveWorkout() {
               )}
 
               <button type='button' onClick={() => handleFinishworkout()} className={styles["finish-workout-button"]} >Finish Workout</button>
-              {hasIncompleteSet && <div className={styles["incomplete-sets-text"]}>Incomplete sets.</div>}
+              {hasIncompleteSet && <div id='incomplete-sets' role='alert' className={styles["incomplete-sets-text"]}>Incomplete sets.</div>}
             </>
             : <h2 className={styles["no-active-workout-text"]}>No Active Workout</h2>}
         </section>
 
         <div className={styles["start-workout-wrapper"]}>
           {!activeWorkout ?
-            <button type='button' className={styles["start-workout-button"]} onClick={handleStartWorkout}>
+            <button aria-controls='start-workout-dialog' aria-haspopup="dialog" type='button' className={styles["start-workout-button"]} onClick={handleStartWorkout}>
               Start Workout
             </button> :
-            <button className={styles["cancel-workout-button"]} onClick={handleCancelWorkout}>Cancel Workout</button>
+            <button  type='button' className={styles["cancel-workout-button"]} onClick={handleCancelWorkout}>Cancel Workout</button>
           }
 
           <StartWorkoutDialog

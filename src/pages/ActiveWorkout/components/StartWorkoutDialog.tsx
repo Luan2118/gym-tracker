@@ -20,7 +20,7 @@ export default function StartWorkoutDialog({ dialogRef, handleSubmitStartWorkout
   const selectedSplit = trainingSplits.find((trainingSplit) => trainingSplit.id === selectedTrainingSplitId)
 
   return (
-    <dialog ref={dialogRef} className={styles["dialog-popup"]}>
+    <dialog id='start-workout-dialog' aria-label='Start workout' ref={dialogRef} className={styles["dialog-popup"]}>
       <form className={styles["form-wrapper"]} onSubmit={handleSubmitStartWorkout}>
         <div className={styles["form-header-wrapper"]}>
           <div>
@@ -35,7 +35,7 @@ export default function StartWorkoutDialog({ dialogRef, handleSubmitStartWorkout
             </select>
           </div>
 
-          <button type='button' aria-label='close dialog' className={styles["close-dialog-button"]} onClick={closeDialog}>
+          <button type='button' aria-label='Close dialog' className={styles["close-dialog-button"]} onClick={closeDialog}>
             <img src={closeX} alt="" className={styles["close-dialog-img"]} />
           </button>
         </div>
@@ -45,7 +45,7 @@ export default function StartWorkoutDialog({ dialogRef, handleSubmitStartWorkout
             <div key={workoutDay.id}>
               <div className={styles["workout-day-button-wrapper"]}>
                 <div className={styles["workout-day-text"]}>Workout Day: </div>
-                <button type='button' className={selectedWorkoutDayId === workoutDay.id ? styles["workout-day-button-active"] : styles["workout-day-button"]} onClick={() => handleSelectWorkoutDay(workoutDay.id)}>{workoutDay.name}</button>
+                <button aria-pressed={selectedWorkoutDayId === workoutDay.id} type='button' className={selectedWorkoutDayId === workoutDay.id ? styles["workout-day-button-active"] : styles["workout-day-button"]} onClick={() => handleSelectWorkoutDay(workoutDay.id)}>{workoutDay.name}</button>
               </div>
 
               <div>
@@ -78,7 +78,7 @@ export default function StartWorkoutDialog({ dialogRef, handleSubmitStartWorkout
                         })}
                       </div>
                     )
-                  }) : ''
+                  }) : null
                 }
               </div>
             </div>
