@@ -36,13 +36,13 @@ export default function ExerciseBrowser({ isMobile, handleSelectExercise, handle
 
   const muscleGroupList: string[] = [];
 
-  
+
   exercises.forEach((ex) => {
     if (!muscleGroupList.includes(ex.muscleGroup)) {
       muscleGroupList.push(ex.muscleGroup)
     }
   })
-  
+
   const equipmentList: string[] = [];
 
   exercises.forEach((ex) => {
@@ -100,7 +100,7 @@ export default function ExerciseBrowser({ isMobile, handleSelectExercise, handle
       if (bodyPart) {
         return ex.muscleGroup === selectedMuscleOption && ex.name.toLowerCase().includes(searchText) && ex.equipment === selectedEquipment && ex.bodyRegion === bodyPart
       }
-        return ex.muscleGroup === selectedMuscleOption && ex.name.toLowerCase().includes(searchText) && ex.equipment === selectedEquipment
+      return ex.muscleGroup === selectedMuscleOption && ex.name.toLowerCase().includes(searchText) && ex.equipment === selectedEquipment
     }
 
     if (bodyPart) return ex.bodyRegion === bodyPart
@@ -114,20 +114,20 @@ export default function ExerciseBrowser({ isMobile, handleSelectExercise, handle
           <div className={styles["select-exercise-title-wrapper"]}>
             <h2 className={styles["select-exercise-title"]}>Select Exercise</h2>
             <button type="button" aria-label='Close dialog' className={styles["close-dialog-button"]} onClick={handleCloseDialog}>
-              <img src={closeX} aria-label='Close dialog' className={styles["close-dialog-img"]} alt=''/>
+              <img src={closeX} className={styles["close-dialog-img"]} alt='' />
             </button>
           </div> :
-          ''
+          null
         }
         <div className={styles["filter-search-wrapper"]}>
-          <label htmlFor='search-exercise' />
+          <label htmlFor='search-exercise' className={styles["sr-only"]}>Search exercises</label>
           <img src={searchIcon} alt="" className={styles["search-icon"]} />
           <input type="text" id="search-exercise" className={styles["search-exercise-input"]} onChange={(e) => setSearchText(e.target.value.toLowerCase())} value={searchText} placeholder='Search...' />
 
         </div>
 
 
-        <label htmlFor="exercise-category" className={styles["sr-only"]}>Category</label>
+        <label htmlFor="exercise-category" className={styles["sr-only"]}>Muscle group category</label>
         <select id="exercise-category" className={styles["exercise-category-select"]} onChange={(e) => setSelectedMuscleOption(e.target.value)} value={selectedMuscleOption}>
           <option value="All Muscles">All Muscles</option>
           {
@@ -141,7 +141,7 @@ export default function ExerciseBrowser({ isMobile, handleSelectExercise, handle
           }
         </select>
 
-        <label htmlFor="equipment-category" className={styles["sr-only"]}>Category</label>
+        <label htmlFor="equipment-category" className={styles["sr-only"]}>Equipment category</label>
         <select id="equipment-category" className={styles["equipment-category-select"]} onChange={(e) => setSelectedEquipment(e.target.value)} value={selectedEquipment}>
           <option value="All Equipment">All Equipment</option>
           {
@@ -156,13 +156,15 @@ export default function ExerciseBrowser({ isMobile, handleSelectExercise, handle
         </select>
 
         <div className={styles["filter-upper-lower-wrapper"]}>
-          <button type="button" className={selectedUpperBodyEx ? styles["clicked-filter-button"] : styles["upper-body-exercises-button"]} onClick={() => setSelectedUpperBodyEx((prev) => !prev)} disabled={selectedLowerBodyEx}>Upper Body Exercises</button>
-          <button type="button" className={selectedLowerBodyEx ? styles["clicked-filter-button"] : styles["lower-body-exercises-button"]} onClick={() => setSelectedLowerBodyEx((prev) => !prev)} disabled={selectedUpperBodyEx}>Lower Body Exercises</button>
+          <button aria-pressed={selectedUpperBodyEx} type="button" className={selectedUpperBodyEx ? styles["clicked-filter-button"] : styles["upper-body-exercises-button"]} onClick={() => setSelectedUpperBodyEx((prev) => !prev)} disabled={selectedLowerBodyEx}>Upper Body Exercises</button>
+          <button aria-pressed={selectedLowerBodyEx} type="button" className={selectedLowerBodyEx ? styles["clicked-filter-button"] : styles["lower-body-exercises-button"]} onClick={() => setSelectedLowerBodyEx((prev) => !prev)} disabled={selectedUpperBodyEx}>Lower Body Exercises</button>
         </div>
 
       </section>
       <section aria-label='Exercise List' className={isMobile ? styles["dialog-exercise-list-wrapper"] : styles["exercise-list-wrapper"]}>
-        <ExerciseItem filteredExercises={filteredExercises} handleSelectExercise={handleSelectExercise} />
+        <ul>
+          <ExerciseItem filteredExercises={filteredExercises} handleSelectExercise={handleSelectExercise} />
+        </ul>
       </section>
     </>
   )

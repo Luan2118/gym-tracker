@@ -5,16 +5,16 @@ import formatISODate from '../../../utils/formatISODate'
 import { useOutletContext } from 'react-router-dom'
 import { useState } from 'react';
 import { Line } from 'react-chartjs-2';
-import { Chart as ChartJS, LineElement, PointElement, CategoryScale, LinearScale, Title, Tooltip } from 'chart.js';
+import { Chart as ChartJS, LineElement, PointElement, CategoryScale, LinearScale, Title, Tooltip, TooltipItem } from 'chart.js';
 ChartJS.register(LineElement, PointElement, CategoryScale, LinearScale, Title, Tooltip);
-import {sortByNewest} from '../../../utils/sortDate';
+import { sortByNewest } from '../../../utils/sortDate';
 import { LayoutContextType } from '../../../types'
 
 type SelectedExercisePanelProp = {
   selectedExerciseId: string | null
 }
 
-type ChartFilters = 
+type ChartFilters =
   | 'last30'
   | 'last60'
   | 'last90'
@@ -101,7 +101,7 @@ export default function SelectedExercisePanel({ selectedExerciseId, }: SelectedE
           weight: 600,
         },
         callbacks: {
-          label: (context: any) => {
+          label: (context: TooltipItem<'line'>) => {
             return `Weight: ${context.formattedValue} kg`;
           },
         },
@@ -144,8 +144,8 @@ export default function SelectedExercisePanel({ selectedExerciseId, }: SelectedE
   const bestSets = filteredWorkouts.map((w) => {
     const exercises = w.exercises.find((ex) => ex.exerciseId === selectedExerciseId)
 
-    if(!exercises) return;
-    
+    if (!exercises) return;
+
     const result = exercises.sets.reduce((best, current) => {
       if (current.weight > best.weight) return current;
       if (current.weight === best.weight && current.reps > best.reps) return current;
@@ -155,10 +155,10 @@ export default function SelectedExercisePanel({ selectedExerciseId, }: SelectedE
     return result
   })
 
-  
+
   const latestBestSet = bestSets ? bestSets.at(-1) : undefined;
-  
-  const firstLoggedSet = filteredWorkouts[0]? filteredWorkouts[0].exercises.find((ex) => ex.exerciseId === selectedExerciseId)?.sets[0] : undefined
+
+  const firstLoggedSet = filteredWorkouts[0] ? filteredWorkouts[0].exercises.find((ex) => ex.exerciseId === selectedExerciseId)?.sets[0] : undefined
 
   const latestSet = filteredWorkouts[0] ? sortByNewest(filteredWorkouts)[0].exercises.find((ex) => ex.exerciseId === selectedExerciseId)?.sets[0] : undefined
 
@@ -193,8 +193,20 @@ export default function SelectedExercisePanel({ selectedExerciseId, }: SelectedE
 
           <div className={styles["selected-exercise-statistics-wrapper"]}>
             <div>
-              <button type="button" className={progressClicked ? styles["clicked-statistics-button"] : styles["selected-exercise-statistics-progress-button"]} onClick={handleProgressBtn}>Progress</button>
-              <button type="button" className={!progressClicked ? styles["clicked-statistics-button"] : styles["selected-exercise-statistics-history-button"]} onClick={handleHistoryBtn}>History</button>
+              <button aria-pressed={progressClicked}
+                type="button"
+                className={progressClicked ? styles["clicked-statistics-button"] : styles["selected-exercise-statistics-progress-button"]}
+                onClick={handleProgressBtn}>
+                Progress
+              </button>
+
+              <button aria-pressed={!progressClicked}
+                type="button"
+                className={!progressClicked ? styles["clicked-statistics-button"] : styles["selected-exercise-statistics-history-button"]}
+                onClick={handleHistoryBtn}>
+                History
+              </button>
+
             </div>
 
             <hr className={styles["selected-exercise-statistics-hr"]} />
@@ -203,12 +215,41 @@ export default function SelectedExercisePanel({ selectedExerciseId, }: SelectedE
               <>
 
                 <div className={styles["selected-exercise-buttons-wrapper"]}>
-                  <button type="button" className={styles["selected-exercise-last-30-btn"]} onClick={() => setChartFilter('last30')}>Last 30 Days</button>
-                  <button type="button" className={styles["selected-exercise-last-60-btn"]} onClick={() => setChartFilter('last60')}>Last 60 Days</button>
-                  <button type="button" className={styles["selected-exercise-last-90-btn"]} onClick={() => setChartFilter('last90')}>Last 90 Days</button>
-                  <button type="button" className={styles["selected-exercise-all-btn"]} onClick={() => setChartFilter('all')}>All</button>
+                  <button
+                    aria-pressed={chartFilter === 'last30'}
+                    type="button"
+                    className={styles["selected-exercise-last-30-btn"]}
+                    onClick={() => setChartFilter('last30')}>
+                    Last 30 Days
+                  </button>
+
+                  <button
+                    aria-pressed={chartFilter === 'last60'}
+                    type="button"
+                    className={styles["selected-exercise-last-60-btn"]}
+                    onClick={() => setChartFilter('last60')}>
+                    Last 60 Days
+                  </button>
+
+                  <button
+                    aria-pressed={chartFilter === 'last90'}
+                    type="button"
+                    className={styles["selected-exercise-last-90-btn"]}
+                    onClick={() => setChartFilter('last90')}>
+                    Last 90 Days
+                  </button>
+
+                  <button
+                    aria-pressed={chartFilter === 'all'}
+                    type="button"
+                    className={styles["selected-exercise-all-btn"]}
+                    onClick={() => setChartFilter('all')}>
+                    All
+                  </button>
+
                 </div>
-                <div className={styles["heaviest-weight-chart-wrapper"]}>
+
+                <div className={styles["heaviest-weight-chart-wrapper"]} role="img" aria-label="Strength progress chart">
                   <Line
                     data={data} options={options}
                   />
@@ -219,7 +260,7 @@ export default function SelectedExercisePanel({ selectedExerciseId, }: SelectedE
                   <div className={styles["history-stat-card"]}>
                     <p className={styles["history-stat-label"]}>Latest Set</p>
                     <p className={styles["history-stat-value"]}>
-                      {latestSet.weight} x {latestSet.reps}
+                      {latestSet.weight} × {latestSet.reps}
                     </p>
                   </div>
                 )}
@@ -228,7 +269,7 @@ export default function SelectedExercisePanel({ selectedExerciseId, }: SelectedE
                   <div className={styles["history-stat-card"]}>
                     <p className={styles["history-stat-label"]}>Best Set</p>
                     <p className={styles["history-stat-value"]}>
-                      {latestBestSet.weight} x {latestBestSet.reps}
+                      {latestBestSet.weight} × {latestBestSet.reps}
                     </p>
                   </div>
                 )}
@@ -237,7 +278,7 @@ export default function SelectedExercisePanel({ selectedExerciseId, }: SelectedE
                   <div className={styles["history-stat-card"]}>
                     <p className={styles["history-stat-label"]}>First Set</p>
                     <p className={styles["history-stat-value"]}>
-                      {firstLoggedSet.weight} x {firstLoggedSet.reps}
+                      {firstLoggedSet.weight} × {firstLoggedSet.reps}
                     </p>
                   </div>
                 )}
