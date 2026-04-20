@@ -33,11 +33,11 @@ type AddTrainingSplitDialogProps = {
 export default function AddTrainingSplitDialog({ dialogRef, submitTrainingSplit, trainingSplitInputText, setTrainingSplitInputText, addWorkoutDay, closeDialog, workoutDays, handleWorkoutDayInputText, deleteWorkoutDay, selectExerciseAgain, handleSearchExerciseText, deleteExercise, handleWeightSet, handleRepsSet, deleteSet, addSet, selectExercise, addExercise, duplicatedExerciseId, emptyTrainingSplitName, emptyWorkoutDayName, hasSubmitted }: AddTrainingSplitDialogProps) {
 
   return (
-    <dialog ref={dialogRef} className={styles["add-training-split-dialog"]}>
+    <dialog id='training-split-dialog' ref={dialogRef} className={styles["add-training-split-dialog"]} aria-label='Training split dialog'>
       <form className={styles["form-wrapper"]} onSubmit={submitTrainingSplit}>
         <div className={styles["training-split-name-wrapper"]}>
           <div className={styles["training-split-name-add-workout-wrapper"]}>
-            <label htmlFor="training-split-name"></label>
+            <label htmlFor="training-split-name" className={styles["sr-only"]}>Training split name</label>
             <input type="text" id="training-split-name" placeholder='Training Split Name' className={styles["training-split-name-input"]} onChange={(e) => setTrainingSplitInputText(e.target.value)} value={trainingSplitInputText} />
 
             <button type='button' className={styles["add-workout-button"]} onClick={addWorkoutDay}>Add Workout</button>
@@ -47,7 +47,7 @@ export default function AddTrainingSplitDialog({ dialogRef, submitTrainingSplit,
             <img className={styles["close-dialog-img"]} src={close} alt='' />
           </button>
         </div>
-        {emptyTrainingSplitName && <div className={styles["title-validation"]}>Enter a split name</div>}
+        {emptyTrainingSplitName && <div role='alert' className={styles["title-validation"]}>Enter a split name</div>}
 
         <hr aria-hidden="true" />
 
@@ -71,22 +71,24 @@ export default function AddTrainingSplitDialog({ dialogRef, submitTrainingSplit,
               </div>
               {emptyWorkoutDayName.some((day) => day.id === workoutDay.id) ? <div className={styles["title-validation"]}>Enter workout day name</div> : null}
 
-              {workoutDay.exercises.map((addedExercise) =>
-                <WorkoutDayExercise
-                  key={addedExercise.rowId}
-                  addedExercise={addedExercise}
-                  workoutDayId={workoutDay.id}
-                  selectExerciseAgain={selectExerciseAgain}
-                  handleSearchExerciseText={handleSearchExerciseText}
-                  deleteExercise={deleteExercise}
-                  handleWeightSet={handleWeightSet}
-                  handleRepsSet={handleRepsSet}
-                  deleteSet={deleteSet}
-                  addSet={addSet}
-                  selectExercise={selectExercise}
-                  duplicatedExerciseId={duplicatedExerciseId}
-                />
-              )}
+              <ul>
+                {workoutDay.exercises.map((addedExercise) =>
+                  <WorkoutDayExercise
+                    key={addedExercise.rowId}
+                    addedExercise={addedExercise}
+                    workoutDayId={workoutDay.id}
+                    selectExerciseAgain={selectExerciseAgain}
+                    handleSearchExerciseText={handleSearchExerciseText}
+                    deleteExercise={deleteExercise}
+                    handleWeightSet={handleWeightSet}
+                    handleRepsSet={handleRepsSet}
+                    deleteSet={deleteSet}
+                    addSet={addSet}
+                    selectExercise={selectExercise}
+                    duplicatedExerciseId={duplicatedExerciseId}
+                  />
+                )}
+              </ul>
 
               <button type='button' className={styles["add-exercise-button"]} onClick={() => addExercise(workoutDay.id)}> <span className={styles["add-exercise-plus-symbol"]}>&#43;</span> Add exercise </button>
 
@@ -94,9 +96,9 @@ export default function AddTrainingSplitDialog({ dialogRef, submitTrainingSplit,
           )
         })}
 
-        {hasSubmitted && workoutDays.length === 0 && <div className={styles["workout-day-required-text"]}>Add a workout day</div>}
+        {hasSubmitted && workoutDays.length === 0 && <div role='alert' className={styles["workout-day-required-text"]}>Add a workout day</div>}
 
-        <button type='submit' className={styles["confirm-button"]} >Confirm</button>
+        <button type='submit' className={styles["confirm-button"]}>Confirm</button>
       </form>
     </dialog>
   )

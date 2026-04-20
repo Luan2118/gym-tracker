@@ -20,7 +20,7 @@ type WorkoutDayExerciseProps = {
 
 export default function WorkoutDayExercise({ addedExercise, workoutDayId, selectExerciseAgain, handleSearchExerciseText, deleteExercise, handleWeightSet, handleRepsSet, deleteSet, addSet, selectExercise, duplicatedExerciseId }: WorkoutDayExerciseProps) {
   return (
-    <div className={styles["search-exercise-wrapper"]}>
+    <li className={styles["search-exercise-wrapper"]}>
 
       <div className={styles["search-exercise-input-wrapper"]}>
         {addedExercise.confirm ?
@@ -40,7 +40,7 @@ export default function WorkoutDayExercise({ addedExercise, workoutDayId, select
         </button>
 
       </div>
-      {addedExercise.rowId === duplicatedExerciseId ? <div className={styles["duplicated-exercise-text"]}>Already added</div> : null}
+      {addedExercise.rowId === duplicatedExerciseId ? <div role='alert' className={styles["duplicated-exercise-text"]}>Already added</div> : null}
 
       {addedExercise.sets.map((set, index) => {
         return (
@@ -71,7 +71,7 @@ export default function WorkoutDayExercise({ addedExercise, workoutDayId, select
         <span className={styles["add-set-text"]}>Add set</span>
       </button>}
 
-      {addedExercise.confirm ? '' :
+      {addedExercise.confirm ? null :
         <ul className={styles["search-exercise-list-wrapper"]}>
           {
             exercises.filter((exercise) => exercise.name.toLowerCase().includes(addedExercise.searchText.toLowerCase()))
@@ -90,6 +90,6 @@ export default function WorkoutDayExercise({ addedExercise, workoutDayId, select
 
         </ul>
       }
-    </div>
+    </li>
   )
 }

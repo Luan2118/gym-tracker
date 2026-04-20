@@ -404,7 +404,7 @@ export default function TrainingSplit() {
           }
         </section>
         <div className={styles["add-training-wrapper"]}>
-          <button type="button" className={styles["add-training-button"]} onClick={openDialog}>Add Training Split</button>
+          <button aria-controls='training-split-dialog' aria-haspopup='dialog' type="button" className={styles["add-training-button"]} onClick={openDialog}>Add Training Split</button>
         </div>
       </div>
     </>
