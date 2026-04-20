@@ -128,7 +128,7 @@ export default function WorkoutHistory() {
         <div className={styles["content-main"]}>
           {
             filteredWorkoutHistory.length > 0 ?
-              <>
+              <ul>
                 <WorkoutHistoryItem
                   filteredWorkoutHistory={paginatedData}
                   deleteWorkoutHistoryItem={deleteWorkoutHistoryItem}
@@ -153,7 +153,7 @@ export default function WorkoutHistory() {
 
                   <button type="button" className={styles["pagination-button"]} onClick={() => setCurrentPage((prev) => prev + 1)} disabled={currentPage === totalPages}>Next</button>
                 </div>
-              </>
+              </ul>
 
               :
               <div className={styles["no-workouts-yet"]}>No workouts yet</div>

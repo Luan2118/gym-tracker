@@ -26,9 +26,9 @@ export default function WorkoutHistoryItem({ filteredWorkoutHistory, deleteWorko
   return (
     filteredWorkoutHistory.map((workout) => {
       return (
-        <div key={workout.id} className={styles["workout-history-item-wrapper"]}>
+        <li key={workout.id} className={styles["workout-history-item-wrapper"]}>
           <div className={styles["workout-history-item-inner-wrapper"]}>
-            <button type='button' className={styles["workout-history-item-button"]} onClick={() => displaySelectedWorkoutHist(workout.id)}>
+            <button aria-controls={`workout-history-item-card-${workout.id}`} aria-expanded={workout.id === selectedWorkoutHisId } type='button' className={styles["workout-history-item-button"]} onClick={() => displaySelectedWorkoutHist(workout.id)}>
               <div className={styles["workout-history-item-names"]}>
 
                 <div className={styles["workout-history-item-training-split-wrapper"]}>
@@ -50,12 +50,12 @@ export default function WorkoutHistoryItem({ filteredWorkoutHistory, deleteWorko
               <img src={arrowDown} alt="" className={workout.id === selectedWorkoutHisId ? styles["arrow-up-icon"] : styles["arrow-down-icon"]} />
 
             </button>
-            <button type='button' onClick={() => deleteWorkoutHistoryItem(workout.id)} className={styles["workout-history-item-delete-button"]}>
-              <img src={closeIcon} alt="delete workout history item" className={styles["workout-history-item-delete-button-icon"]} />
+            <button type='button' aria-label='Delete workout history item' onClick={() => deleteWorkoutHistoryItem(workout.id)} className={styles["workout-history-item-delete-button"]}>
+              <img src={closeIcon} alt="" className={styles["workout-history-item-delete-button-icon"]} />
             </button>
           </div>
           {workout.id === selectedWorkoutHisId ?
-            <>
+            <div id={`workout-history-item-card-${workout.id}`} className={styles["workout-history-item-card"]}>
               <div className={styles["workout-history-duration-wrapper"]}>
                 <div className={styles["workout-history-duration-title"]}>
                   Duration:
@@ -100,9 +100,9 @@ export default function WorkoutHistoryItem({ filteredWorkoutHistory, deleteWorko
                 }
                 )}
               </div>
-            </>
-            : ''}
-        </div>
+            </div>
+            : null}
+        </li>
       )
     })
   )
