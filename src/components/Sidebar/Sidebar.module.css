@@ -1,3 +1,15 @@
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 ul {
   list-style: none; 
   margin: 0;
@@ -89,18 +101,29 @@ main {
 .sidebar-nav-link-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 2.5rem;
+  gap: 1rem;
 }
 
 .sidebar-nav-link {
   display: flex;
+  padding: 0.5rem 0.8rem;
   align-items: center;
 }
+
+.sidebar-nav-link-active {
+  display: flex;
+  align-items: center;
+  background-color: rgb(58, 58, 58);
+  border-radius: 0.7rem;
+  padding: 0.5rem 0.8rem;
+  font-weight: 600;
+}
+
 
 .sidebar-nav-link-title {
   font-size: 1.8rem
 }
-.sidebar-nav-link img {
+.sidebar-nav-link-img {
   max-width: 3.7rem;
   margin-right: 1rem;
 }

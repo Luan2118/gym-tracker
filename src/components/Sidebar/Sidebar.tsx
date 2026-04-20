@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import dashboard from '../../assets/dashboard.png'
 import title from '../../assets/title.png'
 import active from '../../assets/active-workout.png'
@@ -24,16 +24,16 @@ export default function Sidebar({ isSidebarOpen, setIsSidebarOpen }: SidebarProp
   return (
     <>
       <div className={styles['menu-button-wrapper']}>
-        <button type="button" className={styles['menu-button']} onClick={handleMenuButton}>
-          <img src={menuIcon} alt="Menu" className={styles['menu-button-icon']} />
+        <button aria-label='Open Menu' type="button" aria-controls='sidebar' aria-expanded={isSidebarOpen} className={styles['menu-button']} onClick={handleMenuButton}>
+          <img src={menuIcon} alt="" className={styles['menu-button-icon']} />
         </button>
       </div>
 
-      <aside className={isSidebarOpen ? styles['sidebar-is-open'] : styles['sidebar']}>
+      <aside id='sidebar' className={isSidebarOpen ? styles['sidebar-is-open'] : styles['sidebar']}>
 
         <header className={styles['title-header']}>
           <img className={styles['title-img']} src={title} alt='' aria-hidden="true" />
-          <div className={styles['title']}>Gym Tracker</div>
+          <h2 className={styles['title']}>Gym Tracker</h2>
 
           <button type="button" aria-label='Close menu' className={styles['close-menu-btn']} onClick={handleMenuButton}>
             <img src={closeIcon} alt="" className={styles['close-menu-icon']} />
@@ -41,48 +41,60 @@ export default function Sidebar({ isSidebarOpen, setIsSidebarOpen }: SidebarProp
         </header>
         <hr aria-hidden="true" className={styles['hr']} />
 
-        <nav>
+        <nav aria-label='Primary'>
           <ul className={styles['sidebar-nav-link-wrapper']}>
             <li>
-              <Link to='/' className={styles['sidebar-nav-link']}>
-                <img src={dashboard} alt='' aria-hidden="true" />
+              <NavLink to='/' end className={( {isActive }) => 
+                isActive ? styles['sidebar-nav-link-active'] : styles['sidebar-nav-link']
+              }>
+                <img className={styles['sidebar-nav-link-img']} src={dashboard} alt='' aria-hidden="true" />
                 <div className={styles['sidebar-nav-link-title']}>DashBoard</div>
-              </Link>
+              </NavLink>
             </li>
 
             <li>
-              <Link to='/active-workout' className={styles['sidebar-nav-link']}>
-                <img src={active} alt='' aria-hidden="true" />
+              <NavLink to='/active-workout' className={( {isActive }) => 
+                isActive ? styles['sidebar-nav-link-active'] : styles['sidebar-nav-link']
+              }>
+                <img className={styles['sidebar-nav-link-img']} src={active} alt='' aria-hidden="true" />
                 <div className={styles['sidebar-nav-link-title']}>Active Workout</div>
-              </Link>
+              </NavLink>
             </li>
 
             <li>
-              <Link to='/workout-history' className={styles['sidebar-nav-link']}>
-                <img src={history} alt='' aria-hidden="true" />
+              <NavLink to='/workout-history' className={( {isActive }) => 
+                isActive ? styles['sidebar-nav-link-active'] : styles['sidebar-nav-link']
+              }>
+                <img className={styles['sidebar-nav-link-img']} src={history} alt='' aria-hidden="true" />
                 <div className={styles['sidebar-nav-link-title']}>Workout History</div>
-              </Link>
+              </NavLink>
             </li>
 
             <li>
-              <Link className={styles['sidebar-nav-link']} to="/exercises">
-                <img src={exercisesPage} alt='' aria-hidden="true" />
+              <NavLink className={( {isActive }) => 
+                isActive ? styles['sidebar-nav-link-active'] : styles['sidebar-nav-link']
+              } to="/exercises">
+                <img className={styles['sidebar-nav-link-img']} src={exercisesPage} alt='' aria-hidden="true" />
                 <div className={styles['sidebar-nav-link-title']}>Exercises</div>
-              </Link>
+              </NavLink>
             </li>
 
             <li>
-              <Link className={styles['sidebar-nav-link']} to="/training-split">
-                <img src={trainingSplit} alt='' aria-hidden="true" />
+              <NavLink className={( {isActive }) => 
+                isActive ? styles['sidebar-nav-link-active'] : styles['sidebar-nav-link']
+              } to="/training-split">
+                <img className={styles['sidebar-nav-link-img']} src={trainingSplit} alt='' aria-hidden="true" />
                 <div className={styles['sidebar-nav-link-title']}>Training Split</div>
-              </Link>
+              </NavLink>
             </li>
 
             <li>
-              <Link className={styles['sidebar-nav-link']} to="/body-weight">
-                <img src={bodyweight} alt='' aria-hidden="true" />
+              <NavLink className={( {isActive }) => 
+                isActive ? styles['sidebar-nav-link-active'] : styles['sidebar-nav-link']
+              } to="/body-weight">
+                <img className={styles['sidebar-nav-link-img']} src={bodyweight} alt='' aria-hidden="true" />
                 <div className={styles['sidebar-nav-link-title']}>Body Weight</div>
-              </Link>
+              </NavLink>
             </li>
 
           </ul>
