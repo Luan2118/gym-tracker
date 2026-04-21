@@ -22,16 +22,16 @@ export default function TrainingSplit() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (searchParams.get('dialog') === 'open') {
-      openDialog();
-    }
-  }, [searchParams])
 
   function openDialog() {
     resetStates();
     dialogRef.current?.showModal();
   }
+  useEffect(() => {
+    if (searchParams.get('dialog') === 'open') {
+      openDialog();
+    }
+  }, [searchParams])
 
   function closeDialog() {
     resetStates()

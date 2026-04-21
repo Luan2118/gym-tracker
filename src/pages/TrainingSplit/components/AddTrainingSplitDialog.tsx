@@ -51,7 +51,7 @@ export default function AddTrainingSplitDialog({ dialogRef, submitTrainingSplit,
 
         <hr aria-hidden="true" />
 
-        {workoutDays.map((workoutDay, i) => {
+        {workoutDays.map((workoutDay) => {
           return (
             <div key={workoutDay.id} className={styles["workout-day-wrapper"]} >
               <div className={styles["workout-day-inner-wrapper"]} >

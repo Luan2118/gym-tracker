@@ -23,7 +23,7 @@ export default function ActiveExerciseCard({ ex, exerciseId, activeExercises, wo
 
     const filteredHisWorkoutDays = workoutHistory?.filter((w) => w.exercises.some(ex => activeExIds.has(ex.exerciseId)))
 
-    let filteredExSets: WorkoutHistorySet[] = []
+    const filteredExSets: WorkoutHistorySet[] = []
     let bestWeightNum = 0;
     let bestRepsNum = 0;
 
