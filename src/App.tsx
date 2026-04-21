@@ -6,6 +6,7 @@ import TrainingSplit from './pages/TrainingSplit/TrainingSplit'
 import Exercises from './pages/Exercises/Exercises'
 import BodyWeight from './pages/BodyWeight/BodyWeight'
 import WorkoutHistory from './pages/WorkoutHistory/WorkoutHistory'
+import NotFound from './pages/NotFound/NotFound'
 import './App.css'
 
 function App() {
@@ -13,13 +14,14 @@ function App() {
   return (
     <Routes>
       <Route path='/' element={<Layout />}>
-        <Route index  element={<Dashboard />}/>
+        <Route index element={<Dashboard />} />
         <Route path='active-workout' element={<ActiveWorkout />} />
         <Route path='training-split' element={<TrainingSplit />} />
-        <Route path='exercises' element={<Exercises/>} />
-        <Route path='body-weight' element={<BodyWeight/>} />
+        <Route path='exercises' element={<Exercises />} />
+        <Route path='body-weight' element={<BodyWeight />} />
         <Route path='workout-history' element={<WorkoutHistory />} />
       </Route>
+      <Route path='*' element={<NotFound />} />
     </Routes>
   )
 }
