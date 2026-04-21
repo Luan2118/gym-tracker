@@ -3,43 +3,38 @@ import { useState, useEffect } from "react";
 import Sidebar from '../components/Sidebar/Sidebar'
 import styles from './Layout.module.css'
 import { TrainingSplit, WorkoutHistory, BodyWeight, LayoutContextType } from "../types";
+import { readStorage, writeStorage } from "../utils/localStorage";
 
 export default function Layout() {
 
   const [trainingSplits, setTrainingSplits] = useState<TrainingSplit[]>(() => {
-    const stored = localStorage.getItem('trainingSplits');
-
-    return stored ? JSON.parse(stored) : []
+    return readStorage<TrainingSplit>('trainingSplits', []);
   });
 
   useEffect(() => {
-    localStorage.setItem('trainingSplits', JSON.stringify(trainingSplits));
+    writeStorage('trainingSplits', trainingSplits);
   }, [trainingSplits])
 
 
 
   const [workoutHistory, setWorkoutHistory] = useState<WorkoutHistory[]>(() => {
-    const stored = localStorage.getItem('workoutHistory');
-
-    return stored ? JSON.parse(stored) : [];
+    return readStorage<WorkoutHistory>('workoutHistory', []);
   });
 
   useEffect(() => {
-    localStorage.setItem('workoutHistory', JSON.stringify(workoutHistory));
+    writeStorage('workoutHistory', workoutHistory);
   }, [workoutHistory]);
 
 
   const [bodyWeights, setBodyWeights] = useState<BodyWeight[]>(() => {
-    const stored = localStorage.getItem('bodyWeights');
-
-    return stored ? JSON.parse(stored) : [];
+    return readStorage<BodyWeight>('bodyWeights', []);
   });
 
   useEffect(() => {
-    localStorage.setItem('bodyWeights', JSON.stringify(bodyWeights))
+    writeStorage('bodyWeights', bodyWeights);
   }, [bodyWeights])
 
-  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const layoutContext: LayoutContextType = {
     trainingSplits,
