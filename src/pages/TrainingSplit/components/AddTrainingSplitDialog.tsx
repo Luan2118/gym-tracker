@@ -13,7 +13,7 @@ type AddTrainingSplitDialogProps = {
   addWorkoutDay: () => void
   closeDialog: () => void
   workoutDays: TrainingSplitWorkoutDay[]
-  handleWorkoutDayInputText: (id: string, e: React.ChangeEvent<HTMLInputElement>) => void
+  handleWorkoutDayInputText: (workoutDayId: string, e: React.ChangeEvent<HTMLInputElement>) => void
   deleteWorkoutDay: (id: string) => void
   selectExerciseAgain: (rowId: string, workoutDayId: string) => void
   handleSearchExerciseText: (e: React.ChangeEvent<HTMLInputElement>, workoutDayId: string, addedExerciseRowId: string) => void
@@ -23,7 +23,7 @@ type AddTrainingSplitDialogProps = {
   deleteSet: (setId: string) => void
   addSet: (workoutDayId: string, addedExerciseRowId: string) => void
   selectExercise: (workoutDayId: string, selectedExerciseId: string, addedExerciseRowId: string) => void
-  addExercise: (id: string) => void
+  addExercise: (workoutDayId: string) => void
   duplicatedExerciseId: string
   emptyTrainingSplitName: boolean
   emptyWorkoutDayName: TrainingSplitWorkoutDay[]

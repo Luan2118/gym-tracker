@@ -19,6 +19,7 @@ type WorkoutDayExerciseProps = {
 }
 
 export default function WorkoutDayExercise({ addedExercise, workoutDayId, selectExerciseAgain, handleSearchExerciseText, deleteExercise, handleWeightSet, handleRepsSet, deleteSet, addSet, selectExercise, duplicatedExerciseId }: WorkoutDayExerciseProps) {
+
   return (
     <li className={styles["search-exercise-wrapper"]}>
 

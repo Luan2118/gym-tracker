@@ -4,7 +4,7 @@ import { useNavigate, useOutletContext, useSearchParams } from 'react-router-dom
 import styles from './TrainingSplit.module.css'
 import AddTrainingSplitDialog from './components/AddTrainingSplitDialog'
 import TrainingSplitItem from './components/TrainingSplitItem'
-import { LayoutContextType, TrainingSplitWorkoutDay,  } from '../../types'
+import { LayoutContextType, TrainingSplitWorkoutDay, TrainingSplitExercise } from '../../types'
 
 export default function TrainingSplit() {
 
@@ -24,29 +24,29 @@ export default function TrainingSplit() {
 
   useEffect(() => {
     if (searchParams.get('dialog') === 'open') {
-      dialogRef.current?.showModal();
+      openDialog();
     }
   }, [searchParams])
 
   function openDialog() {
-    setEditingSplitId(null);
-    setTrainingSplitInputText('');
-    setWorkoutDays([]);
-    setEmptyTrainingSplitName(false);
-    setEmptyWorkoutDayName([])
-    setHasSubmitted(false);
+    resetStates();
     dialogRef.current?.showModal();
   }
 
   function closeDialog() {
+    resetStates()
+    dialogRef.current?.close();
+    navigate('')
+  }
+
+  function resetStates() {
     setEditingSplitId(null);
-    setTrainingSplitInputText('');
     setWorkoutDays([]);
+    setTrainingSplitInputText('');
     setEmptyTrainingSplitName(false);
     setEmptyWorkoutDayName([])
     setHasSubmitted(false);
-    dialogRef.current?.close();
-    navigate('')
+    setDuplicatedExercise('')
   }
 
   function addWorkoutDay() {
@@ -61,37 +61,37 @@ export default function TrainingSplit() {
     setWorkoutDays(newArray)
   }
 
-  function handleWorkoutDayInputText(id: string, e: React.ChangeEvent<HTMLInputElement>) {
+  function handleWorkoutDayInputText(workoutDayId: string, e: React.ChangeEvent<HTMLInputElement>) {
     const value = (e.target.value);
 
-    setWorkoutDays(prev =>
-      prev.map((workoutDay => {
-        if (workoutDay.id === id) {
-          return {
-            ...workoutDay,
-            name: value
-          }
-        }
-        return workoutDay
-      }))
-    )
+    updateWorkoutDay(workoutDayId, (workoutDay) => {
+      return {
+        ...workoutDay,
+        name: value
+      }
+    })
+
   }
 
-  function addExercise(id: string) {
+
+
+  function addExercise(workoutDayId: string) {
+    updateWorkoutDay(workoutDayId, (workoutDay) => {
+      return {
+        ...workoutDay,
+        exercises: [
+          ...workoutDay.exercises,
+          {
+            exerciseName: '', rowId: crypto.randomUUID(), exerciseId: '', sets: [], confirm: false, searchText: '', images: []
+          }]
+      }
+    })
+  }
+
+  function updateWorkoutDay(workoutDayId: string, updater: (workoutDay: TrainingSplitWorkoutDay) => TrainingSplitWorkoutDay) {
     setWorkoutDays((prev) =>
-      prev.map((workoutDay) => {
-        if (workoutDay.id !== id) return workoutDay;
-
-        return {
-          ...workoutDay,
-          exercises: [
-            ...workoutDay.exercises,
-            {
-              exerciseName: '', rowId: crypto.randomUUID(), exerciseId: '', sets: [], confirm: false, searchText: '', images: []
-            }]
-        }
-      }))
-
+      prev.map((workoutDay) => workoutDay.id === workoutDayId ? updater(workoutDay) : workoutDay)
+    )
   }
 
   function handleSearchExerciseText(e: React.ChangeEvent<HTMLInputElement>, workoutDayId: string, addedExerciseRowId: string) {
@@ -135,24 +135,30 @@ export default function TrainingSplit() {
     )
   }
 
+
+
+
+
   function selectExercise(workoutDayId: string, selectedExerciseId: string, addedExerciseRowId: string) {
     const selectedExercise = exercises.find((exercise) => exercise.id === selectedExerciseId);
     if (!selectedExercise) return;
 
+    setDuplicatedExercise('');
+
+    const selectedWorkoutDay = workoutDays.find((workoutDay) => workoutDay.id === workoutDayId);
+
+    if (!selectedWorkoutDay) return;
+    const isDuplicate = selectedWorkoutDay.exercises.some((ex) => {
+      return ex.exerciseId === selectedExerciseId;
+    });
+
+    if (isDuplicate) {
+      setDuplicatedExercise(addedExerciseRowId);
+      return;
+    }
     setWorkoutDays((prev) => {
-      setDuplicatedExercise('');
-      const selectedWorkoutDay = prev.find((workoutDay) => workoutDay.id === workoutDayId);
-      if (!selectedWorkoutDay) return prev;
-
-      const isDuplicate = selectedWorkoutDay.exercises.some((ex) => {
-        return ex.exerciseId === selectedExerciseId;
-      });
-
-      if (isDuplicate) {
-        setDuplicatedExercise(addedExerciseRowId);
-        return prev;
-      }
       return prev.map((workoutDay) => {
+        if (workoutDay.id !== workoutDayId) return workoutDay;
 
         const newExercisesArray = workoutDay.exercises.map((ex) => {
 
@@ -268,7 +274,7 @@ export default function TrainingSplit() {
     }
     setEmptyTrainingSplitName(false);
 
-    if (hasEmptyWorkoutDayName.length > 0)  {
+    if (hasEmptyWorkoutDayName.length > 0) {
       setEmptyWorkoutDayName(hasEmptyWorkoutDayName)
       return;
     }
@@ -284,24 +290,28 @@ export default function TrainingSplit() {
           { name, id: crypto.randomUUID(), workoutDays: snapshotWorkoutDays }
         ]
       }
-      
+
       return prev.map((trainingSplit) => {
         if (trainingSplit.id !== editingSplitId) return trainingSplit;
-        
+
         return {
           ...trainingSplit,
           name,
           workoutDays: snapshotWorkoutDays
         }
       })
-      
+
     })
-    
+
     closeDialog();
     setHasSubmitted(false);
   }
 
   function editTrainingSplit(id: string) {
+    setEmptyTrainingSplitName(false);
+    setEmptyWorkoutDayName([]);
+    setHasSubmitted(false);
+    setDuplicatedExercise('')
     const selectedSplit = trainingSplits.find((split) => split.id === id);
     if (!selectedSplit) return;
     const selectedSplitCopy = structuredClone(selectedSplit);
@@ -309,11 +319,10 @@ export default function TrainingSplit() {
     setEditingSplitId(selectedSplitCopy.id);
     setWorkoutDays(selectedSplitCopy.workoutDays);
     setTrainingSplitInputText(selectedSplitCopy.name);
-    setEmptyTrainingSplitName(false);
-    setEmptyWorkoutDayName([]);
-    setHasSubmitted(false);
     dialogRef.current?.showModal();
   }
+
+
 
   function deleteTrainingSplit(id: string) {
     setTrainingSplits((prev) => prev.filter((trainingsplit) => trainingsplit.id !== id))
