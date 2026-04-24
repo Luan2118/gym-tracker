@@ -5,7 +5,7 @@ export async function getBodyWeights(): Promise<BodyWeight[]> {
   const { data, error } = await supabase
     .from('body_weights')
     .select('id, bw, date')
-    .order('date', { ascending: false });
+    .order('created_at', { ascending: false });
 
   if (error) {
     throw new Error(`Failed to fetch body weights: ${error.message}`)
@@ -19,13 +19,13 @@ type CreateBodyWeightInput = {
   date: string
 }
 
-export async function createBodyWeight(bodyweight: CreateBodyWeightInput): Promise<BodyWeight> {
-  const {data, error} = await supabase
+export async function createBodyWeight(bodyWeight: CreateBodyWeightInput): Promise<BodyWeight> {
+  const { data, error } = await supabase
     .from('body_weights')
-    .insert(bodyweight)
+    .insert(bodyWeight)
     .select('id, bw, date')
     .single();
-  
+
   if (error) {
     throw new Error(`Failed to create body weight: ${error.message}`)
   }
@@ -35,7 +35,7 @@ export async function createBodyWeight(bodyweight: CreateBodyWeightInput): Promi
   }
 
   return data;
-} 
+}
 
 export async function deleteBodyWeightById(id: string): Promise<void> {
   const { error } = await supabase
@@ -46,4 +46,24 @@ export async function deleteBodyWeightById(id: string): Promise<void> {
   if (error) {
     throw new Error(`Failed to delete body weight: ${error.message}`)
   }
+}
+
+
+export async function updateBodyWeightById(id: string, bw: number): Promise<BodyWeight> {
+  const { data, error } = await supabase
+    .from('body_weights')
+    .update({ bw })
+    .eq('id', id)
+    .select('id, bw, date')
+    .single()
+
+  if (error) {
+    throw new Error(`Failed to update body weight: ${error.message}`);
+  }
+
+  if (!data) {
+    throw new Error('Failed to update body weight.');
+  }
+
+  return data;
 }

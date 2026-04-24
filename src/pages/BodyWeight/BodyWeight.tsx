@@ -6,7 +6,7 @@ import { useNavigate, useOutletContext, useSearchParams } from 'react-router-dom
 import { sortByNewest } from '../../utils/sortDate';
 import getPaginationData from '../../utils/getPaginationData';
 import { BodyWeight as BodyWeightType, LayoutContextType } from '../../types';
-import { createBodyWeight, deleteBodyWeightById } from '../../api/bodyWeightsApi';
+import { createBodyWeight, deleteBodyWeightById, updateBodyWeightById } from '../../api/bodyWeightsApi';
 
 type BodyWeightFilter =
   | 'lastWeek'
@@ -191,7 +191,7 @@ export default function BodyWeight() {
     setEditBodyWeightInputText(e.target.value)
   }
 
-  function handleSaveBodyWeight() {
+  async function handleSaveBodyWeight() {
     const isBodyWeightInvalid =
       editBodyWeightInputText === '' || Number(editBodyWeightInputText) <= 0;
 
@@ -200,19 +200,27 @@ export default function BodyWeight() {
       return;
     }
 
-    setEditBwInputValidation(false);
-    setBodyWeights((prev) =>
-      prev.map((bw) => {
-        if (bw.id !== editBodyWeightId) return bw;
+    if (!editBodyWeightId) return;
 
-        return {
-          ...bw,
-          bw: Number(editBodyWeightInputText)
-        }
-      })
-    )
-    setEditBodyWeightId(null);
-    setEditBodyWeightInputText('');
+    setEditBwInputValidation(false);
+    try {
+      const updatedBodyweight = await updateBodyWeightById(editBodyWeightId, Number(editBodyWeightInputText))
+
+
+      setBodyWeights((prev) =>
+        prev.map((bw) => {
+          if (bw.id !== editBodyWeightId) return bw;
+
+          return updatedBodyweight;
+        })
+      )
+
+      setEditBodyWeightId(null);
+      setEditBodyWeightInputText('');
+    } catch (error) {
+      console.error('Failed to update body weight:', error)
+    }
+
   }
 
   return (
