@@ -6,6 +6,7 @@ import { useNavigate, useOutletContext, useSearchParams } from 'react-router-dom
 import { sortByNewest } from '../../utils/sortDate';
 import getPaginationData from '../../utils/getPaginationData';
 import { BodyWeight as BodyWeightType, LayoutContextType } from '../../types';
+import { createBodyWeight } from '../../api/bodyWeightsApi';
 
 type BodyWeightFilter =
   | 'lastWeek'
@@ -115,7 +116,8 @@ export default function BodyWeight() {
     return () => clearTimeout(editBBwInputId)
   }, [editBwInputValidation])
 
-  function addBodyWeight() {
+  async function addBodyWeight() {
+
     const isBodyWeightInvalid =
       bodyWeightInputText === '' || Number(bodyWeightInputText) <= 0;
 
@@ -126,16 +128,28 @@ export default function BodyWeight() {
 
     setBwInputValidation(false);
 
-    setBodyWeights((prev) => {
-      return [
-        ...prev,
-        { bw: Number(bodyWeightInputText), id: crypto.randomUUID(), date: today }
-      ]
-    })
+    try {
+      const savedBodyWeight = await createBodyWeight({
+        bw: Number(bodyWeightInputText),
+        date: today.slice(0, 10)
+      })
 
-    setFeedback('added')
-    setCurrentPage(1);
-    navigate('')
+      setBodyWeights((prev) => {
+        return [
+          ...prev,
+          savedBodyWeight
+        ]
+      })
+
+      setFeedback('added')
+      setBodyWeightInputText('');
+      setCurrentPage(1);
+      navigate('')
+    } catch (error) {
+      console.error(error)
+    }
+
+
   }
 
   function handleCustomDateFrom(e: React.ChangeEvent<HTMLInputElement>) {

@@ -13,3 +13,26 @@ export async function getBodyWeights(): Promise<BodyWeight[]> {
 
   return data ?? [];
 }
+
+type CreateBodyWeightInput = {
+  bw: number
+  date: string
+}
+
+export async function createBodyWeight(bodyweight: CreateBodyWeightInput): Promise<BodyWeight> {
+  const {data, error} = await supabase
+    .from('body_weights')
+    .insert(bodyweight)
+    .select('id, bw, date')
+    .single();
+  
+  if (error) {
+    throw new Error(`Failed to create body weight: ${error.message}`)
+  }
+
+  if (!data) {
+    throw new Error('Failed to create body weight.')
+  }
+
+  return data;
+} 
