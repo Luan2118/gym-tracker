@@ -4,6 +4,7 @@ import Sidebar from '../components/Sidebar/Sidebar'
 import styles from './Layout.module.css'
 import { TrainingSplit, WorkoutHistory, BodyWeight, LayoutContextType } from "../types";
 import { readStorage, writeStorage } from "../utils/localStorage";
+import { getBodyWeights } from "../api/bodyWeightsApi";
 
 export default function Layout() {
 
@@ -16,7 +17,6 @@ export default function Layout() {
   }, [trainingSplits])
 
 
-
   const [workoutHistory, setWorkoutHistory] = useState<WorkoutHistory[]>(() => {
     return readStorage<WorkoutHistory>('workoutHistory', []);
   });
@@ -26,13 +26,20 @@ export default function Layout() {
   }, [workoutHistory]);
 
 
-  const [bodyWeights, setBodyWeights] = useState<BodyWeight[]>(() => {
-    return readStorage<BodyWeight>('bodyWeights', []);
-  });
+  const [bodyWeights, setBodyWeights] = useState<BodyWeight[]>([]);
 
   useEffect(() => {
-    writeStorage('bodyWeights', bodyWeights);
-  }, [bodyWeights])
+    async function loadBodyWeights() {
+      try {
+        const rows = await getBodyWeights();
+        setBodyWeights(rows)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    loadBodyWeights();
+  }, [])
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
