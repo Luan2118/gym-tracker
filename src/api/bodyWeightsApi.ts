@@ -36,3 +36,14 @@ export async function createBodyWeight(bodyweight: CreateBodyWeightInput): Promi
 
   return data;
 } 
+
+export async function deleteBodyWeightById(id: string): Promise<void> {
+  const { error } = await supabase
+    .from('body_weights')
+    .delete()
+    .eq('id', id)
+
+  if (error) {
+    throw new Error(`Failed to delete body weight: ${error.message}`)
+  }
+}

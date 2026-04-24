@@ -6,7 +6,7 @@ import { useNavigate, useOutletContext, useSearchParams } from 'react-router-dom
 import { sortByNewest } from '../../utils/sortDate';
 import getPaginationData from '../../utils/getPaginationData';
 import { BodyWeight as BodyWeightType, LayoutContextType } from '../../types';
-import { createBodyWeight } from '../../api/bodyWeightsApi';
+import { createBodyWeight, deleteBodyWeightById } from '../../api/bodyWeightsApi';
 
 type BodyWeightFilter =
   | 'lastWeek'
@@ -171,8 +171,14 @@ export default function BodyWeight() {
     setCurrentPage(1);
   }
 
-  function deleteBodyWeight(id: string) {
-    setBodyWeights((prev) => prev.filter((bw) => bw.id !== id))
+  async function deleteBodyWeight(id: string) {
+
+    try {
+      await deleteBodyWeightById(id)
+      setBodyWeights((prev) => prev.filter((bw) => bw.id !== id))
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   function handleEditBodyWeight(id: string, bodyweight: string) {
