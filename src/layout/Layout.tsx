@@ -27,14 +27,23 @@ export default function Layout() {
 
 
   const [bodyWeights, setBodyWeights] = useState<BodyWeight[]>([]);
+  const [isBodyWeightsLoading, setIsBodyWeightsLoading] = useState(true);
+  const [bodyWeightsError, setBodyWeightsError] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadBodyWeights() {
       try {
+        setIsBodyWeightsLoading(true);
+        setBodyWeightsError(null);
+
         const rows = await getBodyWeights();
         setBodyWeights(rows)
+
       } catch (error) {
+        setBodyWeightsError('Failed to load body weights.')
         console.error(error)
+      } finally {
+        setIsBodyWeightsLoading(false);
       }
     }
 
@@ -50,6 +59,8 @@ export default function Layout() {
     setWorkoutHistory,
     bodyWeights,
     setBodyWeights,
+    isBodyWeightsLoading,
+    bodyWeightsError
   };
 
   return (

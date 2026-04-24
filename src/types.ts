@@ -81,6 +81,8 @@ export type LayoutContextType = {
   setWorkoutHistory: React.Dispatch<React.SetStateAction<WorkoutHistory[]>>
   bodyWeights: BodyWeight[]
   setBodyWeights: React.Dispatch<React.SetStateAction<BodyWeight[]>>
+  isBodyWeightsLoading: boolean
+  bodyWeightsError: string | null
 }
 
 
