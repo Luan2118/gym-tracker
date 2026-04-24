@@ -20,13 +20,9 @@ type ApplyPresetFilter = Exclude<BodyWeightFilter, 'customDate'>
 
 export default function BodyWeight() {
 
-  const today = new Date().toISOString();
-  const lastWeekDate = setPastDate(7);
-  const lastTwoWeeksDate = setPastDate(14);
-  const lastMonthDate = setPastDate(30);
-  const lastTwoMonthsDate = setPastDate(60);
 
-  const { bodyWeights, setBodyWeights } = useOutletContext<LayoutContextType>();
+
+  const { bodyWeights, setBodyWeights, isBodyWeightsLoading, bodyWeightsError } = useOutletContext<LayoutContextType>();
 
   const [bodyWeightInputText, setBodyWeightInputText] = useState('');
   const [feedback, setFeedback] = useState<'added' | null>(null)
@@ -49,6 +45,12 @@ export default function BodyWeight() {
   }, [searchParams]);
 
   const sortedByDateBodyWeights = sortByNewest(bodyWeights)
+
+  const today = new Date().toISOString();
+  const lastWeekDate = setPastDate(7);
+  const lastTwoWeeksDate = setPastDate(14);
+  const lastMonthDate = setPastDate(30);
+  const lastTwoMonthsDate = setPastDate(60);
 
   function getBodyWeightsInRange(bodyWeights: BodyWeightType[], date: string): BodyWeightType[] {
     return bodyWeights.filter((bw) => today > bw.date && date <= bw.date)
@@ -262,11 +264,41 @@ export default function BodyWeight() {
           </section>
 
           <h2 className={styles["sr-only"]}>Body weight entries</h2>
-          <ul >
-            <BodyWeightItem bodyWeights={paginatedData} deleteBodyWeight={deleteBodyWeight} handleEditBodyWeight={handleEditBodyWeight} editBodyWeightId={editBodyWeightId} handleSaveBodyWeight={handleSaveBodyWeight} handleEditBwInput={handleEditBwInput} editBodyWeightInputText={editBodyWeightInputText} editBwInputValidation={editBwInputValidation} />
-          </ul>
-
-          {bodyWeights.length > 0 &&
+          {isBodyWeightsLoading ? (
+            <p
+              role="status"
+              className={`${styles['status-message']} ${styles['loading-message']}`}
+            >
+              Loading body weight logs...
+            </p>
+          ) : bodyWeightsError ? (
+            <p
+              role="alert"
+              className={`${styles['status-message']} ${styles['error-message']}`}
+            >
+              {bodyWeightsError}
+            </p>
+          ) : visibleBodyWeights.length === 0 ? (
+            <p
+              className={`${styles['status-message']} ${styles['no-body-weight-logs-yet-text']}`}
+            >
+              No body weight logs yet
+            </p>
+          ) : (
+            <ul>
+              <BodyWeightItem
+                bodyWeights={paginatedData}
+                deleteBodyWeight={deleteBodyWeight}
+                handleEditBodyWeight={handleEditBodyWeight}
+                editBodyWeightId={editBodyWeightId}
+                handleSaveBodyWeight={handleSaveBodyWeight}
+                handleEditBwInput={handleEditBwInput}
+                editBodyWeightInputText={editBodyWeightInputText}
+                editBwInputValidation={editBwInputValidation}
+              />
+            </ul>
+          )}
+          {!isBodyWeightsLoading && !bodyWeightsError && visibleBodyWeights.length > 0 &&
             <div className={styles["pagination-wrapper"]}>
               <button type="button" className={styles["pagination-button"]} onClick={() => setCurrentPage((prev) => prev - 1)} disabled={currentPage === 1}>Prev</button>
 
@@ -310,7 +342,7 @@ export default function BodyWeight() {
           {bwInputValidation && <div role='alert' className={styles["weight-validation-text"]}>Please enter a valid weight</div>}
         </div>
 
-      </div>
+      </div >
     </>
   )
 }

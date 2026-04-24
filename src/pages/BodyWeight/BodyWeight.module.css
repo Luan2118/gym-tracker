@@ -259,6 +259,30 @@ h2 {
   color: red;
 }
 
+.status-message {
+  text-align: center;
+  font-weight: 600;
+  font-size: clamp(1.5rem, 1vw, 1.8rem);
+  background-color: rgb(41, 41, 41);
+  border: 1px solid rgb(255, 255, 255, 0.06);
+  padding: clamp(1.2rem, 2vw, 1.8rem) clamp(1.2rem, 2vw, 2.2rem);
+  border-radius: 1rem;
+  color: rgb(200, 200, 200);
+}
+
+.loading-message {
+  color: rgb(180, 180, 180);
+}
+
+.error-message {
+  background-color: rgb(55, 32, 32);
+  border-color: rgba(255, 90, 90, 0.35);
+  color: rgb(255, 170, 170);
+}
+
+.no-body-weight-logs-yet-text {
+  color: rgb(200, 200, 200);
+}
 
 @media (min-width: 940px) {
 

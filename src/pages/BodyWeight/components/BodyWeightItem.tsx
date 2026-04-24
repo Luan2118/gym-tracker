@@ -33,7 +33,7 @@ export default function BodyWeightItem({ bodyWeights, deleteBodyWeight, handleEd
                   <div>
                     <div className={styles["edit-body-weight-input-wrapper"]}>
                       <label htmlFor={`edit-body-weight-${bodyweight.id}`} className={styles['sr-only']}>Edit body weight</label>
-                      <input id={`edit-body-weight-${bodyweight.id}`} type="number" className={styles['edit-body-weight']} onChange={handleEditBwInput} value={editBodyWeightInputText}/>
+                      <input id={`edit-body-weight-${bodyweight.id}`} type="number" className={styles['edit-body-weight']} onChange={handleEditBwInput} value={editBodyWeightInputText} />
                     </div>
                   </div>
                   :
@@ -65,8 +65,6 @@ export default function BodyWeightItem({ bodyWeights, deleteBodyWeight, handleEd
           </li>
         )
       })}
-
-      {bodyWeights.length === 0 && <li className={styles['no-body-weight-logs-yet-text']}>No body weight logs yet</li>}
     </>
   )
 }
