@@ -3,7 +3,6 @@ import BodyWeightItem from './components/BodyWeightItem'
 import setPastDate from '../../utils/setPastDate';
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate, useOutletContext, useSearchParams } from 'react-router-dom';
-import { sortByNewest } from '../../utils/sortDate';
 import getPaginationData from '../../utils/getPaginationData';
 import { BodyWeight as BodyWeightType, LayoutContextType } from '../../types';
 import { createBodyWeight, deleteBodyWeightById, updateBodyWeightById } from '../../api/bodyWeightsApi';
@@ -45,8 +44,7 @@ export default function BodyWeight() {
     }
   }, [searchParams]);
 
-  const sortedByDateBodyWeights = sortByNewest(bodyWeights)
-
+  
   const today = new Date().toISOString();
   const lastWeekDate = setPastDate(7);
   const lastTwoWeeksDate = setPastDate(14);
@@ -54,14 +52,14 @@ export default function BodyWeight() {
   const lastTwoMonthsDate = setPastDate(60);
 
   function getBodyWeightsInRange(bodyWeights: BodyWeightType[], date: string): BodyWeightType[] {
-    return bodyWeights.filter((bw) => today > bw.date && date <= bw.date)
+    return bodyWeights.filter((bw) => today >= bw.date && date <= bw.date)
   }
 
-  const lastWeek = getBodyWeightsInRange(sortedByDateBodyWeights, lastWeekDate)
-  const lastTwoWeeks = getBodyWeightsInRange(sortedByDateBodyWeights, lastTwoWeeksDate)
-  const lastMonth = getBodyWeightsInRange(sortedByDateBodyWeights, lastMonthDate)
-  const lastTwoMonths = getBodyWeightsInRange(sortedByDateBodyWeights, lastTwoMonthsDate)
-  const customDate = sortedByDateBodyWeights.filter((bw) => {
+  const lastWeek = getBodyWeightsInRange(bodyWeights, lastWeekDate)
+  const lastTwoWeeks = getBodyWeightsInRange(bodyWeights, lastTwoWeeksDate)
+  const lastMonth = getBodyWeightsInRange(bodyWeights, lastMonthDate)
+  const lastTwoMonths = getBodyWeightsInRange(bodyWeights, lastTwoMonthsDate)
+  const customDate = bodyWeights.filter((bw) => {
     const bwDate = bw.date.slice(0, 10);
     const from = dateFrom || '0000-01-01';
     const to = dateTo || '9999-12-31';
@@ -76,7 +74,7 @@ export default function BodyWeight() {
         filter === 'lastMonth' ? lastMonth :
           filter === 'lastTwoMonths' ? lastTwoMonths :
             filter === 'customDate' ? customDate :
-              sortedByDateBodyWeights
+              bodyWeights
 
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -128,6 +126,7 @@ export default function BodyWeight() {
 
     setBwInputValidation(false);
 
+    
     try {
       const savedBodyWeight = await createBodyWeight({
         bw: Number(bodyWeightInputText),
@@ -136,8 +135,8 @@ export default function BodyWeight() {
 
       setBodyWeights((prev) => {
         return [
-          ...prev,
-          savedBodyWeight
+          savedBodyWeight,
+          ...prev
         ]
       })
 

@@ -5,6 +5,7 @@ export async function getBodyWeights(): Promise<BodyWeight[]> {
   const { data, error } = await supabase
     .from('body_weights')
     .select('id, bw, date')
+    .order('date', { ascending: false })
     .order('created_at', { ascending: false });
 
   if (error) {
