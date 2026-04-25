@@ -36,6 +36,7 @@ export default function BodyWeight() {
 
   const [isAddingBodyWeight, setIsAddingBodyWeight] = useState(false);
   const [addBodyWeightError, setAddBodyWeightError] = useState<string | null>(null);
+  const [deleteBodyWeightError, setDeleteBodyWeightError] = useState<string | null>(null);
 
   const bwInputRef = useRef<HTMLInputElement | null>(null);
   const [searchParams] = useSearchParams();
@@ -181,12 +182,14 @@ export default function BodyWeight() {
   }
 
   async function deleteBodyWeight(id: string) {
+    setDeleteBodyWeightError(null);
 
     try {
       await deleteBodyWeightById(id)
       setBodyWeights((prev) => prev.filter((bw) => bw.id !== id))
     } catch (error) {
-      console.error(error)
+      console.error("Failed to delete body weight:", error);
+      setDeleteBodyWeightError('Failed to delete body weight')
     }
   }
 
@@ -301,6 +304,14 @@ export default function BodyWeight() {
           </section>
 
           <h2 className={styles["sr-only"]}>Body weight entries</h2>
+          {deleteBodyWeightError && (
+            <p
+              role="alert"
+              className={`${styles["status-message"]} ${styles["error-message"]}`}
+            >
+              {deleteBodyWeightError}
+            </p>
+          )}
           {isBodyWeightsLoading ? (
             <p
               role="status"
