@@ -77,7 +77,7 @@ export default function AddTrainingSplitDialog({ dialogRef, submitTrainingSplit,
                 </button>
               </div>
               {emptyWorkoutDayName.some((day) => day.id === workoutDay.id) &&
-                <p className={`${styles["error-message"]} ${styles["workout-day-name-message"]}`}>
+                <p  role='alert' className={`${styles["error-message"]} ${styles["workout-day-name-message"]}`}>
                   <span aria-hidden='true'>&#10071;</span>
                   Enter workout day name
                 </p>}

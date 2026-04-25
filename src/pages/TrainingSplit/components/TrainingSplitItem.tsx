@@ -26,11 +26,11 @@ export default function TrainingSplitItem({ trainingSplits, editTrainingSplit, d
 
               <div className={styles["button-wrapper"]}>
                 <button type='button' className={styles["modify-button"]} onClick={() => editTrainingSplit(trainingSplit.id)} disabled={isDeletingTrainingSplitId !== null}>Edit</button>
-                <button type='button' className={styles["delete-button"]} onClick={() => deleteTrainingSplit(trainingSplit.id)} disabled={isDeletingTrainingSplitId !== null}>Delete</button>
+                <button type='button' className={styles["delete-button"]} onClick={() => deleteTrainingSplit(trainingSplit.id)} disabled={deleteTrainingSplitErrorId === trainingSplit.id && isDeletingTrainingSplitId !== null}>Delete</button>
               </div>
             </div>
 
-            {deleteTrainingSplitErrorId === trainingSplit.id && deleteTrainingSplitError  &&
+            {deleteTrainingSplitErrorId === trainingSplit.id && deleteTrainingSplitError &&
               <p role='alert' className={styles['delete-training-split-message']}>
                 <span aria-hidden='true'>&#10071;</span>
                 {deleteTrainingSplitError}
