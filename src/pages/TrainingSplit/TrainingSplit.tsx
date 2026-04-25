@@ -8,7 +8,7 @@ import { LayoutContextType, TrainingSplitWorkoutDay, TrainingSplitExercise } fro
 
 export default function TrainingSplit() {
 
-  const { trainingSplits, setTrainingSplits } = useOutletContext<LayoutContextType>();
+  const { trainingSplits, setTrainingSplits, isTrainingSplitsLoading, trainingSplitsError } = useOutletContext<LayoutContextType>();
 
   const [trainingSplitInputText, setTrainingSplitInputText] = useState('')
   const [workoutDays, setWorkoutDays] = useState<TrainingSplitWorkoutDay[]>([]);
@@ -405,12 +405,24 @@ export default function TrainingSplit() {
         />
 
         <section className={styles["content-main"]}>
-          {trainingSplits.length > 0 ?
+          {isTrainingSplitsLoading ? (
+            <h2
+              role='status'
+              className={`${styles['status-message']} ${styles['loading-message']}`}
+            >
+              Loading training splits...
+            </h2>
+          ) : trainingSplitsError ? (
+            <h2 role='alert'
+              className={`${styles['status-message']} ${styles['error-message']}`}>
+              {trainingSplitsError}
+            </h2>
+          ) : trainingSplits.length > 0 ? (
 
-            <TrainingSplitItem trainingSplits={trainingSplits} editTrainingSplit={editTrainingSplit} deleteTrainingSplit={deleteTrainingSplit} />
+            <TrainingSplitItem trainingSplits={trainingSplits} editTrainingSplit={editTrainingSplit} deleteTrainingSplit={deleteTrainingSplit} />)
             :
-            <h2 className={styles["content-main-no-split-text"]}>No training split yet</h2>
-          }
+            (<h2 role='status' className={`${styles['status-message']} ${styles['no-split-yet-message']}`}>No training split yet</h2>
+            )}
         </section>
         <div className={styles["add-training-wrapper"]}>
           <button aria-controls='training-split-dialog' aria-haspopup='dialog' type="button" className={styles["add-training-button"]} onClick={openDialog}>Add Training Split</button>

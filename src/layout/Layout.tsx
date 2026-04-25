@@ -24,7 +24,7 @@ export default function Layout() {
         setTrainingSplits(rows)
       } catch (error) {
         console.error(error)
-        setTrainingSplitsError('Failed to load training splits.')
+        setTrainingSplitsError('Failed to load training splits')
       } finally {
         setIsTrainingSplitsLoading(false)
       }
@@ -58,7 +58,7 @@ export default function Layout() {
         setBodyWeights(rows)
 
       } catch (error) {
-        setBodyWeightsError('Failed to load body weights.')
+        setBodyWeightsError('Failed to load body weights')
         console.error(error)
       } finally {
         setIsBodyWeightsLoading(false);
