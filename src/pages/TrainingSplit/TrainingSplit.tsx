@@ -20,6 +20,10 @@ export default function TrainingSplit() {
   const [emptyWorkoutDayName, setEmptyWorkoutDayName] = useState<TrainingSplitWorkoutDay[]>([]);
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
+
+  const [isAddingTrainingSplit, setIsAddingTrainingSplit] = useState(false);
+  const [addTrainingSplitError, setAddTrainingSplitError] = useState<string | null>(null);
+
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
@@ -280,9 +284,12 @@ export default function TrainingSplit() {
 
     if (snapshotWorkoutDays.length === 0) return;
 
-    try {
+    setAddTrainingSplitError(null);
 
-      if (editingSplitId === null) {
+
+    if (editingSplitId === null) {
+      try {
+        setIsAddingTrainingSplit(true);
         const savedTrainingSplit = await createTrainingSplit({
           name,
           workoutDays: snapshotWorkoutDays
@@ -294,29 +301,35 @@ export default function TrainingSplit() {
             ...prev
           ]
         })
-      } else {
-        setTrainingSplits((prev) => {
-          return prev.map((trainingSplit) => {
-            if (trainingSplit.id !== editingSplitId) return trainingSplit;
 
-            return {
-              ...trainingSplit,
-              name,
-              workoutDays: snapshotWorkoutDays
-            }
-          })
-
-        })
+        closeDialog();
+        setHasSubmitted(false);
+      } catch (error) {
+        console.error(error)
+        setAddTrainingSplitError('Failed to add training split');
+      } finally {
+        setIsAddingTrainingSplit(false);
       }
 
+    } else {
+      setTrainingSplits((prev) => {
+        return prev.map((trainingSplit) => {
+          if (trainingSplit.id !== editingSplitId) return trainingSplit;
+
+          return {
+            ...trainingSplit,
+            name,
+            workoutDays: snapshotWorkoutDays
+          }
+        })
+
+      })
       closeDialog();
       setHasSubmitted(false);
-    } catch (error) {
-      console.error(error)
     }
+
   }
 
-  console.log(trainingSplits)
   function editTrainingSplit(id: string) {
     setEmptyTrainingSplitName(false);
     setEmptyWorkoutDayName([]);
@@ -412,6 +425,8 @@ export default function TrainingSplit() {
           emptyTrainingSplitName={emptyTrainingSplitName}
           emptyWorkoutDayName={emptyWorkoutDayName}
           hasSubmitted={hasSubmitted}
+          isAddingTrainingSplit={isAddingTrainingSplit}
+          addTrainingSplitError={addTrainingSplitError}
         />
 
         <section className={styles["content-main"]}>

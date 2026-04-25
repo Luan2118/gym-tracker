@@ -7,7 +7,7 @@ import { TrainingSplitWorkoutDay } from '../../../types'
 
 type AddTrainingSplitDialogProps = {
   dialogRef: React.RefObject<HTMLDialogElement | null>
-  submitTrainingSplit: (e: React.SubmitEvent<HTMLFormElement>) => void
+  submitTrainingSplit: (e: React.SubmitEvent<HTMLFormElement>) => Promise<void>
   trainingSplitInputText: string
   setTrainingSplitInputText: React.Dispatch<React.SetStateAction<string>>
   addWorkoutDay: () => void
@@ -28,9 +28,11 @@ type AddTrainingSplitDialogProps = {
   emptyTrainingSplitName: boolean
   emptyWorkoutDayName: TrainingSplitWorkoutDay[]
   hasSubmitted: boolean
+  isAddingTrainingSplit: boolean
+  addTrainingSplitError: string | null
 }
 
-export default function AddTrainingSplitDialog({ dialogRef, submitTrainingSplit, trainingSplitInputText, setTrainingSplitInputText, addWorkoutDay, closeDialog, workoutDays, handleWorkoutDayInputText, deleteWorkoutDay, selectExerciseAgain, handleSearchExerciseText, deleteExercise, handleWeightSet, handleRepsSet, deleteSet, addSet, selectExercise, addExercise, duplicatedExerciseId, emptyTrainingSplitName, emptyWorkoutDayName, hasSubmitted }: AddTrainingSplitDialogProps) {
+export default function AddTrainingSplitDialog({ dialogRef, submitTrainingSplit, trainingSplitInputText, setTrainingSplitInputText, addWorkoutDay, closeDialog, workoutDays, handleWorkoutDayInputText, deleteWorkoutDay, selectExerciseAgain, handleSearchExerciseText, deleteExercise, handleWeightSet, handleRepsSet, deleteSet, addSet, selectExercise, addExercise, duplicatedExerciseId, emptyTrainingSplitName, emptyWorkoutDayName, hasSubmitted, isAddingTrainingSplit, addTrainingSplitError }: AddTrainingSplitDialogProps) {
 
   return (
     <dialog id='training-split-dialog' ref={dialogRef} className={styles["add-training-split-dialog"]} aria-label='Training split dialog'>
@@ -47,7 +49,10 @@ export default function AddTrainingSplitDialog({ dialogRef, submitTrainingSplit,
             <img className={styles["close-dialog-img"]} src={close} alt='' />
           </button>
         </div>
-        {emptyTrainingSplitName && <div role='alert' className={styles["title-validation"]}>Enter a split name</div>}
+        {emptyTrainingSplitName && <div role='alert' className={`${styles["error-message"]} ${styles["split-name-message"]}`}>
+          <span aria-hidden='true'>&#10071;</span>
+          Enter a split name
+        </div>}
 
         <hr aria-hidden="true" />
 
@@ -69,7 +74,11 @@ export default function AddTrainingSplitDialog({ dialogRef, submitTrainingSplit,
                   <img className={styles["delete-workout-day-icon"]} src={deleteWorkoutDayIcon} alt='' />
                 </button>
               </div>
-              {emptyWorkoutDayName.some((day) => day.id === workoutDay.id) ? <div className={styles["title-validation"]}>Enter workout day name</div> : null}
+              {emptyWorkoutDayName.some((day) => day.id === workoutDay.id) &&
+                <p className={`${styles["error-message"]} ${styles["workout-day-name-message"]}`}>
+                  <span aria-hidden='true'>&#10071;</span>
+                  Enter workout day name
+                </p>}
 
               <ul>
                 {workoutDay.exercises.map((addedExercise) =>
@@ -96,9 +105,19 @@ export default function AddTrainingSplitDialog({ dialogRef, submitTrainingSplit,
           )
         })}
 
-        {hasSubmitted && workoutDays.length === 0 && <div role='alert' className={styles["workout-day-required-text"]}>Add a workout day</div>}
+        {hasSubmitted && workoutDays.length === 0 &&
+          <p role='alert' className={`${styles["error-message"]} ${styles["workout-day-error-message"]}`}>
+            <span aria-hidden='true'>&#10071;</span>
+            Add a workout day
+          </p>}
 
-        <button type='submit' className={styles["confirm-button"]}>Confirm</button>
+        {addTrainingSplitError &&
+          <p role='alert' className={`${styles["error-message"]} ${styles["workout-day-error-message"]}`}>
+            <span aria-hidden='true'>&#10071;</span>
+            {addTrainingSplitError}
+          </p>
+        }
+        <button type='submit' className={styles["confirm-button"]} disabled={isAddingTrainingSplit}>Confirm</button>
       </form>
     </dialog>
   )

@@ -18,24 +18,12 @@
   border-radius: 1rem;
   padding: clamp(0.7rem, 2.5vw, 1rem) clamp(1.5rem, 2.5vw, 2rem);
   width: clamp(30rem, 55vw, 51.5rem);
-  max-height: clamp(60rem, 70vh, 80rem); 
+  max-height: clamp(60rem, 70vh, 80rem);
   scrollbar-width: thin;
   scrollbar-color: #6f6f6f #222;
 }
 
-.title-validation {
-  color: red;
-  font-size: clamp(1.4rem, 1vw, 1.7rem);
-  margin-left: 1rem;
-  margin-top: 1rem;
-}
 
-.workout-day-required-text {
-  font-weight: 600;
-  color: rgb(255, 0, 0);
-  text-align: center;
-  font-size: clamp(1.5rem, 2vw, 1.8rem);
-}
 
 .training-split-name-wrapper {
   display: flex;
@@ -51,7 +39,7 @@
 }
 
 @media (min-width: 650px) {
-  .training-split-name-add-workout-wrapper  {
+  .training-split-name-add-workout-wrapper {
     flex-direction: row;
   }
 }
@@ -197,4 +185,30 @@
 
 .confirm-button:active {
   background-color: rgb(30, 112, 45);
+}
+
+.error-message {
+  background-color: rgba(90, 35, 45, 0.45);
+  border: 1px solid rgba(255, 95, 115, 0.45);
+  color: rgb(255, 95, 115);
+  width: fit-content;
+  padding: 0.5rem 0.8rem;
+  border-radius: 1rem;
+  font-size: clamp(1.2rem, 1vw, 1.5rem);
+  font-weight: 600;
+}
+
+.workout-day-error-message {
+  margin: 0 auto
+}
+
+.split-name-message,
+.workout-day-name-message {
+  margin-left: 1rem;
+  margin-top: 1rem;
+}
+
+.workout-day-name-message {
+  font-size: clamp(1.2rem, 1vw, 1.4rem);
+  font-weight: 600;
 }
