@@ -397,7 +397,7 @@ export default function BodyWeight() {
             }} ref={bwInputRef} />
           </div>
 
-          <button type="button" className={styles["add-weight-button"]} onClick={addBodyWeight} disabled={isAddingBodyWeight}>                          {isAddingBodyWeight ? "Adding..." : "Add Weight"}
+          <button type="button" className={styles["add-weight-button"]} onClick={addBodyWeight} disabled={isAddingBodyWeight}>                          Add Weight
           </button>
           {feedback === 'added' ?
             <div role='status' className={styles["body-weight-added"]}>
