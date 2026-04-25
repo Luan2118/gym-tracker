@@ -44,7 +44,7 @@ export default function BodyWeight() {
     }
   }, [searchParams]);
 
-  
+
   const today = new Date().toISOString();
   const lastWeekDate = setPastDate(7);
   const lastTwoWeeksDate = setPastDate(14);
@@ -88,7 +88,7 @@ export default function BodyWeight() {
 
     const addedID = setTimeout(() => {
       setFeedback(null)
-    }, 4000)
+    }, 2000)
 
     return () => clearTimeout(addedID)
   }, [feedback])
@@ -99,7 +99,9 @@ export default function BodyWeight() {
 
     const bwInputId = setTimeout(() => {
       setBwInputValidation(false)
-    }, 4000)
+    }, 2000
+
+  )
 
     return () => clearTimeout(bwInputId)
   }, [bwInputValidation])
@@ -109,7 +111,7 @@ export default function BodyWeight() {
 
     const editBBwInputId = setTimeout(() => {
       setEditBwInputValidation(false)
-    }, 4000)
+    }, 2000)
 
     return () => clearTimeout(editBBwInputId)
   }, [editBwInputValidation])
@@ -126,7 +128,7 @@ export default function BodyWeight() {
 
     setBwInputValidation(false);
 
-    
+
     try {
       const savedBodyWeight = await createBodyWeight({
         bw: Number(bodyWeightInputText),
@@ -362,11 +364,16 @@ export default function BodyWeight() {
           <button type="button" className={styles["add-weight-button"]} onClick={addBodyWeight}>Add Weight</button>
           {feedback === 'added' ?
             <div role='status' className={styles["body-weight-added"]}>
-              <span className={styles["body-weight-added-icon"]}>&#9989;</span>
+              <span className={styles["body-weight-added-icon"]} aria-hidden='true'>&#10004;</span>
               Body weight added
             </div>
             : null}
-          {bwInputValidation && <div role='alert' className={styles["weight-validation-text"]}>Please enter a valid weight</div>}
+          {bwInputValidation &&
+            <div role='status' className={styles["weight-validation-text"]}>
+              <span className={styles["body-weight-validation-icon"]} aria-hidden='true'>&#10006;</span>
+              Please enter a valid weight
+            </div>
+          }
         </div>
 
       </div >
