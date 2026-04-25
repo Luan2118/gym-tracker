@@ -34,6 +34,9 @@ export default function BodyWeight() {
   const [bwInputValidation, setBwInputValidation] = useState(false);
   const [editBwInputValidation, setEditBwInputValidation] = useState(false);
 
+  const [isAddingBodyWeight, setIsAddingBodyWeight] = useState(false);
+  const [addBodyWeightError, setAddBodyWeightError] = useState<string | null>(null);
+
   const bwInputRef = useRef<HTMLInputElement | null>(null);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -101,7 +104,7 @@ export default function BodyWeight() {
       setBwInputValidation(false)
     }, 2000
 
-  )
+    )
 
     return () => clearTimeout(bwInputId)
   }, [bwInputValidation])
@@ -128,6 +131,8 @@ export default function BodyWeight() {
 
     setBwInputValidation(false);
 
+    setIsAddingBodyWeight(true);
+    setAddBodyWeightError(null);
 
     try {
       const savedBodyWeight = await createBodyWeight({
@@ -147,7 +152,10 @@ export default function BodyWeight() {
       setCurrentPage(1);
       navigate('')
     } catch (error) {
-      console.error(error)
+      console.error(error);
+      setAddBodyWeightError("Failed to add body weight");
+    } finally {
+      setIsAddingBodyWeight(false);
     }
 
 
@@ -358,10 +366,15 @@ export default function BodyWeight() {
             <label htmlFor="body-weight" className={styles["weight-input-label"]}>
               Weight:
             </label>
-            <input type="number" id="body-weight" className={styles["weight-input"]} value={bodyWeightInputText} onChange={(e) => setBodyWeightInputText(e.target.value)} ref={bwInputRef} />
+            <input type="number" id="body-weight" className={styles["weight-input"]} value={bodyWeightInputText} onChange={(e) => {
+              setBodyWeightInputText(e.target.value);
+              setAddBodyWeightError(null);
+              setBwInputValidation(false);
+            }} ref={bwInputRef} />
           </div>
 
-          <button type="button" className={styles["add-weight-button"]} onClick={addBodyWeight}>Add Weight</button>
+          <button type="button" className={styles["add-weight-button"]} onClick={addBodyWeight} disabled={isAddingBodyWeight}>                          {isAddingBodyWeight ? "Adding..." : "Add Weight"}
+          </button>
           {feedback === 'added' ?
             <div role='status' className={styles["body-weight-added"]}>
               <span className={styles["body-weight-added-icon"]} aria-hidden='true'>&#10004;</span>
@@ -369,11 +382,19 @@ export default function BodyWeight() {
             </div>
             : null}
           {bwInputValidation &&
-            <div role='status' className={styles["weight-validation-text"]}>
+            <div role='alert' className={styles["weight-validation-text"]}>
               <span className={styles["body-weight-validation-icon"]} aria-hidden='true'>&#10006;</span>
               Please enter a valid weight
             </div>
           }
+          {addBodyWeightError && (
+            <div role="alert" className={styles["weight-validation-text"]}>
+              <span className={styles["body-weight-validation-icon"]} aria-hidden="true">
+                &#10006;
+              </span>
+              {addBodyWeightError}
+            </div>
+          )}
         </div>
 
       </div >

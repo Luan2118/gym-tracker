@@ -108,7 +108,7 @@ h2 {
 }
 
 .body-weight-added-icon {
-  width: 2rem;
+  font-size: clamp(1.4rem, 2vw, 1.6rem);
 }
 
 .filter-section-wrapper {
@@ -267,6 +267,9 @@ h2 {
   border-radius: 1rem;
 }
 
+.body-weight-validation-icon {
+  font-size: clamp(1.4rem, 2vw, 1.6rem);
+}
 
 .status-message {
   text-align: center;
