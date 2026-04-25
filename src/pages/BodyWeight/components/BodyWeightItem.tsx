@@ -13,7 +13,7 @@ type BodyWeightItemProps = {
   editBwInputValidation: boolean
   updateBodyWeightError: string | null
   isUpdatingBodyWeight: boolean
-+  deletingBodyWeightId : string | null
+  deletingBodyWeightId : string | null
 }
 
 export default function BodyWeightItem({ bodyWeights, deleteBodyWeight, handleEditBodyWeight, editBodyWeightId, handleEditBwInput, editBodyWeightInputText, handleSaveBodyWeight, editBwInputValidation, updateBodyWeightError, isUpdatingBodyWeight, deletingBodyWeightId }: BodyWeightItemProps) {
