@@ -26,6 +26,8 @@ export default function TrainingSplit() {
   const [addTrainingSplitError, setAddTrainingSplitError] = useState<string | null>(null);
   const [isDeletingTrainingSplitId, setIsDeletingTrainingSplitId] = useState<string | null>(null);
   const [deleteTrainingSplitError, setDeleteTrainingSplitError] = useState<string | null>(null);
+  const [isUpdatingTrainingSplit, setIsUpdatingTrainingSplit] = useState(false);
+  const [updateTrainingSplitError, setUpdateTrainingSplitError] = useState<string | null>(null);
 
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -55,6 +57,7 @@ export default function TrainingSplit() {
     setEmptyWorkoutDayName([])
     setHasSubmitted(false);
     setDuplicatedExercise('')
+    setUpdateTrainingSplitError(null);
   }
 
   function addWorkoutDay() {
@@ -80,8 +83,6 @@ export default function TrainingSplit() {
     })
 
   }
-
-
 
   function addExercise(workoutDayId: string) {
     updateWorkoutDay(workoutDayId, (workoutDay) => {
@@ -316,6 +317,9 @@ export default function TrainingSplit() {
 
     } else {
       try {
+        setUpdateTrainingSplitError(null);
+        setIsUpdatingTrainingSplit(true);
+
         const updatedTrainingSplit = await updateTrainingSplitById({
           name,
           id: editingSplitId,
@@ -332,13 +336,16 @@ export default function TrainingSplit() {
         closeDialog();
         setHasSubmitted(false);
       } catch (error) {
+        setUpdateTrainingSplitError('Failed to update training split')
         console.error(error)
+      } finally {
+        setIsUpdatingTrainingSplit(false);
       }
     }
-
   }
 
   function editTrainingSplit(id: string) {
+    setUpdateTrainingSplitError(null);
     setEmptyTrainingSplitName(false);
     setEmptyWorkoutDayName([]);
     setHasSubmitted(false);
@@ -446,8 +453,9 @@ export default function TrainingSplit() {
           hasSubmitted={hasSubmitted}
           isAddingTrainingSplit={isAddingTrainingSplit}
           addTrainingSplitError={addTrainingSplitError}
+          isUpdatingTrainingSplit={isUpdatingTrainingSplit}
+          updateTrainingSplitError={updateTrainingSplitError}
         />
-
         <section className={styles["content-main"]}>
           {isTrainingSplitsLoading ? (
             <h2

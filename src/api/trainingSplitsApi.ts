@@ -77,7 +77,7 @@ type UpdateTrainingSplitByIdInput = {
 
 export async function updateTrainingSplitById( trainingSplit: UpdateTrainingSplitByIdInput): Promise<TrainingSplit> {
   const { data, error } = await supabase
-    .from('training_splits')
+    .from('traisning_splits')
     .update({
       name: trainingSplit.name,
       workout_days: trainingSplit.workoutDays

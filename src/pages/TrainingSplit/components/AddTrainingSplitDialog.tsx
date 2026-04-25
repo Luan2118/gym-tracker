@@ -30,9 +30,11 @@ type AddTrainingSplitDialogProps = {
   hasSubmitted: boolean
   isAddingTrainingSplit: boolean
   addTrainingSplitError: string | null
+  isUpdatingTrainingSplit: boolean
+  updateTrainingSplitError: string | null
 }
 
-export default function AddTrainingSplitDialog({ dialogRef, submitTrainingSplit, trainingSplitInputText, setTrainingSplitInputText, addWorkoutDay, closeDialog, workoutDays, handleWorkoutDayInputText, deleteWorkoutDay, selectExerciseAgain, handleSearchExerciseText, deleteExercise, handleWeightSet, handleRepsSet, deleteSet, addSet, selectExercise, addExercise, duplicatedExerciseId, emptyTrainingSplitName, emptyWorkoutDayName, hasSubmitted, isAddingTrainingSplit, addTrainingSplitError }: AddTrainingSplitDialogProps) {
+export default function AddTrainingSplitDialog({ dialogRef, submitTrainingSplit, trainingSplitInputText, setTrainingSplitInputText, addWorkoutDay, closeDialog, workoutDays, handleWorkoutDayInputText, deleteWorkoutDay, selectExerciseAgain, handleSearchExerciseText, deleteExercise, handleWeightSet, handleRepsSet, deleteSet, addSet, selectExercise, addExercise, duplicatedExerciseId, emptyTrainingSplitName, emptyWorkoutDayName, hasSubmitted, isAddingTrainingSplit, addTrainingSplitError, isUpdatingTrainingSplit, updateTrainingSplitError }: AddTrainingSplitDialogProps) {
 
   return (
     <dialog id='training-split-dialog' ref={dialogRef} className={styles["add-training-split-dialog"]} aria-label='Training split dialog'>
@@ -106,18 +108,26 @@ export default function AddTrainingSplitDialog({ dialogRef, submitTrainingSplit,
         })}
 
         {hasSubmitted && workoutDays.length === 0 &&
-          <p role='alert' className={`${styles["error-message"]} ${styles["workout-day-error-message"]}`}>
+          <p role='alert' className={`${styles["error-message"]} ${styles["form-error-message"]}`}>
             <span aria-hidden='true'>&#10071;</span>
             Add a workout day
           </p>}
 
         {addTrainingSplitError &&
-          <p role='alert' className={`${styles["error-message"]} ${styles["workout-day-error-message"]}`}>
+          <p role='alert' className={`${styles["error-message"]} ${styles["form-error-message"]}`}>
             <span aria-hidden='true'>&#10071;</span>
             {addTrainingSplitError}
           </p>
         }
-        <button type='submit' className={styles["confirm-button"]} disabled={isAddingTrainingSplit}>Confirm</button>
+
+        {updateTrainingSplitError &&
+          <p role='alert' className={`${styles["error-message"]} ${styles["form-error-message"]}`}>
+            <span aria-hidden='true'>&#10071;</span>
+            {updateTrainingSplitError}
+          </p>
+        }
+
+        <button type='submit' className={styles["confirm-button"]} disabled={isAddingTrainingSplit || isUpdatingTrainingSplit}>Confirm</button>
       </form>
     </dialog>
   )
