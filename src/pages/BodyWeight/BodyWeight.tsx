@@ -37,8 +37,9 @@ export default function BodyWeight() {
   const [isAddingBodyWeight, setIsAddingBodyWeight] = useState(false);
   const [addBodyWeightError, setAddBodyWeightError] = useState<string | null>(null);
   const [deleteBodyWeightError, setDeleteBodyWeightError] = useState<string | null>(null);
-  const [updateBodyWeightError, setUpdateBodyWeightError] = useState<string | null>(null); 3
+  const [updateBodyWeightError, setUpdateBodyWeightError] = useState<string | null>(null);
   const [isUpdatingBodyWeight, setIsUpdatingBodyWeight] = useState(false);
+  const [deletingBodyWeightId, setDeletingBodyWeightId] = useState<string | null>(null);
 
   const bwInputRef = useRef<HTMLInputElement | null>(null);
   const [searchParams] = useSearchParams();
@@ -185,13 +186,15 @@ export default function BodyWeight() {
 
   async function deleteBodyWeight(id: string) {
     setDeleteBodyWeightError(null);
-
+    setDeletingBodyWeightId(id);
     try {
       await deleteBodyWeightById(id)
       setBodyWeights((prev) => prev.filter((bw) => bw.id !== id))
     } catch (error) {
       console.error("Failed to delete body weight:", error);
       setDeleteBodyWeightError('Failed to delete body weight')
+    } finally {
+      setDeletingBodyWeightId(null);
     }
   }
 
@@ -209,17 +212,17 @@ export default function BodyWeight() {
 
   async function handleSaveBodyWeight() {
     setUpdateBodyWeightError(null);
-    
+
     const isBodyWeightInvalid =
-    editBodyWeightInputText === '' || Number(editBodyWeightInputText) <= 0;
-    
+      editBodyWeightInputText === '' || Number(editBodyWeightInputText) <= 0;
+
     if (isBodyWeightInvalid) {
       setEditBwInputValidation(true);
       return;
     }
-    
+
     if (!editBodyWeightId) return;
-    
+
     setEditBwInputValidation(false);
     setIsUpdatingBodyWeight(true);
 
@@ -356,6 +359,7 @@ export default function BodyWeight() {
                 editBwInputValidation={editBwInputValidation}
                 updateBodyWeightError={updateBodyWeightError}
                 isUpdatingBodyWeight={isUpdatingBodyWeight}
+                deletingBodyWeightId={deletingBodyWeightId}
               />
             </ul>
           )}
