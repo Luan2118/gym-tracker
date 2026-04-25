@@ -64,7 +64,42 @@ export async function deleteTrainingSplitById(id: string): Promise<void> {
     .delete()
     .eq('id', id)
 
-    if (error) {
-      throw new Error(`Failed to delete training split: ${error.message}`)
-    }
+  if (error) {
+    throw new Error(`Failed to delete training split: ${error.message}`)
+  }
+}
+
+type UpdateTrainingSplitByIdInput = {
+  id: string
+  name: string
+  workoutDays: TrainingSplitWorkoutDay[]
+}
+
+export async function updateTrainingSplitById( trainingSplit: UpdateTrainingSplitByIdInput): Promise<TrainingSplit> {
+  const { data, error } = await supabase
+    .from('training_splits')
+    .update({
+      name: trainingSplit.name,
+      workout_days: trainingSplit.workoutDays
+    })
+    .eq('id', trainingSplit.id)
+    .select('name,id, workout_days')
+    .single();
+
+
+  if (error) {
+    throw new Error(`Failed to update training split: ${error.message}`);
+  }
+
+  if (!data) {
+    throw new Error(`Failed to update training split`);
+  }
+
+  const mappedData = {
+    id: data.id,
+    name: data.name,
+    workoutDays: data.workout_days
+  }
+
+  return mappedData;
 }

@@ -5,7 +5,7 @@ import styles from './TrainingSplit.module.css'
 import AddTrainingSplitDialog from './components/AddTrainingSplitDialog'
 import TrainingSplitItem from './components/TrainingSplitItem'
 import { LayoutContextType, TrainingSplitWorkoutDay } from '../../types'
-import { createTrainingSplit, deleteTrainingSplitById } from '../../api/trainingSplitsApi'
+import { createTrainingSplit, deleteTrainingSplitById, updateTrainingSplitById } from '../../api/trainingSplitsApi'
 
 export default function TrainingSplit() {
 
@@ -315,20 +315,25 @@ export default function TrainingSplit() {
       }
 
     } else {
-      setTrainingSplits((prev) => {
-        return prev.map((trainingSplit) => {
-          if (trainingSplit.id !== editingSplitId) return trainingSplit;
-
-          return {
-            ...trainingSplit,
-            name,
-            workoutDays: snapshotWorkoutDays
-          }
+      try {
+        const updatedTrainingSplit = await updateTrainingSplitById({
+          name,
+          id: editingSplitId,
+          workoutDays: snapshotWorkoutDays
         })
 
-      })
-      closeDialog();
-      setHasSubmitted(false);
+        setTrainingSplits((prev) => {
+          return prev.map((trainingSplit) => {
+            if (trainingSplit.id !== editingSplitId) return trainingSplit;
+            return updatedTrainingSplit;
+          })
+
+        })
+        closeDialog();
+        setHasSubmitted(false);
+      } catch (error) {
+        console.error(error)
+      }
     }
 
   }
