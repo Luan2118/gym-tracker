@@ -83,6 +83,8 @@ export type LayoutContextType = {
   setBodyWeights: React.Dispatch<React.SetStateAction<BodyWeight[]>>
   isBodyWeightsLoading: boolean
   bodyWeightsError: string | null
+  isTrainingSplitsLoading: boolean
+  trainingSplitsError: string | null
 }
 
 

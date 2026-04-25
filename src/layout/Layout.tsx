@@ -5,16 +5,34 @@ import styles from './Layout.module.css'
 import { TrainingSplit, WorkoutHistory, BodyWeight, LayoutContextType } from "../types";
 import { readStorage, writeStorage } from "../utils/localStorage";
 import { getBodyWeights } from "../api/bodyWeightsApi";
+import { getTrainingSplits } from "../api/trainingSplitsApi";
 
 export default function Layout() {
 
-  const [trainingSplits, setTrainingSplits] = useState<TrainingSplit[]>(() => {
-    return readStorage<TrainingSplit>('trainingSplits', []);
-  });
+  const [trainingSplits, setTrainingSplits] = useState<TrainingSplit[]>([]);
+  const [isTrainingSplitsLoading, setIsTrainingSplitsLoading] = useState(true);
+  const [trainingSplitsError, setTrainingSplitsError] = useState<string | null>(null);
 
   useEffect(() => {
-    writeStorage('trainingSplits', trainingSplits);
-  }, [trainingSplits])
+    async function loadTrainingSplits() {
+      try {
+        setIsTrainingSplitsLoading(true);
+        setTrainingSplitsError(null);
+
+        const rows = await getTrainingSplits();
+
+        setTrainingSplits(rows)
+      } catch (error) {
+        console.error(error)
+        setTrainingSplitsError('Failed to load training splits.')
+      } finally {
+        setIsTrainingSplitsLoading(false)
+      }
+    }
+
+    loadTrainingSplits();
+  }, [])
+
 
 
   const [workoutHistory, setWorkoutHistory] = useState<WorkoutHistory[]>(() => {
@@ -60,7 +78,9 @@ export default function Layout() {
     bodyWeights,
     setBodyWeights,
     isBodyWeightsLoading,
-    bodyWeightsError
+    bodyWeightsError,
+    isTrainingSplitsLoading,
+    trainingSplitsError
   };
 
   return (
