@@ -12,9 +12,10 @@ type BodyWeightItemProps = {
   handleSaveBodyWeight: () => void
   editBwInputValidation: boolean
   updateBodyWeightError: string | null
+  isUpdatingBodyWeight: boolean
 }
 
-export default function BodyWeightItem({ bodyWeights, deleteBodyWeight, handleEditBodyWeight, editBodyWeightId, handleEditBwInput, editBodyWeightInputText, handleSaveBodyWeight, editBwInputValidation, updateBodyWeightError }: BodyWeightItemProps) {
+export default function BodyWeightItem({ bodyWeights, deleteBodyWeight, handleEditBodyWeight, editBodyWeightId, handleEditBwInput, editBodyWeightInputText, handleSaveBodyWeight, editBwInputValidation, updateBodyWeightError, isUpdatingBodyWeight }: BodyWeightItemProps) {
 
   return (
     <>
@@ -48,7 +49,7 @@ export default function BodyWeightItem({ bodyWeights, deleteBodyWeight, handleEd
 
               <div className={styles['body-weight-buttons-wrapper']}>
                 {editBodyWeightId === bodyweight.id ?
-                  <button type='button' className={styles['body-weight-save-button']} onClick={handleSaveBodyWeight}>Save</button> :
+                  <button type='button' className={styles['body-weight-save-button']} onClick={handleSaveBodyWeight} disabled={isUpdatingBodyWeight}>{isUpdatingBodyWeight ? 'Saving...' : 'Save'}</button> :
                   <button type='button' className={styles['body-weight-edit-button']} onClick={() => handleEditBodyWeight(bodyweight.id, String(bodyweight.bw))}>Edit</button>
                 }
                 <button type='button' className={styles['body-weight-delete-button']} onClick={() => deleteBodyWeight(bodyweight.id)}>Delete</button>

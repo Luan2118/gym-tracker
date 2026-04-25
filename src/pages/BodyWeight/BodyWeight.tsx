@@ -37,7 +37,8 @@ export default function BodyWeight() {
   const [isAddingBodyWeight, setIsAddingBodyWeight] = useState(false);
   const [addBodyWeightError, setAddBodyWeightError] = useState<string | null>(null);
   const [deleteBodyWeightError, setDeleteBodyWeightError] = useState<string | null>(null);
-  const [updateBodyWeightError, setUpdateBodyWeightError] = useState<string | null>(null);
+  const [updateBodyWeightError, setUpdateBodyWeightError] = useState<string | null>(null); 3
+  const [isUpdatingBodyWeight, setIsUpdatingBodyWeight] = useState(false);
 
   const bwInputRef = useRef<HTMLInputElement | null>(null);
   const [searchParams] = useSearchParams();
@@ -208,18 +209,19 @@ export default function BodyWeight() {
 
   async function handleSaveBodyWeight() {
     setUpdateBodyWeightError(null);
-
+    
     const isBodyWeightInvalid =
-      editBodyWeightInputText === '' || Number(editBodyWeightInputText) <= 0;
-
+    editBodyWeightInputText === '' || Number(editBodyWeightInputText) <= 0;
+    
     if (isBodyWeightInvalid) {
       setEditBwInputValidation(true);
       return;
     }
-
+    
     if (!editBodyWeightId) return;
-
+    
     setEditBwInputValidation(false);
+    setIsUpdatingBodyWeight(true);
 
     try {
       const updatedBodyweight = await updateBodyWeightById(editBodyWeightId, Number(editBodyWeightInputText))
@@ -238,6 +240,8 @@ export default function BodyWeight() {
     } catch (error) {
       console.error('Failed to update body weight:', error)
       setUpdateBodyWeightError('Failed to update body weight');
+    } finally {
+      setIsUpdatingBodyWeight(false);
     }
 
   }
@@ -351,6 +355,7 @@ export default function BodyWeight() {
                 editBodyWeightInputText={editBodyWeightInputText}
                 editBwInputValidation={editBwInputValidation}
                 updateBodyWeightError={updateBodyWeightError}
+                isUpdatingBodyWeight={isUpdatingBodyWeight}
               />
             </ul>
           )}
