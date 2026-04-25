@@ -4,7 +4,8 @@ import { useNavigate, useOutletContext, useSearchParams } from 'react-router-dom
 import styles from './TrainingSplit.module.css'
 import AddTrainingSplitDialog from './components/AddTrainingSplitDialog'
 import TrainingSplitItem from './components/TrainingSplitItem'
-import { LayoutContextType, TrainingSplitWorkoutDay, TrainingSplitExercise } from '../../types'
+import { LayoutContextType, TrainingSplitWorkoutDay } from '../../types'
+import { createTrainingSplit } from '../../api/trainingSplitsApi'
 
 export default function TrainingSplit() {
 
@@ -135,10 +136,6 @@ export default function TrainingSplit() {
     )
   }
 
-
-
-
-
   function selectExercise(workoutDayId: string, selectedExerciseId: string, addedExerciseRowId: string) {
     const selectedExercise = exercises.find((exercise) => exercise.id === selectedExerciseId);
     if (!selectedExercise) return;
@@ -260,7 +257,7 @@ export default function TrainingSplit() {
     )
   }
 
-  function submitTrainingSplit(e: React.SubmitEvent<HTMLFormElement>) {
+  async function submitTrainingSplit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
     setHasSubmitted(true);
 
@@ -283,30 +280,43 @@ export default function TrainingSplit() {
 
     if (snapshotWorkoutDays.length === 0) return;
 
-    setTrainingSplits((prev) => {
+    try {
+
       if (editingSplitId === null) {
-        return [
-          ...prev,
-          { name, id: crypto.randomUUID(), workoutDays: snapshotWorkoutDays }
-        ]
-      }
-
-      return prev.map((trainingSplit) => {
-        if (trainingSplit.id !== editingSplitId) return trainingSplit;
-
-        return {
-          ...trainingSplit,
+        const savedTrainingSplit = await createTrainingSplit({
           name,
           workoutDays: snapshotWorkoutDays
-        }
-      })
+        })
 
-    })
+        setTrainingSplits((prev) => {
+          return [
+            savedTrainingSplit,
+            ...prev
+          ]
+        })
+      } else {
+        setTrainingSplits((prev) => {
+          return prev.map((trainingSplit) => {
+            if (trainingSplit.id !== editingSplitId) return trainingSplit;
 
-    closeDialog();
-    setHasSubmitted(false);
+            return {
+              ...trainingSplit,
+              name,
+              workoutDays: snapshotWorkoutDays
+            }
+          })
+
+        })
+      }
+
+      closeDialog();
+      setHasSubmitted(false);
+    } catch (error) {
+      console.error(error)
+    }
   }
 
+  console.log(trainingSplits)
   function editTrainingSplit(id: string) {
     setEmptyTrainingSplitName(false);
     setEmptyWorkoutDayName([]);
