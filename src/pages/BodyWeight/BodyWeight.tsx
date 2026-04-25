@@ -37,6 +37,7 @@ export default function BodyWeight() {
   const [isAddingBodyWeight, setIsAddingBodyWeight] = useState(false);
   const [addBodyWeightError, setAddBodyWeightError] = useState<string | null>(null);
   const [deleteBodyWeightError, setDeleteBodyWeightError] = useState<string | null>(null);
+  const [updateBodyWeightError, setUpdateBodyWeightError] = useState<string | null>(null);
 
   const bwInputRef = useRef<HTMLInputElement | null>(null);
   const [searchParams] = useSearchParams();
@@ -115,7 +116,7 @@ export default function BodyWeight() {
 
     const editBBwInputId = setTimeout(() => {
       setEditBwInputValidation(false)
-    }, 2000)
+    }, 882000)
 
     return () => clearTimeout(editBBwInputId)
   }, [editBwInputValidation])
@@ -200,10 +201,14 @@ export default function BodyWeight() {
   }
 
   function handleEditBwInput(e: React.ChangeEvent<HTMLInputElement>) {
-    setEditBodyWeightInputText(e.target.value)
+    setEditBodyWeightInputText(e.target.value);
+    setEditBwInputValidation(false);
+    setUpdateBodyWeightError(null);
   }
 
   async function handleSaveBodyWeight() {
+    setUpdateBodyWeightError(null);
+
     const isBodyWeightInvalid =
       editBodyWeightInputText === '' || Number(editBodyWeightInputText) <= 0;
 
@@ -215,6 +220,7 @@ export default function BodyWeight() {
     if (!editBodyWeightId) return;
 
     setEditBwInputValidation(false);
+
     try {
       const updatedBodyweight = await updateBodyWeightById(editBodyWeightId, Number(editBodyWeightInputText))
 
@@ -231,6 +237,7 @@ export default function BodyWeight() {
       setEditBodyWeightInputText('');
     } catch (error) {
       console.error('Failed to update body weight:', error)
+      setUpdateBodyWeightError('Failed to update body weight');
     }
 
   }
@@ -343,6 +350,7 @@ export default function BodyWeight() {
                 handleEditBwInput={handleEditBwInput}
                 editBodyWeightInputText={editBodyWeightInputText}
                 editBwInputValidation={editBwInputValidation}
+                updateBodyWeightError={updateBodyWeightError}
               />
             </ul>
           )}

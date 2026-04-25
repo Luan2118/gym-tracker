@@ -11,9 +11,10 @@ type BodyWeightItemProps = {
   editBodyWeightInputText: string
   handleSaveBodyWeight: () => void
   editBwInputValidation: boolean
+  updateBodyWeightError: string | null
 }
 
-export default function BodyWeightItem({ bodyWeights, deleteBodyWeight, handleEditBodyWeight, editBodyWeightId, handleEditBwInput, editBodyWeightInputText, handleSaveBodyWeight, editBwInputValidation }: BodyWeightItemProps) {
+export default function BodyWeightItem({ bodyWeights, deleteBodyWeight, handleEditBodyWeight, editBodyWeightId, handleEditBwInput, editBodyWeightInputText, handleSaveBodyWeight, editBwInputValidation, updateBodyWeightError }: BodyWeightItemProps) {
 
   return (
     <>
@@ -54,14 +55,21 @@ export default function BodyWeightItem({ bodyWeights, deleteBodyWeight, handleEd
               </div>
             </div>
 
-            {editBodyWeightId === bodyweight.id ?
+            {editBodyWeightId === bodyweight.id && editBwInputValidation && (
               <div className={styles['weight-validation-text-wrapper']}>
-                {editBwInputValidation ? <div role='alert' className={styles["weight-validation-text"]}> Please enter a valid weight</div> : null}
+                <p role="alert" className={styles['weight-validation-text']}>
+                  Please enter a valid weight
+                </p>
               </div>
-              :
-              null
-            }
+            )}
 
+            {editBodyWeightId === bodyweight.id && updateBodyWeightError && (
+              <div className={styles['weight-validation-text-wrapper']}>
+                <p role="alert" className={styles['weight-validation-text']}>
+                  {updateBodyWeightError}
+                </p>
+              </div>
+            )}
           </li>
         )
       })}
