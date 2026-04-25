@@ -57,3 +57,14 @@ export async function createTrainingSplit(trainingSplit: CreateTrainingSplitInpu
 
   return mappedData;
 }
+
+export async function deleteTrainingSplitById(id: string): Promise<void> {
+  const { error } = await supabase
+    .from('training_splits')
+    .delete()
+    .eq('id', id)
+
+    if (error) {
+      throw new Error(`Failed to delete training split: ${error.message}`)
+    }
+}

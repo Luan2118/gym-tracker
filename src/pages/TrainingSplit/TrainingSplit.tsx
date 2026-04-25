@@ -5,7 +5,7 @@ import styles from './TrainingSplit.module.css'
 import AddTrainingSplitDialog from './components/AddTrainingSplitDialog'
 import TrainingSplitItem from './components/TrainingSplitItem'
 import { LayoutContextType, TrainingSplitWorkoutDay } from '../../types'
-import { createTrainingSplit } from '../../api/trainingSplitsApi'
+import { createTrainingSplit, deleteTrainingSplitById } from '../../api/trainingSplitsApi'
 
 export default function TrainingSplit() {
 
@@ -19,10 +19,13 @@ export default function TrainingSplit() {
   const [emptyTrainingSplitName, setEmptyTrainingSplitName] = useState(false);
   const [emptyWorkoutDayName, setEmptyWorkoutDayName] = useState<TrainingSplitWorkoutDay[]>([]);
   const [hasSubmitted, setHasSubmitted] = useState(false);
+  const [deleteTrainingSplitErrorId, setDeleteTrainingSplitErrorId] = useState<string | null>(null);
 
 
   const [isAddingTrainingSplit, setIsAddingTrainingSplit] = useState(false);
   const [addTrainingSplitError, setAddTrainingSplitError] = useState<string | null>(null);
+  const [isDeletingTrainingSplitId, setIsDeletingTrainingSplitId] = useState<string | null>(null);
+  const [deleteTrainingSplitError, setDeleteTrainingSplitError] = useState<string | null>(null);
 
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -347,8 +350,19 @@ export default function TrainingSplit() {
 
 
 
-  function deleteTrainingSplit(id: string) {
-    setTrainingSplits((prev) => prev.filter((trainingsplit) => trainingsplit.id !== id))
+  async function deleteTrainingSplit(id: string) {
+    setDeleteTrainingSplitErrorId(id);
+    setDeleteTrainingSplitError(null);
+    setIsDeletingTrainingSplitId(id);
+    try {
+      await deleteTrainingSplitById(id)
+      setTrainingSplits((prev) => prev.filter((trainingsplit) => trainingsplit.id !== id))
+    } catch (error) {
+      console.error(error)
+      setDeleteTrainingSplitError('Failed to delete training split')
+    } finally {
+      setIsDeletingTrainingSplitId(null);
+    }
   }
 
   function handleSet(e: React.ChangeEvent<HTMLInputElement>, workoutDayId: string, addedExerciseRowId: string, setId: string, property: 'weight' | 'reps') {
@@ -444,7 +458,14 @@ export default function TrainingSplit() {
             </h2>
           ) : trainingSplits.length > 0 ? (
 
-            <TrainingSplitItem trainingSplits={trainingSplits} editTrainingSplit={editTrainingSplit} deleteTrainingSplit={deleteTrainingSplit} />)
+            <TrainingSplitItem
+              trainingSplits={trainingSplits}
+              editTrainingSplit={editTrainingSplit}
+              deleteTrainingSplit={deleteTrainingSplit}
+              isDeletingTrainingSplitId={isDeletingTrainingSplitId}
+              deleteTrainingSplitError={deleteTrainingSplitError}
+              deleteTrainingSplitErrorId={deleteTrainingSplitErrorId}
+            />)
             :
             (<h2 role='status' className={`${styles['status-message']} ${styles['no-split-yet-message']}`}>No training split yet</h2>
             )}
