@@ -4,9 +4,9 @@ import styles from './ActiveWorkout.module.css'
 import ActiveExerciseCard from './components/ActiveExerciseCard'
 import StartWorkoutDialog from './components/StartWorkoutDialog'
 import formatTimer from '../../utils/formatTimer'
-import { LayoutContextType, WorkoutHistoryExercise, ActiveWorkoutExercise } from '../../types'
+import { LayoutContextType, WorkoutHistoryExercise, ActiveWorkoutExercise, TrainingSplit } from '../../types'
 import { createWorkoutHistory } from '../../api/workoutHistoryApi'
-
+import { updateTrainingSplitById } from '../../api/trainingSplitsApi'
 
 export default function ActiveWorkout() {
 
@@ -199,40 +199,49 @@ export default function ActiveWorkout() {
           ...prev,
         ]
       });
-      setTrainingSplits((prev) =>
-        prev.map((split) => {
-          if (split.id !== selectedTrainingSplitId) return split;
+
+      const selectedSplit = trainingSplits.find((split) => split.id === selectedTrainingSplitId);
+
+      if (!selectedSplit) return; 
+
+      const updatedSplit : TrainingSplit = {
+        id: selectedSplit.id,
+        name: selectedSplit.name,
+        workoutDays: selectedSplit.workoutDays.map((workoutDay) => {
+          if (workoutDay.id !== selectedWorkoutDayId) return workoutDay;
 
           return {
-            ...split,
-            workoutDays: split.workoutDays.map((workoutDay) => {
-              if (workoutDay.id !== selectedWorkoutDayId) return workoutDay;
+            ...workoutDay,
+            exercises: workoutDay.exercises.map((ex) => {
+              const activeExercise = activeExercises.find((activeEx) => activeEx.exerciseId === ex.exerciseId)
+
+              if (!activeExercise) return ex;
 
               return {
-                ...workoutDay,
-                exercises: workoutDay.exercises.map((ex) => {
-                  const activeExercise = activeExercises.find((activeEx) => activeEx.exerciseId === ex.exerciseId)
+                ...ex,
+                sets: ex.sets.map((set) => {
+                  const activeSet = activeExercise.sets.find((activeSet) => activeSet.id === set.id);
 
-                  if (!activeExercise) return ex;
+                  if (!activeSet) return set
 
                   return {
-                    ...ex,
-                    sets: ex.sets.map((set) => {
-                      const activeSet = activeExercise.sets.find((activeSet) => activeSet.id === set.id);
-
-                      if (!activeSet) return set
-
-                      return {
-                        ...set,
-                        weight: activeSet.weight,
-                        reps: activeSet.reps
-                      }
-                    })
+                    ...set,
+                    weight: activeSet.weight,
+                    reps: activeSet.reps
                   }
                 })
               }
             })
           }
+        })
+      }
+
+
+      const savedUpdatedSplit = await updateTrainingSplitById(updatedSplit)
+      setTrainingSplits((prev) =>
+        prev.map((split) => {
+          if (split.id !== selectedTrainingSplitId) return split;
+          return savedUpdatedSplit;
         })
       )
 
