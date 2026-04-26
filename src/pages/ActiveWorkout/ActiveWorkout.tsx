@@ -5,6 +5,7 @@ import ActiveExerciseCard from './components/ActiveExerciseCard'
 import StartWorkoutDialog from './components/StartWorkoutDialog'
 import formatTimer from '../../utils/formatTimer'
 import { LayoutContextType, WorkoutHistoryExercise, ActiveWorkoutExercise } from '../../types'
+import { createWorkoutHistory } from '../../api/workoutHistoryApi'
 
 
 export default function ActiveWorkout() {
@@ -150,7 +151,7 @@ export default function ActiveWorkout() {
     setActiveExercises(newExerciseList)
   }
 
-  function handleFinishworkout() {
+  async function handleFinishworkout() {
 
     const incompleteSet = activeExercises.some((ex) =>
       ex.sets.some((set) =>
@@ -182,7 +183,6 @@ export default function ActiveWorkout() {
 
 
     const newWorkoutHistory = {
-      id: crypto.randomUUID(),
       trainingSplitName: selectedTrainingSplit ? selectedTrainingSplit.name : '',
       workoutDay: selectedWorkoutDay ? selectedWorkoutDay.name : '',
       date: new Date().toISOString(),
@@ -190,53 +190,59 @@ export default function ActiveWorkout() {
       duration: elapsedTime
     }
 
-    setWorkoutHistory((prev) => {
-      return [
-        ...prev,
-        newWorkoutHistory
-      ]
-    });
+    try {
+      const savedWorkoutHistory = await createWorkoutHistory(newWorkoutHistory);
 
-    setTrainingSplits((prev) =>
-      prev.map((split) => {
-        if (split.id !== selectedTrainingSplitId) return split;
+      setWorkoutHistory((prev) => {
+        return [
+          savedWorkoutHistory,
+          ...prev,
+        ]
+      });
+      setTrainingSplits((prev) =>
+        prev.map((split) => {
+          if (split.id !== selectedTrainingSplitId) return split;
 
-        return {
-          ...split,
-          workoutDays: split.workoutDays.map((workoutDay) => {
-            if (workoutDay.id !== selectedWorkoutDayId) return workoutDay;
+          return {
+            ...split,
+            workoutDays: split.workoutDays.map((workoutDay) => {
+              if (workoutDay.id !== selectedWorkoutDayId) return workoutDay;
 
-            return {
-              ...workoutDay,
-              exercises: workoutDay.exercises.map((ex) => {
-                const activeExercise = activeExercises.find((activeEx) => activeEx.exerciseId === ex.exerciseId)
+              return {
+                ...workoutDay,
+                exercises: workoutDay.exercises.map((ex) => {
+                  const activeExercise = activeExercises.find((activeEx) => activeEx.exerciseId === ex.exerciseId)
 
-                if (!activeExercise) return ex;
+                  if (!activeExercise) return ex;
 
-                return {
-                  ...ex,
-                  sets: ex.sets.map((set) => {
-                    const activeSet = activeExercise.sets.find((activeSet) => activeSet.id === set.id);
+                  return {
+                    ...ex,
+                    sets: ex.sets.map((set) => {
+                      const activeSet = activeExercise.sets.find((activeSet) => activeSet.id === set.id);
 
-                    if (!activeSet) return set
+                      if (!activeSet) return set
 
-                    return {
-                      ...set,
-                      weight: activeSet.weight,
-                      reps: activeSet.reps
-                    }
-                  })
-                }
-              })
-            }
-          })
-        }
-      })
-    )
+                      return {
+                        ...set,
+                        weight: activeSet.weight,
+                        reps: activeSet.reps
+                      }
+                    })
+                  }
+                })
+              }
+            })
+          }
+        })
+      )
 
-    setActiveWorkout(false);
-    setTimerRunning(false);
-    setElapsedTime(0);
+      setActiveWorkout(false);
+      setTimerRunning(false);
+      setElapsedTime(0);
+    } catch (error) {
+      console.error(error)
+    }
+
   }
 
   useEffect(() => {
@@ -314,7 +320,7 @@ export default function ActiveWorkout() {
             <button aria-controls='start-workout-dialog' aria-haspopup="dialog" type='button' className={styles["start-workout-button"]} onClick={handleStartWorkout}>
               Start Workout
             </button> :
-            <button  type='button' className={styles["cancel-workout-button"]} onClick={handleCancelWorkout}>Cancel Workout</button>
+            <button type='button' className={styles["cancel-workout-button"]} onClick={handleCancelWorkout}>Cancel Workout</button>
           }
 
           <StartWorkoutDialog
