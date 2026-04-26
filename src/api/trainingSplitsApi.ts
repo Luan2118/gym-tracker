@@ -4,7 +4,7 @@ import { TrainingSplit, TrainingSplitWorkoutDay } from "../types";
 
 export async function getTrainingSplits(): Promise<TrainingSplit[]> {
   const { data, error } = await supabase
-    .from('traininsg_splits')
+    .from('training_splits')
     .select('id, name, workout_days')
     .order('created_at', { ascending: false });
 
