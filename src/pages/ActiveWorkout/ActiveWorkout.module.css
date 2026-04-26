@@ -151,7 +151,15 @@
   background-color: rgb(45, 110, 220);
 }
 
+.finish-section-wrapper {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+  margin-top: 1rem;
+}
+
 .finish-workout-button {
+  grid-column: 2;
   background-color: rgb(39, 134, 56);
   color: white;
   font-weight: 600;
@@ -160,10 +168,8 @@
   border: none;
   border-radius: 1rem;
   cursor: pointer;
-  margin-top: 1rem;
-  max-width: 20rem;
-  align-self: center;
   transition: 0.2s ease;
+  
 }
 
 .finish-workout-button:hover {
@@ -174,12 +180,16 @@
   background-color: rgb(42, 130, 59);
 }
 
-.incomplete-sets-text {
-  color: red;
-  font-size: clamp(1.4rem, 1vw, 1.6rem);
+.error-message {
+  grid-column: 3;
+  justify-self: end;
+  background-color: rgba(90, 35, 45, 0.45);
+  border: 1px solid rgba(255, 95, 115, 0.45);
+  color: rgb(255, 95, 115);
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  font-size: clamp(1.2rem, 1vw, 1.5rem);
   font-weight: 600;
-  text-align: center;
-  margin-top: 1rem;
 }
 
 @media (min-width: 1100px) {

@@ -18,6 +18,10 @@ export default function ActiveWorkout() {
   const [activeExercises, setActiveExercises] = useState<ActiveWorkoutExercise[]>([]);
   const [hasIncompleteSet, setHasIncompleteSet] = useState(false);
 
+
+  const [isFinishingWorkout, setIsFinishingWorkout] = useState(false);
+  const [finishWorkoutError, setFinishWorkoutError] = useState<string | null>(null);
+
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
@@ -153,6 +157,7 @@ export default function ActiveWorkout() {
 
   async function handleFinishworkout() {
 
+    // check for incomplete sets
     const incompleteSet = activeExercises.some((ex) =>
       ex.sets.some((set) =>
         (set.weight === '' && set.reps !== '') ||
@@ -161,7 +166,6 @@ export default function ActiveWorkout() {
       )
     );
 
-
     if (incompleteSet) {
       setHasIncompleteSet(true);
       return;
@@ -169,6 +173,9 @@ export default function ActiveWorkout() {
 
     setHasIncompleteSet(false);
 
+
+
+    // map workout exercises
     const workoutExercises: WorkoutHistoryExercise[] = activeExercises.map((ex) => ({
       exerciseName: ex.exerciseName,
       exerciseId: ex.exerciseId,
@@ -181,7 +188,7 @@ export default function ActiveWorkout() {
       })),
     }));
 
-
+    // new workouthistory
     const newWorkoutHistory = {
       trainingSplitName: selectedTrainingSplit ? selectedTrainingSplit.name : '',
       workoutDay: selectedWorkoutDay ? selectedWorkoutDay.name : '',
@@ -190,6 +197,48 @@ export default function ActiveWorkout() {
       duration: elapsedTime
     }
 
+    // check for the correct split
+    const selectedSplit = trainingSplits.find((split) => split.id === selectedTrainingSplitId);
+
+    if (!selectedSplit) return;
+
+    setFinishWorkoutError(null);
+    setIsFinishingWorkout(true);
+
+    // updated split
+    const updatedSplit: TrainingSplit = {
+      id: selectedSplit.id,
+      name: selectedSplit.name,
+      workoutDays: selectedSplit.workoutDays.map((workoutDay) => {
+        if (workoutDay.id !== selectedWorkoutDayId) return workoutDay;
+
+        return {
+          ...workoutDay,
+          exercises: workoutDay.exercises.map((ex) => {
+            const activeExercise = activeExercises.find((activeEx) => activeEx.exerciseId === ex.exerciseId)
+
+            if (!activeExercise) return ex;
+
+            return {
+              ...ex,
+              sets: ex.sets.map((set) => {
+                const activeSet = activeExercise.sets.find((activeSet) => activeSet.id === set.id);
+
+                if (!activeSet) return set
+
+                return {
+                  ...set,
+                  weight: activeSet.weight,
+                  reps: activeSet.reps
+                }
+              })
+            }
+          })
+        }
+      })
+    }
+
+    // create new workout history and update the split
     try {
       const savedWorkoutHistory = await createWorkoutHistory(newWorkoutHistory);
 
@@ -199,43 +248,6 @@ export default function ActiveWorkout() {
           ...prev,
         ]
       });
-
-      const selectedSplit = trainingSplits.find((split) => split.id === selectedTrainingSplitId);
-
-      if (!selectedSplit) return; 
-
-      const updatedSplit : TrainingSplit = {
-        id: selectedSplit.id,
-        name: selectedSplit.name,
-        workoutDays: selectedSplit.workoutDays.map((workoutDay) => {
-          if (workoutDay.id !== selectedWorkoutDayId) return workoutDay;
-
-          return {
-            ...workoutDay,
-            exercises: workoutDay.exercises.map((ex) => {
-              const activeExercise = activeExercises.find((activeEx) => activeEx.exerciseId === ex.exerciseId)
-
-              if (!activeExercise) return ex;
-
-              return {
-                ...ex,
-                sets: ex.sets.map((set) => {
-                  const activeSet = activeExercise.sets.find((activeSet) => activeSet.id === set.id);
-
-                  if (!activeSet) return set
-
-                  return {
-                    ...set,
-                    weight: activeSet.weight,
-                    reps: activeSet.reps
-                  }
-                })
-              }
-            })
-          }
-        })
-      }
-
 
       const savedUpdatedSplit = await updateTrainingSplitById(updatedSplit)
       setTrainingSplits((prev) =>
@@ -250,6 +262,10 @@ export default function ActiveWorkout() {
       setElapsedTime(0);
     } catch (error) {
       console.error(error)
+      setFinishWorkoutError('Failed to finish workout')
+
+    } finally {
+      setIsFinishingWorkout(false);
     }
 
   }
@@ -318,8 +334,23 @@ export default function ActiveWorkout() {
                 />
               )}
 
-              <button type='button' onClick={() => handleFinishworkout()} className={styles["finish-workout-button"]} >Finish Workout</button>
-              {hasIncompleteSet && <div id='incomplete-sets' role='alert' className={styles["incomplete-sets-text"]}>Incomplete sets.</div>}
+              <div className={styles["finish-section-wrapper"]}>
+                <button type='button' onClick={() => handleFinishworkout()} className={styles["finish-workout-button"]} disabled={isFinishingWorkout}>Finish Workout</button>
+
+                {hasIncompleteSet && <p id='incomplete-sets' role='alert' className={styles["error-message"]}>
+                  <span aria-hidden='true'>&#10071;</span>
+                  Incomplete sets.</p>}
+
+                {finishWorkoutError &&
+                  <p
+                    role='alert'
+                    className={styles["error-message"]}
+                  >
+                    <span aria-hidden='true'>&#10071;</span>
+                    {finishWorkoutError}
+                  </p>
+                }
+              </div>
             </>
             : <h2 className={styles["no-active-workout-text"]}>No Active Workout</h2>}
         </section>
