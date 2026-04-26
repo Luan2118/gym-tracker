@@ -97,19 +97,16 @@ h2 {
   display: flex;
   align-items: center;
   gap: 0.8rem;
-  margin-top: 1.5rem;
   padding: 1rem 1.4rem;
   font-size: clamp(1.4rem, 2vw, 1.6rem);
   font-weight: 600;
   color: rgb(34, 197, 94);
-  background-color: rgb(62, 62, 62);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.35);
   border-radius: 1rem;
+  margin: 1.5rem;
 }
 
-.body-weight-added-icon {
-  font-size: clamp(1.4rem, 2vw, 1.6rem);
-}
 
 .filter-section-wrapper {
   display: flex;
@@ -274,12 +271,14 @@ h2 {
 .status-message {
   text-align: center;
   font-weight: 600;
-  font-size: clamp(1.5rem, 1vw, 1.8rem);
+  font-size: clamp(1.2rem, 1vw, 1.6rem);
   background-color: rgb(41, 41, 41);
   border: 1px solid rgb(255, 255, 255, 0.06);
-  padding: clamp(1.2rem, 2vw, 1.8rem) clamp(1.2rem, 2vw, 2.2rem);
+  padding: clamp(0.8rem, 1vw, 1.2rem) clamp(1.2rem, 1vw, 1.8rem);
   border-radius: 1rem;
   color: rgb(200, 200, 200);
+  width: fit-content;
+  margin: 0 auto;
 }
 
 .loading-message {
@@ -287,9 +286,20 @@ h2 {
 }
 
 .error-message {
-  background-color: rgb(55, 32, 32);
-  border-color: rgba(255, 90, 90, 0.35);
-  color: rgb(255, 170, 170);
+  background-color: rgba(90, 35, 45, 0.45);
+  border: 1px solid rgba(255, 95, 115, 0.45);
+  color: rgb(255, 95, 115);
+}
+
+.weight-validation-text {
+  background-color: rgba(90, 35, 45, 0.45);
+  border: 1px solid rgba(255, 95, 115, 0.45);
+  color: rgb(255, 95, 115);
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  font-size: clamp(1.2rem, 1vw, 1.5rem);
+  font-weight: 600;
+  align-self: center;
 }
 
 .no-body-weight-logs-yet-text {

@@ -320,7 +320,7 @@ export default function BodyWeight() {
           </section>
 
           <h2 className={styles["sr-only"]}>Body weight entries</h2>
-          
+
           {isBodyWeightsLoading ? (
             <p
               role="status"
@@ -333,6 +333,9 @@ export default function BodyWeight() {
               role="alert"
               className={`${styles['status-message']} ${styles['error-message']}`}
             >
+              <span aria-hidden="true">
+                &#10071;
+              </span>
               {bodyWeightsError}
             </p>
           ) : visibleBodyWeights.length === 0 ? (
@@ -401,24 +404,24 @@ export default function BodyWeight() {
           <button type="button" className={styles["add-weight-button"]} onClick={addBodyWeight} disabled={isAddingBodyWeight}>                          Add Weight
           </button>
           {feedback === 'added' ?
-            <div role='status' className={styles["body-weight-added"]}>
-              <span className={styles["body-weight-added-icon"]} aria-hidden='true'>&#10004;</span>
+            <p role='status' className={styles["body-weight-added"]}>
+              <span aria-hidden='true'>&#10004;</span>
               Body weight added
-            </div>
+            </p>
             : null}
           {bwInputValidation &&
-            <div role='alert' className={styles["weight-validation-text"]}>
-              <span className={styles["body-weight-validation-icon"]} aria-hidden='true'>&#10006;</span>
+            <p role='alert' className={styles["weight-validation-text"]}>
+              <span aria-hidden='true'>&#10071;</span>
               Please enter a valid weight
-            </div>
+            </p>
           }
           {addBodyWeightError && (
-            <div role="alert" className={styles["weight-validation-text"]}>
-              <span className={styles["body-weight-validation-icon"]} aria-hidden="true">
-                &#10006;
+            <p role="alert" className={styles["weight-validation-text"]}>
+              <span aria-hidden="true">
+                &#10071;
               </span>
               {addBodyWeightError}
-            </div>
+            </p>
           )}
         </div>
 
