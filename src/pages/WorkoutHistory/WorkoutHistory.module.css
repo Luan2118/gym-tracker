@@ -137,11 +137,29 @@ h2 {
   cursor: not-allowed;
 }
 
-.no-workouts-yet {
-  padding: 1rem 2rem;
+
+.status-message {
+  padding: 1rem 1.4rem;
   border-radius: 1rem;
+  font-size: clamp(1.5rem, 1vw, 1.8rem);
   font-weight: 600;
-  align-self: center;
+  margin: 0 auto;
+}
+
+.loading-message {
+  background-color: rgb(45, 45, 45);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgb(160, 160, 160);
+}
+
+.no-workouts-yet-message {
+  background-color: rgb(45, 45, 45);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   color: rgb(200, 200, 200);
-  font-size: clamp(1,4rem, 1vw, 1.8rem);
+}
+
+.error-message {
+  background-color: rgba(90, 35, 45, 0.45);
+  border: 1px solid rgba(255, 95, 115, 0.45);
+  color: rgb(255, 95, 115);
 }

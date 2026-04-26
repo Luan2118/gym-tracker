@@ -2,9 +2,9 @@ import styles from './WorkoutHistory.module.css'
 import { useOutletContext } from 'react-router-dom'
 import WorkoutHistoryItem from './components/WorkoutHistoryItem';
 import { useState } from 'react';
-import { sortByNewest, sortByOldest} from '../../utils/sortDate';
+import { sortByNewest, sortByOldest } from '../../utils/sortDate';
 import getPaginationData from '../../utils/getPaginationData';
-import { LayoutContextType, WorkoutHistory as WorkoutHistoryType  } from '../../types';
+import { LayoutContextType, WorkoutHistory as WorkoutHistoryType } from '../../types';
 
 type TrainingSplitOptionsType = Pick<WorkoutHistoryType, 'id' | 'trainingSplitName'>
 
@@ -12,7 +12,7 @@ type WorkoutDayOptionsType = Pick<WorkoutHistoryType, 'id' | 'workoutDay'>
 
 export default function WorkoutHistory() {
 
-  const { workoutHistory, setWorkoutHistory } = useOutletContext<LayoutContextType>();
+  const { workoutHistory, setWorkoutHistory, isWorkoutHistoryLoading, workoutHistoryError } = useOutletContext<LayoutContextType>();
   const [selectedSplitName, setSelectedSplitName] = useState('');
   const [selectedWorkoutDayName, setSelectedWorkoutDayName] = useState('');
   const [selectedSort, setSelectedSort] = useState<'newest' | 'oldest'>('newest');
@@ -41,7 +41,7 @@ export default function WorkoutHistory() {
 
   // pagination
   const itemsPerPage = 5;
-  const {pageNumbers, paginatedData, totalPages} = getPaginationData(itemsPerPage, filteredWorkoutHistory, currentPage )
+  const { pageNumbers, paginatedData, totalPages } = getPaginationData(itemsPerPage, filteredWorkoutHistory, currentPage)
 
   // options
   const trainingSplitOptions: TrainingSplitOptionsType[] = [];
@@ -126,37 +126,50 @@ export default function WorkoutHistory() {
         </div>
 
         <div className={styles["content-main"]}>
-          {
-            filteredWorkoutHistory.length > 0 ?
-              <ul>
-                <WorkoutHistoryItem
-                  filteredWorkoutHistory={paginatedData}
-                  deleteWorkoutHistoryItem={deleteWorkoutHistoryItem}
-                />
-                <div className={styles["pagination-wrapper"]}>
-                  <button type="button" className={styles["pagination-button"]} onClick={() => setCurrentPage((prev) => prev - 1)} disabled={currentPage === 1}>Prev</button>
+          {isWorkoutHistoryLoading ? (
+            <p
+              role='status'
+              className={`${styles["status-message"]} ${styles["loading-message"]}`}>
+              Loading workout history...
+            </p>) : workoutHistoryError ? (
+              <p
+                role='alert'
+                className={`${styles["status-message"]} ${styles["error-message"]}`}>
+                <span aria-hidden='true'>&#10071;</span>
+                {workoutHistoryError}
+              </p>) : filteredWorkoutHistory.length > 0 ? (
+                <>
+                  <ul>
+                    <WorkoutHistoryItem
+                      filteredWorkoutHistory={paginatedData}
+                      deleteWorkoutHistoryItem={deleteWorkoutHistoryItem}
+                    />
+                  </ul>
+                  <div className={styles["pagination-wrapper"]}>
+                    <button type="button" className={styles["pagination-button"]} onClick={() => setCurrentPage((prev) => prev - 1)} disabled={currentPage === 1}>Prev</button>
 
-                  {pageNumbers.map((page) => (
-                    <button
-                      key={page}
-                      type="button"
-                      className={
-                        currentPage === page
-                          ? styles["active-page-button"]
-                          : styles["page-button"]
-                      }
-                      onClick={() => setCurrentPage(page)}
-                    >
-                      {page}
-                    </button>
-                  ))}
+                    {pageNumbers.map((page) => (
+                      <button
+                        key={page}
+                        type="button"
+                        className={
+                          currentPage === page
+                            ? styles["active-page-button"]
+                            : styles["page-button"]
+                        }
+                        onClick={() => setCurrentPage(page)}
+                      >
+                        {page}
+                      </button>
+                    ))}
 
-                  <button type="button" className={styles["pagination-button"]} onClick={() => setCurrentPage((prev) => prev + 1)} disabled={currentPage === totalPages}>Next</button>
-                </div>
-              </ul>
-
-              :
-              <div className={styles["no-workouts-yet"]}>No workouts yet</div>
+                    <button type="button" className={styles["pagination-button"]} onClick={() => setCurrentPage((prev) => prev + 1)} disabled={currentPage === totalPages}>Next</button>
+                  </div>
+                </>)
+            :
+            (<p
+              role='status'
+              className={`${styles["status-message"]} ${styles["no-workouts-yet-message"]}`}>No workout history yet</p>)
           }
         </div>
       </div>

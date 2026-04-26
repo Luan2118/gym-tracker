@@ -85,6 +85,8 @@ export type LayoutContextType = {
   bodyWeightsError: string | null
   isTrainingSplitsLoading: boolean
   trainingSplitsError: string | null
+  isWorkoutHistoryLoading: boolean
+  workoutHistoryError: string | null
 }
 
 

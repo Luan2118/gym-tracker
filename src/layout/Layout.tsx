@@ -36,15 +36,23 @@ export default function Layout() {
 
 
   const [workoutHistory, setWorkoutHistory] = useState<WorkoutHistory[]>([]);
+  const [isWorkoutHistoryLoading, setIsWorkoutHistoryLoading] = useState(true);
+  const [workoutHistoryError, setWorkoutHistoryError] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadWorkoutHistory() {
       try {
+        setWorkoutHistoryError(null);
+        setIsWorkoutHistoryLoading(true);
+
         const rows = await getWorkoutHistory();
         setWorkoutHistory(rows);
 
       } catch (error) {
         console.error(error)
+        setWorkoutHistoryError('Failed to load workout history')
+      } finally {
+        setIsWorkoutHistoryLoading(false);
       }
     }
 
@@ -88,7 +96,9 @@ export default function Layout() {
     isBodyWeightsLoading,
     bodyWeightsError,
     isTrainingSplitsLoading,
-    trainingSplitsError
+    trainingSplitsError,
+    isWorkoutHistoryLoading,
+    workoutHistoryError
   };
 
   return (
