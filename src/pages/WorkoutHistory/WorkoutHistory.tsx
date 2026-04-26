@@ -1,10 +1,11 @@
 import styles from './WorkoutHistory.module.css'
 import { useOutletContext } from 'react-router-dom'
 import WorkoutHistoryItem from './components/WorkoutHistoryItem';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { sortByNewest, sortByOldest } from '../../utils/sortDate';
 import getPaginationData from '../../utils/getPaginationData';
 import { LayoutContextType, WorkoutHistory as WorkoutHistoryType } from '../../types';
+import { deleteWorkoutHistoryItemById } from '../../api/workoutHistoryApi';
 
 type TrainingSplitOptionsType = Pick<WorkoutHistoryType, 'id' | 'trainingSplitName'>
 
@@ -17,6 +18,23 @@ export default function WorkoutHistory() {
   const [selectedWorkoutDayName, setSelectedWorkoutDayName] = useState('');
   const [selectedSort, setSelectedSort] = useState<'newest' | 'oldest'>('newest');
   const [currentPage, setCurrentPage] = useState(1);
+  const [deleteWorkoutHistoryItemId, setDeleteWorkoutHistoryItemId] = useState<string | null>(null);
+
+  const [deleteWorkoutHistorySuccess, setDeleteWorkoutHistorySuccess] = useState<string | null>(null);
+  const [isDeletingWorkoutHistoryItem, setIsDeletingWorkoutHistoryItem] = useState(false);
+  const [deleteWorkoutHistoryItemError, setDeleteWorkoutHistoryItemError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!deleteWorkoutHistorySuccess) return;
+
+    const feedbackId = setTimeout(() => {
+      setDeleteWorkoutHistorySuccess(null)
+    }, 2000)
+
+    return () => clearTimeout(feedbackId)
+
+  }, [deleteWorkoutHistorySuccess])
+
 
   // visible workout history data
   let filteredWorkoutHistory = workoutHistory.filter((w) => {
@@ -71,11 +89,29 @@ export default function WorkoutHistory() {
     setCurrentPage(1);
   }
 
-  function deleteWorkoutHistoryItem(id: string) {
-    setWorkoutHistory((prev) => {
-      return prev.filter((workout) => workout.id !== id)
-    })
+  async function deleteWorkoutHistoryItem(id: string) {
+
+    setDeleteWorkoutHistoryItemError(null);
+    setDeleteWorkoutHistorySuccess(null);
+    setIsDeletingWorkoutHistoryItem(true);
+    setDeleteWorkoutHistoryItemId(id);
+    try {
+
+      await deleteWorkoutHistoryItemById(id);
+
+      setWorkoutHistory((prev) => {
+        return prev.filter((workout) => workout.id !== id)
+      })
+      setDeleteWorkoutHistorySuccess('Workout history card deleted')
+    } catch (error) {
+      console.error(error)
+      setDeleteWorkoutHistoryItemError('Failed to delete workout history card')
+      setDeleteWorkoutHistoryItemId(null);
+    } finally {
+      setIsDeletingWorkoutHistoryItem(false);
+    }
   }
+
   return (
     <>
       <header>
@@ -121,7 +157,14 @@ export default function WorkoutHistory() {
             </select>
 
             <button type='button' onClick={clearFilters} className={styles["clear-button"]}>Clear</button>
+
           </div>
+          {deleteWorkoutHistorySuccess && (
+            <p role="status" className={styles["success-delete-message"]}>
+              <span aria-hidden='true'>&#10004;</span>
+              {deleteWorkoutHistorySuccess}
+            </p>
+          )}
 
         </div>
 
@@ -143,6 +186,10 @@ export default function WorkoutHistory() {
                     <WorkoutHistoryItem
                       filteredWorkoutHistory={paginatedData}
                       deleteWorkoutHistoryItem={deleteWorkoutHistoryItem}
+                      isDeletingWorkoutHistoryItem={isDeletingWorkoutHistoryItem}
+                      deleteWorkoutHistoryItemError={deleteWorkoutHistoryItemError}
+                      setDeleteWorkoutHistoryItemError={setDeleteWorkoutHistoryItemError}
+                      deleteWorkoutHistoryItemId={deleteWorkoutHistoryItemId}
                     />
                   </ul>
                   <div className={styles["pagination-wrapper"]}>

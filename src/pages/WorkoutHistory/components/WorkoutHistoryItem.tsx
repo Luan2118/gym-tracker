@@ -10,9 +10,13 @@ import { WorkoutHistory } from '../../../types';
 type WorkoutHistoryItemProps = {
   filteredWorkoutHistory: WorkoutHistory[]
   deleteWorkoutHistoryItem: (id: string) => void
+  isDeletingWorkoutHistoryItem: boolean
+  deleteWorkoutHistoryItemError: string | null
+  deleteWorkoutHistoryItemId: string | null
+  setDeleteWorkoutHistoryItemError: React.Dispatch<React.SetStateAction<string | null>>
 }
 
-export default function WorkoutHistoryItem({ filteredWorkoutHistory, deleteWorkoutHistoryItem }: WorkoutHistoryItemProps) {
+export default function WorkoutHistoryItem({ filteredWorkoutHistory, deleteWorkoutHistoryItem, isDeletingWorkoutHistoryItem, deleteWorkoutHistoryItemError, deleteWorkoutHistoryItemId, setDeleteWorkoutHistoryItemError }: WorkoutHistoryItemProps) {
 
   const [selectedWorkoutHisId, setSelectedWorkoutHisId] = useState('');
 
@@ -28,7 +32,11 @@ export default function WorkoutHistoryItem({ filteredWorkoutHistory, deleteWorko
       return (
         <li key={workout.id} className={styles["workout-history-item-wrapper"]}>
           <div className={styles["workout-history-item-inner-wrapper"]}>
-            <button aria-controls={`workout-history-item-card-${workout.id}`} aria-expanded={workout.id === selectedWorkoutHisId } type='button' className={styles["workout-history-item-button"]} onClick={() => displaySelectedWorkoutHist(workout.id)}>
+            <button aria-controls={`workout-history-item-card-${workout.id}`} aria-expanded={workout.id === selectedWorkoutHisId} type='button' className={styles["workout-history-item-button"]} onClick={() => 
+              {
+                displaySelectedWorkoutHist(workout.id)
+                setDeleteWorkoutHistoryItemError(null)
+                }}>
               <div className={styles["workout-history-item-names"]}>
 
                 <div className={styles["workout-history-item-training-split-wrapper"]}>
@@ -50,7 +58,12 @@ export default function WorkoutHistoryItem({ filteredWorkoutHistory, deleteWorko
               <img src={arrowDown} alt="" className={workout.id === selectedWorkoutHisId ? styles["arrow-up-icon"] : styles["arrow-down-icon"]} />
 
             </button>
-            <button type='button' aria-label='Delete workout history item' onClick={() => deleteWorkoutHistoryItem(workout.id)} className={styles["workout-history-item-delete-button"]}>
+            <button type='button' aria-label='Delete workout history item' onClick={() => 
+            {
+              deleteWorkoutHistoryItem(workout.id)
+              setDeleteWorkoutHistoryItemError(null)
+
+              }} className={styles["workout-history-item-delete-button"]} disabled={isDeletingWorkoutHistoryItem && deleteWorkoutHistoryItemId === workout.id}>
               <img src={closeIcon} alt="" className={styles["workout-history-item-delete-button-icon"]} />
             </button>
           </div>
@@ -102,6 +115,13 @@ export default function WorkoutHistoryItem({ filteredWorkoutHistory, deleteWorko
               </div>
             </div>
             : null}
+
+          {deleteWorkoutHistoryItemId === workout.id && deleteWorkoutHistoryItemError &&
+            <p role='alert' className={styles["error-message"]}>
+              <span aria-hidden='true'>&#10071;</span>
+              {deleteWorkoutHistoryItemError}
+            </p>
+          }
         </li>
       )
     })

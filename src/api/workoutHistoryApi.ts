@@ -65,3 +65,15 @@ export async function createWorkoutHistory(workoutHistory: CreateWorkoutHistoryI
 
   return mappedData;
 }
+
+
+export async function deleteWorkoutHistoryItemById(id: string): Promise<void> {
+  const {error} = await supabase
+    .from('workout_history')
+    .delete()
+    .eq('id', id)
+
+    if (error) {
+      throw new Error(`Failed to delete workout history card ${error.message}`)
+    }
+}

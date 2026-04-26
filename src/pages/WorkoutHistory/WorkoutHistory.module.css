@@ -25,7 +25,7 @@ h2 {
   flex-direction: column;
   width: auto;
   border-radius: 1rem;
-  padding: 2rem;
+  padding: 1.8rem 2rem;
   background-color: rgb(41, 41, 41);
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
@@ -33,6 +33,7 @@ h2 {
 .filter-wrapper {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   flex-wrap: wrap;
   margin-bottom: 1rem;
 }
@@ -41,7 +42,6 @@ h2 {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  margin-bottom: 1rem;
 }
 
 .filter-input {
@@ -162,4 +162,18 @@ h2 {
   background-color: rgba(90, 35, 45, 0.45);
   border: 1px solid rgba(255, 95, 115, 0.45);
   color: rgb(255, 95, 115);
+}
+
+.success-delete-message {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1rem 1.4rem;
+  font-size: clamp(1.4rem, 2vw, 1.6rem);
+  font-weight: 600;
+  color: rgb(34, 197, 94);
+  background-color: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  border-radius: 1rem;
+  margin: 0;
 }

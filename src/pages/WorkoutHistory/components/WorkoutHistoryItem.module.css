@@ -204,6 +204,17 @@
   line-height: 1;
 }
 
+.error-message {
+  background-color: rgba(90, 35, 45, 0.45);
+  border: 1px solid rgba(255, 95, 115, 0.45);
+  color: rgb(255, 95, 115);
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  font-size: clamp(1.2rem, 1vw, 1.5rem);
+  font-weight: 600;
+  align-self: center;
+}
+
 
 
 .workout-history-item-delete-button-icon {
