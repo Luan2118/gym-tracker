@@ -3,9 +3,9 @@ import { useState, useEffect } from "react";
 import Sidebar from '../components/Sidebar/Sidebar'
 import styles from './Layout.module.css'
 import { TrainingSplit, WorkoutHistory, BodyWeight, LayoutContextType } from "../types";
-import { readStorage, writeStorage } from "../utils/localStorage";
 import { getBodyWeights } from "../api/bodyWeightsApi";
 import { getTrainingSplits } from "../api/trainingSplitsApi";
+import { getWorkoutHistory } from "../api/workoutHistoryApi";
 
 export default function Layout() {
 
@@ -35,14 +35,22 @@ export default function Layout() {
 
 
 
-  const [workoutHistory, setWorkoutHistory] = useState<WorkoutHistory[]>(() => {
-    return readStorage<WorkoutHistory>('workoutHistory', []);
-  });
+  const [workoutHistory, setWorkoutHistory] = useState<WorkoutHistory[]>([]);
 
   useEffect(() => {
-    writeStorage('workoutHistory', workoutHistory);
-  }, [workoutHistory]);
+    async function loadWorkoutHistory() {
+      try {
+        const rows = await getWorkoutHistory();
+        setWorkoutHistory(rows);
 
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+
+    loadWorkoutHistory();
+  }, [])
 
   const [bodyWeights, setBodyWeights] = useState<BodyWeight[]>([]);
   const [isBodyWeightsLoading, setIsBodyWeightsLoading] = useState(true);
