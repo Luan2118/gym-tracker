@@ -82,27 +82,16 @@
 
 }
 
-.weight-validation-text-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  margin-top: 1rem;
-  padding: 1rem 1.4rem;
-  font-weight: 600;
-  background-color: rgb(62, 62, 62);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+.error-message {
+  background-color: rgba(90, 35, 45, 0.45);
+  border: 1px solid rgba(255, 95, 115, 0.45);
+  color: rgb(255, 95, 115);
+  padding: 0.5rem 1rem;
   border-radius: 1rem;
-  width: fit-content;
-  margin-left: auto;
-  margin-right: auto;
+  font-size: clamp(1.2rem, 1vw, 1.5rem);
+  font-weight: 600;
+  align-self: center;
 }
-
-.weight-validation-text {
-  font-size: 1.4rem;
-  color: red;
-  margin: 0;
-}
-
 
 .body-weight-delete-button {
   transition: 0.2s ease;

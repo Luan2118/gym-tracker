@@ -13,10 +13,12 @@ type BodyWeightItemProps = {
   editBwInputValidation: boolean
   updateBodyWeightError: string | null
   isUpdatingBodyWeight: boolean
-  deletingBodyWeightId : string | null
+  deletingBodyWeight: boolean
+  deleteBodyWeightError: string | null
+  deleteBodyWeightId: string | null
 }
 
-export default function BodyWeightItem({ bodyWeights, deleteBodyWeight, handleEditBodyWeight, editBodyWeightId, handleEditBwInput, editBodyWeightInputText, handleSaveBodyWeight, editBwInputValidation, updateBodyWeightError, isUpdatingBodyWeight, deletingBodyWeightId }: BodyWeightItemProps) {
+export default function BodyWeightItem({ bodyWeights, deleteBodyWeight, handleEditBodyWeight, editBodyWeightId, handleEditBwInput, editBodyWeightInputText, handleSaveBodyWeight, editBwInputValidation, updateBodyWeightError, isUpdatingBodyWeight, deletingBodyWeight, deleteBodyWeightError, deleteBodyWeightId }: BodyWeightItemProps) {
 
   return (
     <>
@@ -53,25 +55,34 @@ export default function BodyWeightItem({ bodyWeights, deleteBodyWeight, handleEd
                   <button type='button' className={styles['body-weight-save-button']} onClick={handleSaveBodyWeight} disabled={isUpdatingBodyWeight}>Save</button> :
                   <button type='button' className={styles['body-weight-edit-button']} onClick={() => handleEditBodyWeight(bodyweight.id, String(bodyweight.bw))}>Edit</button>
                 }
-                <button type='button' className={styles['body-weight-delete-button']} onClick={() => deleteBodyWeight(bodyweight.id)} disabled={deletingBodyWeightId === bodyweight.id}>Delete</button>
+                <button type='button' className={styles['body-weight-delete-button']} onClick={() => deleteBodyWeight(bodyweight.id)} disabled={deleteBodyWeightId === bodyweight.id && deletingBodyWeight}>Delete</button>
               </div>
             </div>
 
-            {editBodyWeightId === bodyweight.id && editBwInputValidation && (
-              <div className={styles['weight-validation-text-wrapper']}>
-                <p role="alert" className={styles['weight-validation-text']}>
-                  Please enter a valid weight
-                </p>
-              </div>
-            )}
+            {editBodyWeightId === bodyweight.id && editBwInputValidation ? (
+              <p role="alert" className={styles['error-message']}>
+                <span aria-hidden='true'>&#10071;</span>
+                Please enter a valid weight
+              </p>
+            ) : editBodyWeightId === bodyweight.id && updateBodyWeightError ? (
+              <p role="alert" className={styles['error-message']}>
+                <span aria-hidden='true'>&#10071;</span>
+                {updateBodyWeightError}
+              </p>
+            ) : deleteBodyWeightId === bodyweight.id && deleteBodyWeightError ? (
+              <p
+                role="alert"
+                className={styles["error-message"]}
+              >
+                <span aria-hidden='true'>&#10071;</span>
+                {deleteBodyWeightError}
+              </p>
+            ) : null
+            }
 
-            {editBodyWeightId === bodyweight.id && updateBodyWeightError && (
-              <div className={styles['weight-validation-text-wrapper']}>
-                <p role="alert" className={styles['weight-validation-text']}>
-                  {updateBodyWeightError}
-                </p>
-              </div>
-            )}
+
+
+
           </li>
         )
       })}

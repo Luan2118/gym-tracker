@@ -39,7 +39,8 @@ export default function BodyWeight() {
   const [deleteBodyWeightError, setDeleteBodyWeightError] = useState<string | null>(null);
   const [updateBodyWeightError, setUpdateBodyWeightError] = useState<string | null>(null);
   const [isUpdatingBodyWeight, setIsUpdatingBodyWeight] = useState(false);
-  const [deletingBodyWeightId, setDeletingBodyWeightId] = useState<string | null>(null);
+  const [deleteBodyWeightId, setDeleteBodyWeightId] = useState<string | null>(null);
+  const [deletingBodyWeight, setDeletingBodyWeightI] = useState(false);
 
   const bwInputRef = useRef<HTMLInputElement | null>(null);
   const [searchParams] = useSearchParams();
@@ -186,7 +187,8 @@ export default function BodyWeight() {
 
   async function deleteBodyWeight(id: string) {
     setDeleteBodyWeightError(null);
-    setDeletingBodyWeightId(id);
+    setDeletingBodyWeightI(true);
+    setDeleteBodyWeightId(id);
     try {
       await deleteBodyWeightById(id)
       setBodyWeights((prev) => prev.filter((bw) => bw.id !== id))
@@ -194,7 +196,7 @@ export default function BodyWeight() {
       console.error("Failed to delete body weight:", error);
       setDeleteBodyWeightError('Failed to delete body weight')
     } finally {
-      setDeletingBodyWeightId(null);
+      setDeletingBodyWeightI(false);
     }
   }
 
@@ -318,14 +320,7 @@ export default function BodyWeight() {
           </section>
 
           <h2 className={styles["sr-only"]}>Body weight entries</h2>
-          {deleteBodyWeightError && (
-            <p
-              role="alert"
-              className={`${styles["status-message"]} ${styles["error-message"]}`}
-            >
-              {deleteBodyWeightError}
-            </p>
-          )}
+          
           {isBodyWeightsLoading ? (
             <p
               role="status"
@@ -359,7 +354,9 @@ export default function BodyWeight() {
                 editBwInputValidation={editBwInputValidation}
                 updateBodyWeightError={updateBodyWeightError}
                 isUpdatingBodyWeight={isUpdatingBodyWeight}
-                deletingBodyWeightId={deletingBodyWeightId}
+                deletingBodyWeight={deletingBodyWeight}
+                deleteBodyWeightError={deleteBodyWeightError}
+                deleteBodyWeightId={deleteBodyWeightId}
               />
             </ul>
           )}
