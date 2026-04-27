@@ -1,6 +1,11 @@
 import { supabase } from '../lib/supabaseClient';
 import { BodyWeight } from '../types';
 
+type BodyWeightRow = BodyWeight;
+
+
+type CreateBodyWeightInput = Pick<BodyWeight, 'bw' | 'date'>
+
 export async function getBodyWeights(): Promise<BodyWeight[]> {
   const { data, error } = await supabase
     .from('body_weights')
@@ -12,12 +17,9 @@ export async function getBodyWeights(): Promise<BodyWeight[]> {
     throw new Error(`Failed to fetch body weights: ${error.message}`)
   }
 
-  return data ?? [];
-}
+  const bodyWeights: BodyWeightRow[] = data ?? [];
 
-type CreateBodyWeightInput = {
-  bw: number
-  date: string
+  return bodyWeights;
 }
 
 export async function createBodyWeight(bodyWeight: CreateBodyWeightInput): Promise<BodyWeight> {
@@ -35,7 +37,9 @@ export async function createBodyWeight(bodyWeight: CreateBodyWeightInput): Promi
     throw new Error('Failed to create body weight.')
   }
 
-  return data;
+  const bodyWeights: BodyWeightRow = data;
+
+  return bodyWeights;
 }
 
 export async function deleteBodyWeightById(id: string): Promise<void> {
@@ -66,5 +70,7 @@ export async function updateBodyWeightById(id: string, bw: number): Promise<Body
     throw new Error('Failed to update body weight.');
   }
 
-  return data;
+  const bodyWeights: BodyWeightRow = data;
+
+  return bodyWeights;
 }
