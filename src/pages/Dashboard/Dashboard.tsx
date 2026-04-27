@@ -9,7 +9,7 @@ type GetDashboardCardValuesParams = {
   loading: boolean
   error: string | null
   value: string | number
-  additionalValue: string
+  additionalValue?: string
 }
 
 
@@ -83,8 +83,10 @@ export default function Dashboard() {
   }, 0)
 
 
-  const avgBodyWeight = totalBodyWeight / thisWeekBodyWeight.length
-
+  const avgBodyWeight =
+    thisWeekBodyWeight.length > 0
+      ? totalBodyWeight / thisWeekBodyWeight.length
+      : null;
 
   //Weight summary
   const previousEntry = sortedBodyWeights[1] ?? null;
@@ -144,10 +146,11 @@ export default function Dashboard() {
               <div className={styles['overview-card-text']}>Latest Weight:</div>
 
               {getDashboardCardValue({
-                loading: isBodyWeightsLoading, 
-                error: bodyWeightsError, 
-                value: latestEntry ? `${latestEntry.bw} kg` : '-', 
-                additionalValue: diffDays === null ? '-' : `Updated ${diffDays === 0 ? 'today' : diffDays === 1 ? `${diffDays} day ago` : `${diffDays} days ago`}`})}
+                loading: isBodyWeightsLoading,
+                error: bodyWeightsError,
+                value: latestEntry ? `${latestEntry.bw} kg` : '-',
+                additionalValue: diffDays === null ? '-' : `Updated ${diffDays === 0 ? 'today' : diffDays === 1 ? `${diffDays} day ago` : `${diffDays} days ago`}`
+              })}
 
             </div>
 
@@ -155,10 +158,11 @@ export default function Dashboard() {
               <div className={styles['overview-card-text']}>Last Workout:</div>
 
               {getDashboardCardValue({
-                loading: isWorkoutHistoryLoading, 
-                error: workoutHistoryError, 
-                value: lastWorkout ? `${lastWorkout.workoutDay}` : '-', 
-                additionalValue: lastWorkoutDate})}
+                loading: isWorkoutHistoryLoading,
+                error: workoutHistoryError,
+                value: lastWorkout ? `${lastWorkout.workoutDay}` : '-',
+                additionalValue: lastWorkoutDate
+              })}
 
             </div>
 
@@ -166,19 +170,20 @@ export default function Dashboard() {
               <div className={styles['overview-card-text']}>This Week:</div>
               {getDashboardCardValue({
                 loading: isWorkoutHistoryLoading,
-                 error: workoutHistoryError, 
-                 value: `${thisWeekWorkouts.length} workouts`, 
-                 additionalValue: subText})}
+                error: workoutHistoryError,
+                value: `${thisWeekWorkouts.length} workouts`,
+                additionalValue: subText
+              })}
             </div>
 
             <div className={styles['overview-card']}>
               <div className={styles['overview-card-text']}>Total Workouts:</div>
               {getDashboardCardValue({
-                loading: isWorkoutHistoryLoading, 
-                error: workoutHistoryError, 
-                value: workoutHistory.length, 
+                loading: isWorkoutHistoryLoading,
+                error: workoutHistoryError,
+                value: workoutHistory.length,
                 additionalValue: totalWorkoutSubtext
-                })}
+              })}
             </div>
           </div>
         </section>
@@ -190,22 +195,38 @@ export default function Dashboard() {
             <div className={styles['week-summary-wrapper']}>
               <div className={styles['week-summary-card']}>
                 <div className={styles['week-summary-title']}>Total Sets</div>
-                <div className={styles['week-summary-value']}>{totalSets}</div>
+                {getDashboardCardValue({
+                  loading: isWorkoutHistoryLoading,
+                  error: workoutHistoryError,
+                  value: totalSets
+                })}
               </div>
 
               <div className={styles['week-summary-card']}>
                 <div className={styles['week-summary-title']}>Total Exercises</div>
-                <div className={styles['week-summary-value']}>{totalExercises}</div>
+                {getDashboardCardValue({
+                  loading: isWorkoutHistoryLoading,
+                  error: workoutHistoryError,
+                  value: totalExercises
+                })}
               </div>
 
               <div className={styles['week-summary-card']}>
                 <div className={styles['week-summary-title']}>Weigh-ins</div>
-                <div className={styles['week-summary-value']}>{thisWeekBodyWeight.length}</div>
+                {getDashboardCardValue({
+                  loading: isBodyWeightsLoading,
+                  error: bodyWeightsError,
+                  value: thisWeekBodyWeight.length
+                })}
               </div>
 
               <div className={styles['week-summary-card']}>
                 <div className={styles['week-summary-title']}>Avg Weight</div>
-                <div className={styles['week-summary-value']}>{avgBodyWeight ? `${avgBodyWeight.toFixed(1)} kg` : '-'} </div>
+                {getDashboardCardValue({
+                  loading: isBodyWeightsLoading,
+                  error: bodyWeightsError,
+                  value: avgBodyWeight ? `${avgBodyWeight.toFixed(1)} kg` : '-'
+                })}
               </div>
             </div>
           </section>
