@@ -15,9 +15,9 @@
 }
 
 h3 {
-  font-size: clamp(1.8rem, 1vw, 3rem);
+  font-size: clamp(1.5rem, 1vw, 2rem);
   background-color: rgb(45, 45, 45);
-  padding: 1rem 2rem;
+  padding: 1rem 1.5rem;
   border-radius: 10rem;
   border: 1px solid rgba(255, 255, 255, 0.08);
   min-width: 10rem;
@@ -28,7 +28,6 @@ h3 {
   background-color: rgb(60, 60, 60);
   transform: translateY(-1px);
 }
-
 
 .button-wrapper {
   display: flex;
@@ -42,7 +41,7 @@ h3 {
   background-color: rgb(72, 72, 72);
   border: 1px solid rgba(255, 255, 255, 0.08);
   color: white;
-  font-size: clamp(1.5rem, 1vw, 1.8rem);
+  font-size: clamp(1.3rem, 1vw, 1.5rem);
   padding: 1rem 2rem;
   border-radius: 1rem;
   cursor: pointer;
@@ -62,7 +61,7 @@ h3 {
 .delete-button {
   background-color: rgb(185, 60, 60);
   color: white;
-  font-size: clamp(1.5rem, 1vw, 1.8rem);
+  font-size: clamp(1.3rem, 1vw, 1.5rem);
   padding: 1rem 2rem;
   border-radius: 1rem;
   border: none;
