@@ -20,7 +20,7 @@ function mapTrainingSplitRow(row: TrainingSplitRow): TrainingSplit {
 
 export async function getTrainingSplits(): Promise<TrainingSplit[]> {
   const { data, error } = await supabase
-    .from('trainsing_splits')
+    .from('training_splits')
     .select('id, name, workout_days')
     .order('created_at', { ascending: false });
 
