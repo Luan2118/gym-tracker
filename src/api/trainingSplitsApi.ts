@@ -1,6 +1,22 @@
 import { supabase } from "../lib/supabaseClient";
 import { TrainingSplit, TrainingSplitWorkoutDay } from "../types";
 
+type TrainingSplitRow = {
+  id: string
+  name: string
+  workout_days: TrainingSplitWorkoutDay[]
+}
+
+type CreateTrainingSplitInput = Pick<TrainingSplit, 'name' | 'workoutDays'>;
+
+function mapTrainingSplitRow(row: TrainingSplitRow): TrainingSplit {
+  return {
+    id: row.id,
+    name: row.name,
+    workoutDays: row.workout_days
+  }
+}
+
 
 export async function getTrainingSplits(): Promise<TrainingSplit[]> {
   const { data, error } = await supabase
@@ -12,24 +28,14 @@ export async function getTrainingSplits(): Promise<TrainingSplit[]> {
     throw new Error(`Failed to fetch training splits, ${error.message}`)
   }
 
+  const trainingSplitRows: TrainingSplitRow[] = data ?? [];
 
-
-  const mappedData = data?.map((trainingSplit) => {
-    return {
-      id: trainingSplit.id,
-      name: trainingSplit.name,
-      workoutDays: trainingSplit.workout_days
-    }
+  return trainingSplitRows.map((row) => {
+    return mapTrainingSplitRow(row);
   })
-
-
-  return mappedData ?? [];
 }
 
-type CreateTrainingSplitInput = {
-  name: string
-  workoutDays: TrainingSplitWorkoutDay[]
-}
+
 
 export async function createTrainingSplit(trainingSplit: CreateTrainingSplitInput): Promise<TrainingSplit> {
   const { data, error } = await supabase
@@ -49,13 +55,9 @@ export async function createTrainingSplit(trainingSplit: CreateTrainingSplitInpu
     throw new Error('Failed to add training split');
   }
 
-  const mappedData = {
-    id: data.id,
-    name: data.name,
-    workoutDays: data.workout_days
-  }
+  const savedTrainingSplit  = mapTrainingSplitRow(data);
 
-  return mappedData;
+  return savedTrainingSplit ;
 }
 
 export async function deleteTrainingSplitById(id: string): Promise<void> {
@@ -69,13 +71,8 @@ export async function deleteTrainingSplitById(id: string): Promise<void> {
   }
 }
 
-type UpdateTrainingSplitByIdInput = {
-  id: string
-  name: string
-  workoutDays: TrainingSplitWorkoutDay[]
-}
 
-export async function updateTrainingSplitById( trainingSplit: UpdateTrainingSplitByIdInput): Promise<TrainingSplit> {
+export async function updateTrainingSplitById(trainingSplit: TrainingSplit): Promise<TrainingSplit> {
   const { data, error } = await supabase
     .from('training_splits')
     .update({
@@ -83,7 +80,7 @@ export async function updateTrainingSplitById( trainingSplit: UpdateTrainingSpli
       workout_days: trainingSplit.workoutDays
     })
     .eq('id', trainingSplit.id)
-    .select('name,id, workout_days')
+    .select('name, id, workout_days')
     .single();
 
 
@@ -95,11 +92,7 @@ export async function updateTrainingSplitById( trainingSplit: UpdateTrainingSpli
     throw new Error(`Failed to update training split`);
   }
 
-  const mappedData = {
-    id: data.id,
-    name: data.name,
-    workoutDays: data.workout_days
-  }
+  const updatedTrainingSplit   = mapTrainingSplitRow(data);
 
-  return mappedData;
+  return updatedTrainingSplit  ;
 }
