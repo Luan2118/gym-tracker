@@ -46,6 +46,9 @@ export default function SelectedExercisePanel({ selectedExerciseId, }: SelectedE
     workout.exercises.some(ex => ex.exerciseId === selectedExerciseId)
   );
 
+  const hasExerciseHistory = filteredWorkouts.length > 0;
+
+
   const filteredWorkoutsData =
     chartFilter === 'last30' ? filteredWorkouts.filter((w) => new Date(w.date) >= new Date(setPastDate(30))) :
       chartFilter === 'last60' ? filteredWorkouts.filter((w) => new Date(w.date) >= new Date(setPastDate(60))) :
@@ -211,92 +214,109 @@ export default function SelectedExercisePanel({ selectedExerciseId, }: SelectedE
 
             <hr className={styles["selected-exercise-statistics-hr"]} />
 
-            {progressClicked ?
-              <>
+            {
+              progressClicked ?
+                (
+                  !hasExerciseHistory ?
+                    <p className={styles["selected-exercise-empty-message"]}>
+                      No progress data for this exercise yet
+                    </p> :
+                    <>
+                      <div className={styles["selected-exercise-buttons-wrapper"]}>
+                        <button
+                          aria-pressed={chartFilter === 'last30'}
+                          type="button"
+                          className={styles["selected-exercise-last-30-btn"]}
+                          onClick={() => setChartFilter('last30')}>
+                          Last 30 Days
+                        </button>
 
-                <div className={styles["selected-exercise-buttons-wrapper"]}>
-                  <button
-                    aria-pressed={chartFilter === 'last30'}
-                    type="button"
-                    className={styles["selected-exercise-last-30-btn"]}
-                    onClick={() => setChartFilter('last30')}>
-                    Last 30 Days
-                  </button>
+                        <button
+                          aria-pressed={chartFilter === 'last60'}
+                          type="button"
+                          className={styles["selected-exercise-last-60-btn"]}
+                          onClick={() => setChartFilter('last60')}>
+                          Last 60 Days
+                        </button>
 
-                  <button
-                    aria-pressed={chartFilter === 'last60'}
-                    type="button"
-                    className={styles["selected-exercise-last-60-btn"]}
-                    onClick={() => setChartFilter('last60')}>
-                    Last 60 Days
-                  </button>
+                        <button
+                          aria-pressed={chartFilter === 'last90'}
+                          type="button"
+                          className={styles["selected-exercise-last-90-btn"]}
+                          onClick={() => setChartFilter('last90')}>
+                          Last 90 Days
+                        </button>
 
-                  <button
-                    aria-pressed={chartFilter === 'last90'}
-                    type="button"
-                    className={styles["selected-exercise-last-90-btn"]}
-                    onClick={() => setChartFilter('last90')}>
-                    Last 90 Days
-                  </button>
+                        <button
+                          aria-pressed={chartFilter === 'all'}
+                          type="button"
+                          className={styles["selected-exercise-all-btn"]}
+                          onClick={() => setChartFilter('all')}>
+                          All
+                        </button>
 
-                  <button
-                    aria-pressed={chartFilter === 'all'}
-                    type="button"
-                    className={styles["selected-exercise-all-btn"]}
-                    onClick={() => setChartFilter('all')}>
-                    All
-                  </button>
+                      </div>
 
-                </div>
-
-                <div className={styles["heaviest-weight-chart-wrapper"]} role="img" aria-label="Strength progress chart">
-                  <Line
-                    data={data} options={options}
-                  />
-                </div>
-              </> :
-              <div className={styles["selected-exercise-history-wrapper"]}>
-                {latestSet && (
-                  <div className={styles["history-stat-card"]}>
-                    <p className={styles["history-stat-label"]}>Latest Set</p>
-                    <p className={styles["history-stat-value"]}>
-                      {latestSet.weight} × {latestSet.reps}
+                      <div className={styles["heaviest-weight-chart-wrapper"]} role="img" aria-label="Strength progress chart">
+                        <Line
+                          data={data} options={options}
+                        />
+                      </div>
+                    </>
+                ) :
+                (
+                  !hasExerciseHistory  ?
+                    <p className={styles["selected-exercise-empty-message"]}>
+                      No workout history for this exercise yet
                     </p>
-                  </div>
-                )}
+                    :
+                    <div className={styles["selected-exercise-history-wrapper"]}>
+                      {latestSet && (
+                        <div className={styles["history-stat-card"]}>
+                          <p className={styles["history-stat-label"]}>Latest Set</p>
+                          <p className={styles["history-stat-value"]}>
+                            {latestSet.weight} × {latestSet.reps}
+                          </p>
+                        </div>
+                      )}
 
-                {latestBestSet && (
-                  <div className={styles["history-stat-card"]}>
-                    <p className={styles["history-stat-label"]}>Best Set</p>
-                    <p className={styles["history-stat-value"]}>
-                      {latestBestSet.weight} × {latestBestSet.reps}
-                    </p>
-                  </div>
-                )}
+                      {latestBestSet && (
+                        <div className={styles["history-stat-card"]}>
+                          <p className={styles["history-stat-label"]}>Best Set</p>
+                          <p className={styles["history-stat-value"]}>
+                            {latestBestSet.weight} × {latestBestSet.reps}
+                          </p>
+                        </div>
+                      )}
 
-                {firstLoggedSet && (
-                  <div className={styles["history-stat-card"]}>
-                    <p className={styles["history-stat-label"]}>First Set</p>
-                    <p className={styles["history-stat-value"]}>
-                      {firstLoggedSet.weight} × {firstLoggedSet.reps}
-                    </p>
-                  </div>
-                )}
+                      {firstLoggedSet && (
+                        <div className={styles["history-stat-card"]}>
+                          <p className={styles["history-stat-label"]}>First Set</p>
+                          <p className={styles["history-stat-value"]}>
+                            {firstLoggedSet.weight} × {firstLoggedSet.reps}
+                          </p>
+                        </div>
+                      )}
 
-                {filteredWorkouts.length > 0 &&
-                  <div className={styles["history-stat-card"]}>
-                    <p className={styles["history-stat-label"]}>Workouts</p>
-                    <p className={styles["history-stat-value"]}>{filteredWorkouts?.length}</p>
-                  </div>
-                }
-              </div>
+                      {filteredWorkouts.length > 0 &&
+                        <div className={styles["history-stat-card"]}>
+                          <p className={styles["history-stat-label"]}>Workouts</p>
+                          <p className={styles["history-stat-value"]}>{filteredWorkouts?.length}</p>
+                        </div>
+                      }
+                    </div>
+                )
             }
-
           </div>
         </>
         :
-        null}
+        <div className={styles["selected-exercise-empty-state"]}>
+          <p className={styles["selected-exercise-empty-message"]}>
+            Select an exercise to view progress and history
+          </p>
+        </div>
+      }
 
-    </div>
+    </div >
   )
 }
