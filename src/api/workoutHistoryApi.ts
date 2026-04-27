@@ -29,7 +29,7 @@ function mapWorkoutHistoryRow(row: WorkoutHistoryRow): WorkoutHistory {
 
 export async function getWorkoutHistory(): Promise<WorkoutHistory[]> {
   const { data, error } = await supabase
-    .from('workout_history')
+    .from('workosut_history')
     .select('id, training_split_name, workout_day, date, exercises, duration')
     .order('date', { ascending: false })
     .order('created_at', { ascending: false });

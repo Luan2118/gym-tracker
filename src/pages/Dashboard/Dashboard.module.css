@@ -45,10 +45,33 @@
   color: rgb(180, 180, 180);
 }
 
-.overview-card-value {
-  font-size: clamp(1.9rem, 2vw, 2.3rem);
-  margin-bottom: 1rem;
+.status-message {
+  font-size: clamp(1.2rem, 1vw, 1.6rem);
   font-weight: 700;
+  padding: 0.5rem 0.8rem;
+  text-align: center;
+  margin: 1.6rem 0;
+  padding: 0;
+  color: rgb(180, 180, 180);
+}
+
+.error-message {
+  font-weight: 600;
+  font-size: clamp(1rem, 1vw, 1.4rem);
+  background-color: rgb(41, 41, 41);
+  border: 1px solid rgb(255, 255, 255, 0.06);
+  padding: clamp(0.6rem, 1vw, 0.8rem) clamp(0.8rem, 1vw, 1.2rem);
+  border-radius: 1rem;
+  width: fit-content;
+  background-color: rgba(90, 35, 45, 0.45);
+  border: 1px solid rgba(255, 95, 115, 0.45);
+  color: rgb(255, 95, 115);
+}
+
+.overview-card-value {
+  color: white;
+  font-size: clamp(1.9rem, 2vw, 2.4rem);
+  text-align: start;
 }
 
 .panel-content-wrapper {

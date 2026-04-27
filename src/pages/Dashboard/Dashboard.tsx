@@ -5,10 +5,18 @@ import setPastDate from '../../utils/setPastDate';
 import { sortByNewest } from '../../utils/sortDate';
 import { LayoutContextType, HasDate } from '../../types';
 
+type GetDashboardCardValuesParams = {
+  loading: boolean
+  error: string | null
+  value: string | number
+  additionalValue: string
+}
+
+
 export default function Dashboard() {
 
   // Body Weight card
-  const { bodyWeights, workoutHistory } = useOutletContext<LayoutContextType>();
+  const { bodyWeights, workoutHistory, isBodyWeightsLoading, bodyWeightsError, isWorkoutHistoryLoading, workoutHistoryError } = useOutletContext<LayoutContextType>();
 
   const sortedBodyWeights = sortByNewest(bodyWeights)
 
@@ -91,6 +99,29 @@ export default function Dashboard() {
     return data.filter((data) => new Date(data.date) > last7Days)
   }
 
+
+  function getDashboardCardValue({ loading, error, value, additionalValue }: GetDashboardCardValuesParams) {
+    return (
+      <>
+        <p role={loading ? 'status' : error ? 'alert' : undefined}
+          className={`${styles['status-message']} ${!loading && !error && styles['overview-card-value']}`}>
+          {
+            loading ? 'Loading...' :
+              error ? 'Unavailable' :
+                value
+          }
+        </p>
+
+        {
+          !loading && !error &&
+          <div className={styles['overview-card-value-additional']}>
+            {additionalValue}
+          </div>
+        }
+      </>
+    )
+  }
+
   return (
     <>
       <header>
@@ -101,32 +132,53 @@ export default function Dashboard() {
         <section className={styles['overview-wrapper']}>
           <h2 className={styles['sr-only']}>Overview</h2>
 
+          {workoutHistoryError || bodyWeightsError ?
+            <p role='alert' className={styles['error-message']}>
+              <span aria-hidden='true'>&#10071;</span>
+              Dashboard data could not be loaded
+            </p> : null
+          }
+
           <div className={styles['overview-card-wrapper']}>
             <div className={styles['overview-card']}>
               <div className={styles['overview-card-text']}>Latest Weight:</div>
-              <div className={styles['overview-card-value']}>{latestEntry ? `${latestEntry.bw} kg` : '-'}</div>
-              <div className={styles['overview-card-value-additional']}>
-                {diffDays === null ? '-' : `Updated ${diffDays === 0 ? 'today' : diffDays === 1 ? `${diffDays} day ago` : `${diffDays} days ago`}`}
-              </div>
+
+              {getDashboardCardValue({
+                loading: isBodyWeightsLoading, 
+                error: bodyWeightsError, 
+                value: latestEntry ? `${latestEntry.bw} kg` : '-', 
+                additionalValue: diffDays === null ? '-' : `Updated ${diffDays === 0 ? 'today' : diffDays === 1 ? `${diffDays} day ago` : `${diffDays} days ago`}`})}
 
             </div>
 
             <div className={styles['overview-card']}>
               <div className={styles['overview-card-text']}>Last Workout:</div>
-              <div className={styles['overview-card-value']}>{lastWorkout ? lastWorkout.workoutDay : '-'}</div>
-              <div className={styles['overview-card-value-additional']}>{lastWorkoutDate}</div>
+
+              {getDashboardCardValue({
+                loading: isWorkoutHistoryLoading, 
+                error: workoutHistoryError, 
+                value: lastWorkout ? `${lastWorkout.workoutDay}` : '-', 
+                additionalValue: lastWorkoutDate})}
+
             </div>
 
             <div className={styles['overview-card']}>
               <div className={styles['overview-card-text']}>This Week:</div>
-              <div className={styles['overview-card-value']}>{thisWeekWorkouts.length} workouts </div>
-              <div className={styles['overview-card-value-additional']}>{subText}</div>
+              {getDashboardCardValue({
+                loading: isWorkoutHistoryLoading,
+                 error: workoutHistoryError, 
+                 value: `${thisWeekWorkouts.length} workouts`, 
+                 additionalValue: subText})}
             </div>
 
             <div className={styles['overview-card']}>
               <div className={styles['overview-card-text']}>Total Workouts:</div>
-              <div className={styles['overview-card-value']}>{workoutHistory.length}</div>
-              <div className={styles['overview-card-value-additional']}>{totalWorkoutSubtext}</div>
+              {getDashboardCardValue({
+                loading: isWorkoutHistoryLoading, 
+                error: workoutHistoryError, 
+                value: workoutHistory.length, 
+                additionalValue: totalWorkoutSubtext
+                })}
             </div>
           </div>
         </section>
