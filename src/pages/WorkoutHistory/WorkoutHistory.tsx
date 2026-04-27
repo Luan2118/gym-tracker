@@ -213,13 +213,21 @@ export default function WorkoutHistory() {
                     <button type="button" className={styles["pagination-button"]} onClick={() => setCurrentPage((prev) => prev + 1)} disabled={currentPage === totalPages}>Next</button>
                   </div>
                 </>)
-            :
-            (<p
-              role='status'
-              className={`${styles["status-message"]} ${styles["no-workouts-yet-message"]}`}>No workout history yet</p>)
+            : workoutHistory.length === 0 ?
+              (<p
+                role='status'
+                className={`${styles["status-message"]} ${styles["no-workouts-message"]}`}>No workout history yet</p>) :
+              (
+                <p
+                  role='status'
+                  className={`${styles["status-message"]} ${styles["no-workouts-message"]}`}
+                >
+                  No workouts match your filters
+                </p>
+              )
           }
         </div>
-      </div>
+      </div >
     </>
   )
 }
