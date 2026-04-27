@@ -1,19 +1,20 @@
 import styles from './ActiveExerciseCard.module.css'
 import { EXERCISE_BASE_PREFIX } from '../../../data/exercises';
-import { WorkoutHistory, WorkoutHistorySet, ActiveWorkoutExercise, TrainingSplit } from '../../../types';
+import { WorkoutHistory, WorkoutHistorySet, ActiveWorkoutExercise, TrainingSplitExercise } from '../../../types';
 
 type ActiveExerciseCardProps = {
   ex: ActiveWorkoutExercise
   exerciseId: string
-  activeExercises: ActiveWorkoutExercise[]
   workoutHistory: WorkoutHistory[]
   handleWeightSet: (e: React.ChangeEvent<HTMLInputElement>, setId: string, exerciseId: string) => void
   handleRepsSet: (e: React.ChangeEvent<HTMLInputElement>, setId: string, exerciseId: string) => void
+  activeExIds: Set<string>
+  activeExercisesData: TrainingSplitExercise[]
 }
 
-export default function ActiveExerciseCard({ ex, exerciseId, activeExercises, workoutHistory, handleWeightSet, handleRepsSet}: ActiveExerciseCardProps) {
+export default function ActiveExerciseCard({ ex, exerciseId, workoutHistory, handleWeightSet, handleRepsSet, activeExIds, activeExercisesData }: ActiveExerciseCardProps) {
 
-  const activeExIds: Set<string> = new Set(activeExercises.map(e => e.exerciseId));
+
 
   const lastWorkout: WorkoutHistory | undefined = [...workoutHistory]
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
@@ -89,14 +90,22 @@ export default function ActiveExerciseCard({ ex, exerciseId, activeExercises, wo
 
           <div className={styles["active-workout-wrapper-previous-set-wrapper"]}>
             <div className={styles["active-workout-previous-set-title"]}>Previous set</div>
-            {ex.sets.map((set, index) => {
-              const prevSet = getPrevSet(exerciseId, set.id, lastWorkout)
-              return (
-                <div key={set.id} className={styles["active-workout-b-p-set-wrapper"]}>
-                  <div className={styles["active-workout-b-p-set"]}>Set {index + 1}:</div>
-                  <span className={styles["active-workout-b-p-set-value"]}>{prevSet ? `${prevSet.weight} × ${prevSet.reps}` :  `${set.weight} × ${set.reps}`}</span>
-                </div>
-              )
+
+
+            {activeExercisesData.map((activeEx) => {
+              if (activeEx.exerciseId !== ex.exerciseId) return;
+
+              
+                return activeEx.sets.map((set, index) => {
+                  const prevSet = getPrevSet(exerciseId, set.id, lastWorkout)
+                  return (
+                    <div key={set.id} className={styles["active-workout-b-p-set-wrapper"]}>
+                      <div className={styles["active-workout-b-p-set"]}>Set {index + 1}:</div>
+                      <span className={styles["active-workout-b-p-set-value"]}>{prevSet ? `${prevSet.weight} × ${prevSet.reps}` : `${set.weight} × ${set.reps}`}</span>
+                    </div>
+                  )
+                })
+              
             })}
           </div>
         </div>
@@ -115,10 +124,10 @@ export default function ActiveExerciseCard({ ex, exerciseId, activeExercises, wo
 
                   <div className={styles["active-workout-set-input-wrapper"]}>
                     <label htmlFor={`weight-${ex.exerciseId}-${set.id}`} className={styles["sr-only"]}>Weight</label>
-                    <input type="number" id={`weight-${ex.exerciseId}-${set.id}`} className={styles["active-workout-weight-input"]} onChange={(e) => handleWeightSet(e, set.id, ex.exerciseId)} value={set.weight}/>
+                    <input type="number" id={`weight-${ex.exerciseId}-${set.id}`} className={styles["active-workout-weight-input"]} onChange={(e) => handleWeightSet(e, set.id, ex.exerciseId)} value={set.weight} />
                     ×
                     <label htmlFor={`reps-${ex.exerciseId}-${set.id}`} className={styles["sr-only"]}>Reps</label>
-                    <input type="number" id={`reps-${ex.exerciseId}-${set.id}`} className={styles["active-workout-reps-input"]} onChange={(e) => handleRepsSet(e, set.id, ex.exerciseId)} value={set.reps}/>
+                    <input type="number" id={`reps-${ex.exerciseId}-${set.id}`} className={styles["active-workout-reps-input"]} onChange={(e) => handleRepsSet(e, set.id, ex.exerciseId)} value={set.reps} />
                   </div>
                 </div>
               </fieldset>

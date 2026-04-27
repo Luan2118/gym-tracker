@@ -38,9 +38,12 @@ export default function ActiveWorkout() {
 
   const selectedWorkoutDay = selectedTrainingSplit?.workoutDays.find((workoutday) => workoutday.id === selectedWorkoutDayId)
 
-  const activeWorkoutData =
+  const activeExercisesData =
     selectedWorkoutDay
       ?.exercises ?? [];
+
+
+  const activeExIds: Set<string> = new Set(activeExercises.map(e => e.exerciseId));
 
   const [timerRunning, setTimerRunning] = useState(false);
   const startTimeRef = useRef(0);
@@ -83,7 +86,7 @@ export default function ActiveWorkout() {
     setTimerRunning(true);
     e.preventDefault();
     setActiveWorkout(true)
-    setActiveExercises(activeWorkoutData.map((ex) => {
+    setActiveExercises(activeExercisesData.map((ex) => {
       return {
         exerciseName: ex.exerciseName,
         exerciseId: ex.exerciseId,
@@ -327,10 +330,11 @@ export default function ActiveWorkout() {
                   key={ex.exerciseId}
                   ex={ex}
                   exerciseId={ex.exerciseId}
-                  activeExercises={activeExercises}
                   workoutHistory={workoutHistory}
                   handleWeightSet={handleWeightSet}
                   handleRepsSet={handleRepsSet}
+                  activeExIds={activeExIds}
+                  activeExercisesData={activeExercisesData}
                 />
               )}
 
