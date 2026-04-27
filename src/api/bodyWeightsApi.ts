@@ -8,7 +8,7 @@ type CreateBodyWeightInput = Pick<BodyWeight, 'bw' | 'date'>
 
 export async function getBodyWeights(): Promise<BodyWeight[]> {
   const { data, error } = await supabase
-    .from('body_weights')
+    .from('bodys_weights')
     .select('id, bw, date')
     .order('date', { ascending: false })
     .order('created_at', { ascending: false });

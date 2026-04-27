@@ -102,7 +102,7 @@ export default function Dashboard() {
   }
 
 
-  function getDashboardCardValue({ loading, error, value, additionalValue }: GetDashboardCardValuesParams) {
+  function getDashboardValue({ loading, error, value, additionalValue }: GetDashboardCardValuesParams) {
     return (
       <>
         <p role={loading ? 'status' : error ? 'alert' : undefined}
@@ -145,7 +145,7 @@ export default function Dashboard() {
             <div className={styles['overview-card']}>
               <div className={styles['overview-card-text']}>Latest Weight:</div>
 
-              {getDashboardCardValue({
+              {getDashboardValue({
                 loading: isBodyWeightsLoading,
                 error: bodyWeightsError,
                 value: latestEntry ? `${latestEntry.bw} kg` : '-',
@@ -157,7 +157,7 @@ export default function Dashboard() {
             <div className={styles['overview-card']}>
               <div className={styles['overview-card-text']}>Last Workout:</div>
 
-              {getDashboardCardValue({
+              {getDashboardValue({
                 loading: isWorkoutHistoryLoading,
                 error: workoutHistoryError,
                 value: lastWorkout ? `${lastWorkout.workoutDay}` : '-',
@@ -168,7 +168,7 @@ export default function Dashboard() {
 
             <div className={styles['overview-card']}>
               <div className={styles['overview-card-text']}>This Week:</div>
-              {getDashboardCardValue({
+              {getDashboardValue({
                 loading: isWorkoutHistoryLoading,
                 error: workoutHistoryError,
                 value: `${thisWeekWorkouts.length} workouts`,
@@ -178,7 +178,7 @@ export default function Dashboard() {
 
             <div className={styles['overview-card']}>
               <div className={styles['overview-card-text']}>Total Workouts:</div>
-              {getDashboardCardValue({
+              {getDashboardValue({
                 loading: isWorkoutHistoryLoading,
                 error: workoutHistoryError,
                 value: workoutHistory.length,
@@ -195,7 +195,7 @@ export default function Dashboard() {
             <div className={styles['week-summary-wrapper']}>
               <div className={styles['week-summary-card']}>
                 <div className={styles['week-summary-title']}>Total Sets</div>
-                {getDashboardCardValue({
+                {getDashboardValue({
                   loading: isWorkoutHistoryLoading,
                   error: workoutHistoryError,
                   value: totalSets
@@ -204,7 +204,7 @@ export default function Dashboard() {
 
               <div className={styles['week-summary-card']}>
                 <div className={styles['week-summary-title']}>Total Exercises</div>
-                {getDashboardCardValue({
+                {getDashboardValue({
                   loading: isWorkoutHistoryLoading,
                   error: workoutHistoryError,
                   value: totalExercises
@@ -213,7 +213,7 @@ export default function Dashboard() {
 
               <div className={styles['week-summary-card']}>
                 <div className={styles['week-summary-title']}>Weigh-ins</div>
-                {getDashboardCardValue({
+                {getDashboardValue({
                   loading: isBodyWeightsLoading,
                   error: bodyWeightsError,
                   value: thisWeekBodyWeight.length
@@ -222,7 +222,7 @@ export default function Dashboard() {
 
               <div className={styles['week-summary-card']}>
                 <div className={styles['week-summary-title']}>Avg Weight</div>
-                {getDashboardCardValue({
+                {getDashboardValue({
                   loading: isBodyWeightsLoading,
                   error: bodyWeightsError,
                   value: avgBodyWeight ? `${avgBodyWeight.toFixed(1)} kg` : '-'
@@ -264,27 +264,33 @@ export default function Dashboard() {
               <Link to="workout-history" className={styles['view-all-button']}>View All</Link>
             </div>
 
-            <div className={styles['recent-workout-card-wrapper']}>
 
-              {thisWeekWorkouts.map((w) => {
-                return (
-                  <div className={styles['recent-workout-card']} key={w.id}>
-                    <div>
-                      <div className={styles['recent-workout-workout-day-title']}>{w.workoutDay}</div>
-                      <div className={styles['recent-workout-workout-day-date']}>{formatISODate(w.date)}</div>
+            <div className={!isWorkoutHistoryLoading && !workoutHistoryError && thisWeekWorkouts.length > 0 ? styles['recent-workout-card-wrapper'] : styles['recent-workout-card-wrapper-no-data']} >
+              {isWorkoutHistoryLoading ? (
+                <p className={styles['no-logs-this-week-status-message']}>Loading...</p>
+              ) : workoutHistoryError ? (
+                <p className={styles['no-logs-this-week-status-message']}>Unavailable</p>
+              ) : thisWeekWorkouts.length === 0 ? (
+                <p className={styles['no-logs-this-week-status-message']}>No workouts this week</p>
+              ) : (
+                thisWeekWorkouts.map((w) => {
+                  return (
+                    <div className={styles['recent-workout-card']} key={w.id}>
+                      <div>
+                        <div className={styles['recent-workout-workout-day-title']}>{w.workoutDay}</div>
+                        <div className={styles['recent-workout-workout-day-date']}>{formatISODate(w.date)}</div>
+                      </div>
+                      <div className={styles['recent-workout-workout-day-exercises']}>{w.exercises.reduce((exAcc) => {
+                        return exAcc + 1
+                      }, 0)} exercises</div>
                     </div>
-                    <div className={styles['recent-workout-workout-day-exercises']}>{w.exercises.reduce((exAcc) => {
-                      return exAcc + 1
-                    }, 0)} exercises</div>
-                  </div>
-                )
-              })}
-
+                  )
+                })
+              )}
             </div>
 
-            {thisWeekWorkouts.length === 0 &&
-              <div className={styles['no-workouts-this-week-text']}>No workouts this week</div>
-            }
+
+
           </section>
 
           <section className={styles['panel-wrapper']}>
@@ -296,38 +302,52 @@ export default function Dashboard() {
             <div className={styles['weight-this-week-content-wrapper']} >
 
               <div className={styles['weight-this-week-card-wrapper']}>
-                {thisWeeksBodyWeight.map((bw) => {
-                  return (
-                    <div className={styles['weight-this-week-card']} key={bw.id}>
-                      <div className={styles['weight-this-week-date']}>{formatISODate(bw.date)}:</div>
-                      <div className={styles['weight-this-week-value']}>{bw.bw} kg</div>
-                    </div>
-                  )
-                })}
 
-                {thisWeeksBodyWeight.length === 0 &&
-                  <div className={styles['no-weight-logs-this-week-text']}>No weight logs this week</div>
-                }
+                {isBodyWeightsLoading ? (
+                  <p className={styles['no-logs-this-week-status-message']}>Loading...</p>
+                ) : bodyWeightsError ? (
+                  <p className={styles['no-logs-this-week-status-message']}>Unavailable</p>
+                ) : thisWeeksBodyWeight.length === 0 ? (
+                  <p className={styles['no-logs-this-week-status-message']}>No weight logs this week</p>
+                ) : (
+                  thisWeeksBodyWeight.map((bw) => {
+                    return (
+                      <div className={styles['weight-this-week-card']} key={bw.id}>
+                        <div className={styles['weight-this-week-date']}>{formatISODate(bw.date)}:</div>
+                        <div className={styles['weight-this-week-value']}>{bw.bw} kg</div>
+                      </div>
+                    )
+                  })
+                )}
               </div>
 
               <div className={styles['weight-this-week-summary']}>
                 <div className={styles['weight-summary-current-text']}>
                   Current
                 </div>
-                <div className={styles['weight-summary-current-weight']}>
-                  {latestEntry ? `${latestEntry.bw} kg` : '-'}
-                </div>
+
+                {getDashboardValue({
+                  loading: isBodyWeightsLoading,
+                  error: bodyWeightsError,
+                  value: latestEntry ? `${latestEntry.bw} kg` : '-'
+                })}
 
                 <div className={styles['weight-summary-previous-info-wrapper']}>
                   <div className={styles['weight-summary-previous-text']}>Previous</div>
-                  <div className={styles['weight-summary-previous-weight']}>{previousEntry ? `${previousEntry.bw} kg` : '-'}</div>
+                  {getDashboardValue({
+                    loading: isBodyWeightsLoading,
+                    error: bodyWeightsError,
+                    value: previousEntry ? `${previousEntry.bw} kg` : '-'
+                  })}
                 </div>
 
                 <div className={styles['weight-summary-change-info-wrapper']}>
                   <div className={styles['weight-summary-change-text']}>Change</div>
-                  <div className={styles['weight-summary-change-value']}>
-                    {bwChange === null ? '-' : `${bwChange > 0 ? `+${bwChange.toFixed(1)}` : bwChange.toFixed(1)} kg`}
-                  </div>
+                  {getDashboardValue({
+                    loading: isBodyWeightsLoading,
+                    error: bodyWeightsError,
+                    value: bwChange === null ? '-' : `${bwChange > 0 ? `+${bwChange.toFixed(1)}` : bwChange.toFixed(1)} kg`
+                  })}
                 </div>
               </div>
             </div>

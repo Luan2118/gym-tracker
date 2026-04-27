@@ -189,6 +189,14 @@
   gap: 1.5rem;
 }
 
+.recent-workout-card-wrapper-no-data {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
 
 
 .recent-workout-card {
@@ -214,8 +222,7 @@
   border-radius: 1rem;
 }
 
-.no-workouts-this-week-text,
-.no-weight-logs-this-week-text {
+.no-logs-this-week-status-message {
   flex: 1;
   display: flex;
   align-items: center;
