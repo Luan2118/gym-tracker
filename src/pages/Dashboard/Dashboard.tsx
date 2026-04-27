@@ -326,28 +326,42 @@ export default function Dashboard() {
                   Current
                 </div>
 
-                {getDashboardValue({
-                  loading: isBodyWeightsLoading,
-                  error: bodyWeightsError,
-                  value: latestEntry ? `${latestEntry.bw} kg` : '-'
-                })}
+                <div className={styles['weight-summary-current-weight']}>
+                  {isBodyWeightsLoading
+                    ? 'Loading...'
+                    : bodyWeightsError
+                      ? 'Unavailable'
+                      : latestEntry
+                        ? `${latestEntry.bw} kg`
+                        : '-'}
+                </div>
 
                 <div className={styles['weight-summary-previous-info-wrapper']}>
                   <div className={styles['weight-summary-previous-text']}>Previous</div>
-                  {getDashboardValue({
-                    loading: isBodyWeightsLoading,
-                    error: bodyWeightsError,
-                    value: previousEntry ? `${previousEntry.bw} kg` : '-'
-                  })}
+
+                  <div className={styles['weight-summary-previous-weight']}>
+                    {isBodyWeightsLoading
+                      ? 'Loading...'
+                      : bodyWeightsError
+                        ? 'Unavailable'
+                        : previousEntry
+                          ? `${previousEntry.bw} kg`
+                          : '-'}
+                  </div>
                 </div>
 
                 <div className={styles['weight-summary-change-info-wrapper']}>
                   <div className={styles['weight-summary-change-text']}>Change</div>
-                  {getDashboardValue({
-                    loading: isBodyWeightsLoading,
-                    error: bodyWeightsError,
-                    value: bwChange === null ? '-' : `${bwChange > 0 ? `+${bwChange.toFixed(1)}` : bwChange.toFixed(1)} kg`
-                  })}
+
+                  <div className={styles['weight-summary-change-value']}>
+                    {isBodyWeightsLoading
+                      ? 'Loading...'
+                      : bodyWeightsError
+                        ? 'Unavailable'
+                        : bwChange === null
+                          ? '-'
+                          : `${bwChange > 0 ? `+ ${bwChange.toFixed(1)}` : bwChange.toFixed(1)} kg`}
+                  </div>
                 </div>
               </div>
             </div>

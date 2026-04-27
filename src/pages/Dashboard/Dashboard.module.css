@@ -289,7 +289,7 @@
 }
 
 .weight-summary-current-weight {
-  font-size: clamp(2.3rem, 3vw, 3rem);
+  font-size: clamp(1.8rem, 2vw, 2.5rem);
   font-weight: 700;
   color: rgb(255, 255, 255);
   margin-bottom: 2rem;
@@ -314,7 +314,7 @@
 .weight-summary-change-value {
   font-size: clamp(1.4rem, 3.7vw, 1.6rem);
   font-weight: 600;
-  color: rgb(255, 255, 255);
+  color: rgb(200, 200, 200);
 }
 
 @media (min-width: 890px) {
