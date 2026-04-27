@@ -1,6 +1,32 @@
 import { supabase } from "../lib/supabaseClient";
 import { WorkoutHistory, WorkoutHistoryExercise } from "../types";
 
+type WorkoutHistoryRow = {
+  id: string
+  training_split_name: string
+  workout_day: string
+  date: string
+  exercises: WorkoutHistoryExercise[]
+  duration: number
+}
+
+type CreateWorkoutHistoryInput = Pick<
+  WorkoutHistory,
+  'trainingSplitName' | 'workoutDay' | 'date' | 'exercises' | 'duration'
+>;
+
+
+function mapWorkoutHistoryRow(row: WorkoutHistoryRow): WorkoutHistory {
+  return {
+    id: row.id,
+    trainingSplitName: row.training_split_name,
+    workoutDay: row.workout_day,
+    date: row.date,
+    exercises: row.exercises,
+    duration: row.duration,
+  }
+}
+
 export async function getWorkoutHistory(): Promise<WorkoutHistory[]> {
   const { data, error } = await supabase
     .from('workout_history')
@@ -11,27 +37,14 @@ export async function getWorkoutHistory(): Promise<WorkoutHistory[]> {
     throw new Error(`Failed to fetch workout history: ${error.message}`);
   }
 
-  const mappedData: WorkoutHistory[] = data?.map((row) => {
-    return {
-      id: row.id,
-      trainingSplitName: row.training_split_name,
-      workoutDay: row.workout_day,
-      date: row.date,
-      exercises: row.exercises,
-      duration: row.duration,
-    }
+  const workoutHistoryRows: WorkoutHistoryRow[] = data ?? [];
+
+  return workoutHistoryRows.map((row) => {
+    return mapWorkoutHistoryRow(row);
   })
 
-  return mappedData ?? [];
 }
 
-type CreateWorkoutHistoryInput = {
-  trainingSplitName: string
-  workoutDay: string
-  date: string
-  exercises: WorkoutHistoryExercise[]
-  duration: number
-}
 
 export async function createWorkoutHistory(workoutHistory: CreateWorkoutHistoryInput): Promise<WorkoutHistory> {
   const { data, error } = await supabase
@@ -47,33 +60,26 @@ export async function createWorkoutHistory(workoutHistory: CreateWorkoutHistoryI
     .single();
 
   if (error) {
-    throw new Error(`Failed to create workout history ${error.message}`);
+    throw new Error(`Failed to create workout history: ${error.message}`);
   }
 
   if (!data) {
     throw new Error('Failed to create workout history');
   }
 
-  const mappedData: WorkoutHistory = {
-    id: data.id,
-    trainingSplitName: data.training_split_name,
-    workoutDay: data.workout_day,
-    date: data.date,
-    exercises: data.exercises,
-    duration: data.duration,
-  }
+  const savedWorkoutHistory = mapWorkoutHistoryRow(data);
 
-  return mappedData;
+  return savedWorkoutHistory;
 }
 
 
 export async function deleteWorkoutHistoryItemById(id: string): Promise<void> {
-  const {error} = await supabase
+  const { error } = await supabase
     .from('workout_history')
     .delete()
     .eq('id', id)
 
-    if (error) {
-      throw new Error(`Failed to delete workout history card ${error.message}`)
-    }
+  if (error) {
+    throw new Error(`Failed to delete workout history card: ${error.message}`)
+  }
 }
