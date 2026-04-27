@@ -32,10 +32,13 @@ type AddTrainingSplitDialogProps = {
   addTrainingSplitError: string | null
   isUpdatingTrainingSplit: boolean
   updateTrainingSplitError: string | null
+  showMissingExercisesError: boolean
+  showUnselectedExerciseError: boolean
 }
 
-export default function AddTrainingSplitDialog({ dialogRef, submitTrainingSplit, trainingSplitInputText, setTrainingSplitInputText, addWorkoutDay, closeDialog, workoutDays, handleWorkoutDayInputText, deleteWorkoutDay, selectExerciseAgain, handleSearchExerciseText, deleteExercise, handleWeightSet, handleRepsSet, deleteSet, addSet, selectExercise, addExercise, duplicatedExerciseId, emptyTrainingSplitName, emptyWorkoutDayName, hasSubmitted, isAddingTrainingSplit, addTrainingSplitError, isUpdatingTrainingSplit, updateTrainingSplitError }: AddTrainingSplitDialogProps) {
+export default function AddTrainingSplitDialog({ dialogRef, submitTrainingSplit, trainingSplitInputText, setTrainingSplitInputText, addWorkoutDay, closeDialog, workoutDays, handleWorkoutDayInputText, deleteWorkoutDay, selectExerciseAgain, handleSearchExerciseText, deleteExercise, handleWeightSet, handleRepsSet, deleteSet, addSet, selectExercise, addExercise, duplicatedExerciseId, emptyTrainingSplitName, emptyWorkoutDayName, hasSubmitted, isAddingTrainingSplit, addTrainingSplitError, isUpdatingTrainingSplit, updateTrainingSplitError, showMissingExercisesError, showUnselectedExerciseError }: AddTrainingSplitDialogProps) {
 
+  console.log(workoutDays)
   return (
     <dialog id='training-split-dialog' ref={dialogRef} className={styles["add-training-split-dialog"]} aria-label='Training split dialog'>
       <form className={styles["form-wrapper"]} onSubmit={submitTrainingSplit}>
@@ -77,7 +80,7 @@ export default function AddTrainingSplitDialog({ dialogRef, submitTrainingSplit,
                 </button>
               </div>
               {emptyWorkoutDayName.some((day) => day.id === workoutDay.id) &&
-                <p  role='alert' className={`${styles["error-message"]} ${styles["workout-day-name-message"]}`}>
+                <p role='alert' className={`${styles["error-message"]} ${styles["workout-day-name-message"]}`}>
                   <span aria-hidden='true'>&#10071;</span>
                   Enter workout day name
                 </p>}
@@ -126,6 +129,20 @@ export default function AddTrainingSplitDialog({ dialogRef, submitTrainingSplit,
             {updateTrainingSplitError}
           </p>
         }
+
+        {showMissingExercisesError &&
+          <p role='alert' className={`${styles["error-message"]} ${styles["form-error-message"]}`}>
+            <span aria-hidden='true'>&#10071;</span>
+            Add at least one exercise to every workout day
+          </p>}
+
+        {showUnselectedExerciseError &&
+          <p role='alert' className={`${styles["error-message"]} ${styles["form-error-message"]}`}>
+            <span aria-hidden='true'>&#10071;</span>
+           Select an exercise for every added exercise row
+          </p>}
+
+
 
         <button type='submit' className={styles["confirm-button"]} disabled={isAddingTrainingSplit || isUpdatingTrainingSplit}>Confirm</button>
       </form>

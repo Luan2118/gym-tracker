@@ -20,7 +20,8 @@ export default function TrainingSplit() {
   const [emptyWorkoutDayName, setEmptyWorkoutDayName] = useState<TrainingSplitWorkoutDay[]>([]);
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [deleteTrainingSplitErrorId, setDeleteTrainingSplitErrorId] = useState<string | null>(null);
-
+  const [showMissingExercisesError, setShowMissingExercisesError] = useState(false);
+  const [showUnselectedExerciseError, setShowUnselectedExerciseError] = useState(false);
 
   const [isAddingTrainingSplit, setIsAddingTrainingSplit] = useState(false);
   const [addTrainingSplitError, setAddTrainingSplitError] = useState<string | null>(null);
@@ -56,8 +57,10 @@ export default function TrainingSplit() {
     setEmptyTrainingSplitName(false);
     setEmptyWorkoutDayName([])
     setHasSubmitted(false);
-    setDuplicatedExercise('')
+    setDuplicatedExercise('');
     setUpdateTrainingSplitError(null);
+    setShowMissingExercisesError(false);
+    setShowUnselectedExerciseError(false);
   }
 
   function addWorkoutDay() {
@@ -272,24 +275,43 @@ export default function TrainingSplit() {
     const name = trainingSplitInputText.trim();
     const snapshotWorkoutDays = structuredClone(workoutDays);
     const hasEmptyWorkoutDayName = snapshotWorkoutDays.filter((workoutDay) => workoutDay.name.trim() === '')
+    const notAddedExercises = snapshotWorkoutDays.some((workoutDay) => workoutDay.exercises.length === 0)
+    const notSelectedExercises = snapshotWorkoutDays.some((workoutDay) => workoutDay.exercises.some((ex) => ex.exerciseName === ''))
 
+    // check for training split name
     if (!name) {
       setEmptyTrainingSplitName(true);
       return;
     }
+
     setEmptyTrainingSplitName(false);
 
+    // check for workoutDay name
     if (hasEmptyWorkoutDayName.length > 0) {
       setEmptyWorkoutDayName(hasEmptyWorkoutDayName)
       return;
     }
     setEmptyWorkoutDayName([])
 
-
+    // check if workout day was added
     if (snapshotWorkoutDays.length === 0) return;
 
-    setAddTrainingSplitError(null);
 
+    // check if ex was added
+    if (notAddedExercises) {
+      setShowMissingExercisesError(true);
+      return;
+    }
+    setShowMissingExercisesError(false);
+
+    // check if ex was selected
+    if (notSelectedExercises) {
+      setShowUnselectedExerciseError(true);
+      return;
+    }
+    setShowUnselectedExerciseError(false);
+
+    setAddTrainingSplitError(null);
 
     if (editingSplitId === null) {
       try {
@@ -455,6 +477,8 @@ export default function TrainingSplit() {
           addTrainingSplitError={addTrainingSplitError}
           isUpdatingTrainingSplit={isUpdatingTrainingSplit}
           updateTrainingSplitError={updateTrainingSplitError}
+          showMissingExercisesError={showMissingExercisesError}
+          showUnselectedExerciseError={showUnselectedExerciseError}
         />
         <section className={styles["content-main"]}>
           {isTrainingSplitsLoading ? (
