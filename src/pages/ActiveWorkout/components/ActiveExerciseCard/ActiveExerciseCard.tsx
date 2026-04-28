@@ -1,6 +1,6 @@
 import styles from './ActiveExerciseCard.module.css'
-import { EXERCISE_BASE_PREFIX } from '../../../data/exercises';
-import { WorkoutHistory, WorkoutHistorySet, ActiveWorkoutExercise, TrainingSplitExercise } from '../../../types';
+import { EXERCISE_BASE_PREFIX } from '../../../../data/exercises';
+import { WorkoutHistory, WorkoutHistorySet, ActiveWorkoutExercise, TrainingSplitExercise } from '../../../../types';
 
 type ActiveExerciseCardProps = {
   ex: ActiveWorkoutExercise

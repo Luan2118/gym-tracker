@@ -1,7 +1,7 @@
 import styles from './StartWorkoutDialog.module.css'
-import closeX from '../../../assets/activeWorkout/x-close.png'
-import { EXERCISE_BASE_PREFIX } from '../../../data/exercises'
-import { TrainingSplit, TrainingSplitWorkoutDay } from '../../../types'
+import closeX from '../../../../assets/activeWorkout/x-close.png'
+import { EXERCISE_BASE_PREFIX } from '../../../../data/exercises'
+import { TrainingSplit, TrainingSplitWorkoutDay } from '../../../../types'
 
 type StartWorkoutDialogProps = {
   dialogRef: React.RefObject<HTMLDialogElement | null>
