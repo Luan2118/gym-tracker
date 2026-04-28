@@ -280,7 +280,6 @@ export default function TrainingSplit() {
     const notSelectedExercises = snapshotWorkoutDays.some((workoutDay) => workoutDay.exercises.some((ex) => ex.exerciseName === ''))
     const notAddedSet = snapshotWorkoutDays.flatMap((workoutDay) => workoutDay.exercises).find((ex) => ex.sets.length === 0);
 
-    console.log(notAddedSet)
 
     // check for training split name
     if (!name) {
