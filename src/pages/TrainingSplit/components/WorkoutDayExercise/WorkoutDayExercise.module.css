@@ -24,7 +24,7 @@
 .search-exercise-input-wrapper-inner {
   display: flex;
   flex-direction: column;
-} 
+}
 
 .added-exercise-button {
   display: flex;
@@ -118,7 +118,7 @@
 }
 
 .set-title {
-   font-size: clamp(1.6rem, 2vw, 1.7rem);
+  font-size: clamp(1.6rem, 2vw, 1.7rem);
   font-weight: 500;
   color: rgb(200, 200, 200);
   margin-right: 1rem;
@@ -244,7 +244,7 @@
   width: 100%;
   cursor: pointer;
   transition: 0.2s ease;
-  gap: 1rem;  
+  gap: 1rem;
 }
 
 .search-exercise-list-button:hover {
@@ -265,4 +265,17 @@
   margin-right: auto;
   font-size: clamp(1.4rem, 1.8vw, 1.6rem);
   font-weight: 600;
+}
+
+.error-message {
+  background-color: rgba(90, 35, 45, 0.45);
+  border: 1px solid rgba(255, 95, 115, 0.45);
+  color: rgb(255, 95, 115);
+  width: fit-content;
+  padding: 0.5rem 0.8rem;
+  border-radius: 1rem;
+  font-size: clamp(1.2rem, 1vw, 1.5rem);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  margin-left: 3.5rem;
 }

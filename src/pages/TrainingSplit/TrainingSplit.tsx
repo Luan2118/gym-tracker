@@ -277,6 +277,7 @@ export default function TrainingSplit() {
     const hasEmptyWorkoutDayName = snapshotWorkoutDays.filter((workoutDay) => workoutDay.name.trim() === '')
     const notAddedExercises = snapshotWorkoutDays.some((workoutDay) => workoutDay.exercises.length === 0)
     const notSelectedExercises = snapshotWorkoutDays.some((workoutDay) => workoutDay.exercises.some((ex) => ex.exerciseName === ''))
+    const notAddedSet = snapshotWorkoutDays.some((workoutDay) => workoutDay.exercises.some((ex) => ex.sets.length === 0));
 
     // check for training split name
     if (!name) {
@@ -310,6 +311,9 @@ export default function TrainingSplit() {
       return;
     }
     setShowUnselectedExerciseError(false);
+
+    // check for empty sets
+    if (notAddedSet) return;
 
     setAddTrainingSplitError(null);
 

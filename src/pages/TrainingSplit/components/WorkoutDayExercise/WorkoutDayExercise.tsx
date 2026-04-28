@@ -16,9 +16,10 @@ type WorkoutDayExerciseProps = {
   addSet: (workoutDayId: string, addedExerciseRowId: string) => void
   selectExercise: (workoutDayId: string, selectedExerciseId: string, addedExerciseRowId: string) => void
   duplicatedExerciseId: string
+  hasSubmitted: boolean
 }
 
-export default function WorkoutDayExercise({ addedExercise, workoutDayId, selectExerciseAgain, handleSearchExerciseText, deleteExercise, handleWeightSet, handleRepsSet, deleteSet, addSet, selectExercise, duplicatedExerciseId }: WorkoutDayExerciseProps) {
+export default function WorkoutDayExercise({ addedExercise, workoutDayId, selectExerciseAgain, handleSearchExerciseText, deleteExercise, handleWeightSet, handleRepsSet, deleteSet, addSet, selectExercise, duplicatedExerciseId, hasSubmitted }: WorkoutDayExerciseProps) {
 
   return (
     <li className={styles["search-exercise-wrapper"]}>
@@ -70,7 +71,16 @@ export default function WorkoutDayExercise({ addedExercise, workoutDayId, select
       {addedExercise.confirm && <button type='button' className={styles["add-set-button"]} aria-label='Add set' onClick={() => addSet(workoutDayId, addedExercise.rowId)}>
         <img className={styles["add-set-icon"]} src={plusIcon} alt='' />
         <span className={styles["add-set-text"]}>Add set</span>
-      </button>}
+      </button>
+      }
+
+      {
+        hasSubmitted && addedExercise.confirm && addedExercise.sets.length === 0 &&
+        <p role='alert' className={styles["error-message"]}>
+          <span aria-hidden='true'>&#10071;</span>
+          Add at least one set
+        </p>
+      }
 
       {addedExercise.confirm ? null :
         <ul className={styles["search-exercise-list-wrapper"]}>

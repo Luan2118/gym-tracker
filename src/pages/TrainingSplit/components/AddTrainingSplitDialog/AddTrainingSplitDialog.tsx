@@ -38,7 +38,6 @@ type AddTrainingSplitDialogProps = {
 
 export default function AddTrainingSplitDialog({ dialogRef, submitTrainingSplit, trainingSplitInputText, setTrainingSplitInputText, addWorkoutDay, closeDialog, workoutDays, handleWorkoutDayInputText, deleteWorkoutDay, selectExerciseAgain, handleSearchExerciseText, deleteExercise, handleWeightSet, handleRepsSet, deleteSet, addSet, selectExercise, addExercise, duplicatedExerciseId, emptyTrainingSplitName, emptyWorkoutDayName, hasSubmitted, isAddingTrainingSplit, addTrainingSplitError, isUpdatingTrainingSplit, updateTrainingSplitError, showMissingExercisesError, showUnselectedExerciseError }: AddTrainingSplitDialogProps) {
 
-  console.log(workoutDays)
   return (
     <dialog id='training-split-dialog' ref={dialogRef} className={styles["add-training-split-dialog"]} aria-label='Training split dialog'>
       <form className={styles["form-wrapper"]} onSubmit={submitTrainingSplit}>
@@ -100,6 +99,7 @@ export default function AddTrainingSplitDialog({ dialogRef, submitTrainingSplit,
                     addSet={addSet}
                     selectExercise={selectExercise}
                     duplicatedExerciseId={duplicatedExerciseId}
+                    hasSubmitted={hasSubmitted}
                   />
                 )}
               </ul>
@@ -142,8 +142,7 @@ export default function AddTrainingSplitDialog({ dialogRef, submitTrainingSplit,
            Select an exercise for every added exercise row
           </p>}
 
-
-
+     
         <button type='submit' className={styles["confirm-button"]} disabled={isAddingTrainingSplit || isUpdatingTrainingSplit}>Confirm</button>
       </form>
     </dialog>
