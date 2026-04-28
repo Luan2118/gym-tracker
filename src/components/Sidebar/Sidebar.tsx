@@ -35,13 +35,13 @@ export default function Sidebar({ isSidebarOpen, setIsSidebarOpen }: SidebarProp
           <img className={styles['title-img']} src={title} alt='' aria-hidden="true" />
           <h2 className={styles['title']}>Gym Tracker</h2>
 
-          <button type="button" aria-label='Close menu' className={styles['close-menu-btn']} onClick={handleMenuButton}>
+          <button type="button" aria-label='Close menu' aria-controls='sidebar' aria-expanded={isSidebarOpen} className={styles['close-menu-btn']} onClick={handleMenuButton}>
             <img src={closeIcon} alt="" className={styles['close-menu-icon']} />
           </button>
         </header>
         <hr aria-hidden="true" className={styles['hr']} />
 
-        <nav aria-label='Primary'>
+        <nav aria-label='Primary navigation'>
           <ul className={styles['sidebar-nav-link-wrapper']}>
             <li>
               <NavLink to='/' end className={( {isActive }) => 
