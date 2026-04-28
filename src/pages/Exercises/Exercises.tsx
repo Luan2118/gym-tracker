@@ -1,8 +1,8 @@
 import styles from './Exercises.module.css'
 import { useEffect, useRef, useState } from 'react'
 
-import ExerciseBrowser from './components/ExerciseBrowser'
-import SelectedExercisePanel from './components/SelectedExercisePanel';
+import ExerciseBrowser from './components/ExerciseBrowser/ExerciseBrowser'
+import SelectedExercisePanel from './components/SelectedExercisePanel/SelectedExercisePanel';
 
 
 export default function Exercises() {

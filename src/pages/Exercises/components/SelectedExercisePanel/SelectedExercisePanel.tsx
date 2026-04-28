@@ -1,14 +1,14 @@
 import styles from './SelectedExercisePanel.module.css'
-import { exercises, EXERCISE_BASE_PREFIX } from '../../../data/exercises'
-import setPastDate from '../../../utils/setPastDate'
-import formatISODate from '../../../utils/formatISODate'
+import { exercises, EXERCISE_BASE_PREFIX } from '../../../../data/exercises'
+import setPastDate from '../../../../utils/setPastDate'
+import formatISODate from '../../../../utils/formatISODate'
 import { useOutletContext } from 'react-router-dom'
 import { useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, LineElement, PointElement, CategoryScale, LinearScale, Title, Tooltip, TooltipItem } from 'chart.js';
 ChartJS.register(LineElement, PointElement, CategoryScale, LinearScale, Title, Tooltip);
-import { sortByNewest } from '../../../utils/sortDate';
-import { LayoutContextType } from '../../../types'
+import { sortByNewest } from '../../../../utils/sortDate';
+import { LayoutContextType } from '../../../../types'
 
 type SelectedExercisePanelProp = {
   selectedExerciseId: string | null

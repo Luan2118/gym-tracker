@@ -1,6 +1,6 @@
 import styles from './ExerciseItem.module.css'
-import { EXERCISE_BASE_PREFIX } from '../../../data/exercises'
-import { ExerciseMetaData } from '../../../types'
+import { EXERCISE_BASE_PREFIX } from '../../../../data/exercises'
+import { ExerciseMetaData } from '../../../../types'
 
 type ExerciseItemProps = {
   filteredExercises: ExerciseMetaData[]

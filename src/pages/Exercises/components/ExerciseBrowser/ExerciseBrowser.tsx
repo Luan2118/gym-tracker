@@ -1,10 +1,10 @@
 import styles from './ExerciseBrowser.module.css';
-import searchIcon from '../../../assets/searchIcon.png'
-import { exercises } from '../../../data/exercises'
+import searchIcon from '../../../../assets/searchIcon.png'
+import { exercises } from '../../../../data/exercises'
 import { useState } from 'react';
-import closeX from '../../../assets/activeWorkout/x-close.png'
-import ExerciseItem from './ExerciseItem';
-import { ExerciseMetaData } from '../../../types';
+import closeX from '../../../../assets/activeWorkout/x-close.png'
+import ExerciseItem from '../ExerciseItem/ExerciseItem';
+import { ExerciseMetaData } from '../../../../types';
 
 type ExerciseBrowserProps = {
   isMobile: boolean
