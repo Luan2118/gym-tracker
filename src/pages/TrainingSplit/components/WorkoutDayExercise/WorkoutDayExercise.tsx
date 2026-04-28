@@ -16,10 +16,10 @@ type WorkoutDayExerciseProps = {
   addSet: (workoutDayId: string, addedExerciseRowId: string) => void
   selectExercise: (workoutDayId: string, selectedExerciseId: string, addedExerciseRowId: string) => void
   duplicatedExerciseId: string
-  notAddedSetExId: string | undefined
+  notAddedSetRowId: string | undefined
 }
 
-export default function WorkoutDayExercise({ addedExercise, workoutDayId, selectExerciseAgain, handleSearchExerciseText, deleteExercise, handleWeightSet, handleRepsSet, deleteSet, addSet, selectExercise, duplicatedExerciseId, notAddedSetExId }: WorkoutDayExerciseProps) {
+export default function WorkoutDayExercise({ addedExercise, workoutDayId, selectExerciseAgain, handleSearchExerciseText, deleteExercise, handleWeightSet, handleRepsSet, deleteSet, addSet, selectExercise, duplicatedExerciseId, notAddedSetRowId }: WorkoutDayExerciseProps) {
   return (
     <li className={styles["search-exercise-wrapper"]}>
 
@@ -74,7 +74,7 @@ export default function WorkoutDayExercise({ addedExercise, workoutDayId, select
       }
 
       {
-        notAddedSetExId === addedExercise.exerciseId  && addedExercise.confirm && addedExercise.sets.length === 0 &&
+        notAddedSetRowId === addedExercise.rowId  && addedExercise.confirm && addedExercise.sets.length === 0 &&
         <p role='alert' className={styles["error-message"]}>
           <span aria-hidden='true'>&#10071;</span>
           Add at least one set

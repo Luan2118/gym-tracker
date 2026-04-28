@@ -34,10 +34,10 @@ type AddTrainingSplitDialogProps = {
   updateTrainingSplitError: string | null
   showMissingExercisesError: boolean
   showUnselectedExerciseError: boolean
-  notAddedSetExId: string | undefined
+  notAddedSetRowId: string | undefined
 }
 
-export default function AddTrainingSplitDialog({ dialogRef, submitTrainingSplit, trainingSplitInputText, setTrainingSplitInputText, addWorkoutDay, closeDialog, workoutDays, handleWorkoutDayInputText, deleteWorkoutDay, selectExerciseAgain, handleSearchExerciseText, deleteExercise, handleWeightSet, handleRepsSet, deleteSet, addSet, selectExercise, addExercise, duplicatedExerciseId, emptyTrainingSplitName, emptyWorkoutDayName, hasSubmitted, isAddingTrainingSplit, addTrainingSplitError, isUpdatingTrainingSplit, updateTrainingSplitError, showMissingExercisesError, showUnselectedExerciseError, notAddedSetExId }: AddTrainingSplitDialogProps) {
+export default function AddTrainingSplitDialog({ dialogRef, submitTrainingSplit, trainingSplitInputText, setTrainingSplitInputText, addWorkoutDay, closeDialog, workoutDays, handleWorkoutDayInputText, deleteWorkoutDay, selectExerciseAgain, handleSearchExerciseText, deleteExercise, handleWeightSet, handleRepsSet, deleteSet, addSet, selectExercise, addExercise, duplicatedExerciseId, emptyTrainingSplitName, emptyWorkoutDayName, hasSubmitted, isAddingTrainingSplit, addTrainingSplitError, isUpdatingTrainingSplit, updateTrainingSplitError, showMissingExercisesError, showUnselectedExerciseError, notAddedSetRowId }: AddTrainingSplitDialogProps) {
 
   return (
     <dialog id='training-split-dialog' ref={dialogRef} className={styles["add-training-split-dialog"]} aria-label='Training split dialog'>
@@ -100,7 +100,7 @@ export default function AddTrainingSplitDialog({ dialogRef, submitTrainingSplit,
                     addSet={addSet}
                     selectExercise={selectExercise}
                     duplicatedExerciseId={duplicatedExerciseId}
-                    notAddedSetExId={notAddedSetExId}
+                    notAddedSetRowId={notAddedSetRowId}
                   />
                 )}
               </ul>
