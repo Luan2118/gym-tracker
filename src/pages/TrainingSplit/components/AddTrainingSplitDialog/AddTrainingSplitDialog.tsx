@@ -34,9 +34,10 @@ type AddTrainingSplitDialogProps = {
   updateTrainingSplitError: string | null
   showMissingExercisesError: boolean
   showUnselectedExerciseError: boolean
+  notAddedSetExId: string | undefined
 }
 
-export default function AddTrainingSplitDialog({ dialogRef, submitTrainingSplit, trainingSplitInputText, setTrainingSplitInputText, addWorkoutDay, closeDialog, workoutDays, handleWorkoutDayInputText, deleteWorkoutDay, selectExerciseAgain, handleSearchExerciseText, deleteExercise, handleWeightSet, handleRepsSet, deleteSet, addSet, selectExercise, addExercise, duplicatedExerciseId, emptyTrainingSplitName, emptyWorkoutDayName, hasSubmitted, isAddingTrainingSplit, addTrainingSplitError, isUpdatingTrainingSplit, updateTrainingSplitError, showMissingExercisesError, showUnselectedExerciseError }: AddTrainingSplitDialogProps) {
+export default function AddTrainingSplitDialog({ dialogRef, submitTrainingSplit, trainingSplitInputText, setTrainingSplitInputText, addWorkoutDay, closeDialog, workoutDays, handleWorkoutDayInputText, deleteWorkoutDay, selectExerciseAgain, handleSearchExerciseText, deleteExercise, handleWeightSet, handleRepsSet, deleteSet, addSet, selectExercise, addExercise, duplicatedExerciseId, emptyTrainingSplitName, emptyWorkoutDayName, hasSubmitted, isAddingTrainingSplit, addTrainingSplitError, isUpdatingTrainingSplit, updateTrainingSplitError, showMissingExercisesError, showUnselectedExerciseError, notAddedSetExId }: AddTrainingSplitDialogProps) {
 
   return (
     <dialog id='training-split-dialog' ref={dialogRef} className={styles["add-training-split-dialog"]} aria-label='Training split dialog'>
@@ -99,7 +100,7 @@ export default function AddTrainingSplitDialog({ dialogRef, submitTrainingSplit,
                     addSet={addSet}
                     selectExercise={selectExercise}
                     duplicatedExerciseId={duplicatedExerciseId}
-                    hasSubmitted={hasSubmitted}
+                    notAddedSetExId={notAddedSetExId}
                   />
                 )}
               </ul>

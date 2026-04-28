@@ -16,11 +16,10 @@ type WorkoutDayExerciseProps = {
   addSet: (workoutDayId: string, addedExerciseRowId: string) => void
   selectExercise: (workoutDayId: string, selectedExerciseId: string, addedExerciseRowId: string) => void
   duplicatedExerciseId: string
-  hasSubmitted: boolean
+  notAddedSetExId: string | undefined
 }
 
-export default function WorkoutDayExercise({ addedExercise, workoutDayId, selectExerciseAgain, handleSearchExerciseText, deleteExercise, handleWeightSet, handleRepsSet, deleteSet, addSet, selectExercise, duplicatedExerciseId, hasSubmitted }: WorkoutDayExerciseProps) {
-
+export default function WorkoutDayExercise({ addedExercise, workoutDayId, selectExerciseAgain, handleSearchExerciseText, deleteExercise, handleWeightSet, handleRepsSet, deleteSet, addSet, selectExercise, duplicatedExerciseId, notAddedSetExId }: WorkoutDayExerciseProps) {
   return (
     <li className={styles["search-exercise-wrapper"]}>
 
@@ -75,7 +74,7 @@ export default function WorkoutDayExercise({ addedExercise, workoutDayId, select
       }
 
       {
-        hasSubmitted && addedExercise.confirm && addedExercise.sets.length === 0 &&
+        notAddedSetExId === addedExercise.exerciseId  && addedExercise.confirm && addedExercise.sets.length === 0 &&
         <p role='alert' className={styles["error-message"]}>
           <span aria-hidden='true'>&#10071;</span>
           Add at least one set

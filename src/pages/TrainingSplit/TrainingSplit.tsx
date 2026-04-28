@@ -29,6 +29,7 @@ export default function TrainingSplit() {
   const [deleteTrainingSplitError, setDeleteTrainingSplitError] = useState<string | null>(null);
   const [isUpdatingTrainingSplit, setIsUpdatingTrainingSplit] = useState(false);
   const [updateTrainingSplitError, setUpdateTrainingSplitError] = useState<string | null>(null);
+  const [notAddedSetExId, setNotAddedSetExId] = useState<string | undefined>(undefined);
 
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -277,7 +278,9 @@ export default function TrainingSplit() {
     const hasEmptyWorkoutDayName = snapshotWorkoutDays.filter((workoutDay) => workoutDay.name.trim() === '')
     const notAddedExercises = snapshotWorkoutDays.some((workoutDay) => workoutDay.exercises.length === 0)
     const notSelectedExercises = snapshotWorkoutDays.some((workoutDay) => workoutDay.exercises.some((ex) => ex.exerciseName === ''))
-    const notAddedSet = snapshotWorkoutDays.some((workoutDay) => workoutDay.exercises.some((ex) => ex.sets.length === 0));
+    const notAddedSet = snapshotWorkoutDays.flatMap((workoutDay) => workoutDay.exercises).find((ex) => ex.sets.length === 0);
+
+    console.log(notAddedSet)
 
     // check for training split name
     if (!name) {
@@ -313,7 +316,10 @@ export default function TrainingSplit() {
     setShowUnselectedExerciseError(false);
 
     // check for empty sets
-    if (notAddedSet) return;
+    if (notAddedSet) {
+      setNotAddedSetExId(notAddedSet.exerciseId)
+      return;
+    }
 
     setAddTrainingSplitError(null);
 
@@ -483,6 +489,7 @@ export default function TrainingSplit() {
           updateTrainingSplitError={updateTrainingSplitError}
           showMissingExercisesError={showMissingExercisesError}
           showUnselectedExerciseError={showUnselectedExerciseError}
+          notAddedSetExId={notAddedSetExId}
         />
         <section className={styles["content-main"]}>
           {isTrainingSplitsLoading ? (
