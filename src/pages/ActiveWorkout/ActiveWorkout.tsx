@@ -7,6 +7,8 @@ import formatTimer from '../../utils/formatTimer'
 import { LayoutContextType, WorkoutHistoryExercise, ActiveWorkoutExercise, TrainingSplit } from '../../types'
 import { createWorkoutHistory } from '../../api/workoutHistoryApi'
 import { updateTrainingSplitById } from '../../api/trainingSplitsApi'
+import buildWorkoutHistoryPayload from './utils/buildWorkoutHistoryPayload'
+import buildUpdatedTrainingSplit from './utils/buildUpdatedTrainingSplit'
 
 export default function ActiveWorkout() {
 
@@ -176,70 +178,20 @@ export default function ActiveWorkout() {
 
     setHasIncompleteSet(false);
 
-
-
-    // map workout exercises
-    const workoutExercises: WorkoutHistoryExercise[] = activeExercises.map((ex) => ({
-      exerciseName: ex.exerciseName,
-      exerciseId: ex.exerciseId,
-      images: ex.images,
-      sets: ex.sets.map((set) => ({
-        id: set.id,
-        sessionId: set.sessionId,
-        weight: Number(set.weight),
-        reps: Number(set.reps),
-      })),
-    }));
-
-    // new workouthistory
-    const newWorkoutHistory = {
+    const newWorkoutHistory = buildWorkoutHistoryPayload({
       trainingSplitName: selectedTrainingSplit ? selectedTrainingSplit.name : '',
       workoutDay: selectedWorkoutDay ? selectedWorkoutDay.name : '',
       date: new Date().toISOString(),
-      exercises: workoutExercises,
       duration: elapsedTime
-    }
+    }, activeExercises)
 
-    // check for the correct split
-    const selectedSplit = trainingSplits.find((split) => split.id === selectedTrainingSplitId);
-
-    if (!selectedSplit) return;
+    if (!selectedTrainingSplit) return;
 
     setFinishWorkoutError(null);
     setIsFinishingWorkout(true);
 
     // updated split
-    const updatedSplit: TrainingSplit = {
-      id: selectedSplit.id,
-      name: selectedSplit.name,
-      workoutDays: selectedSplit.workoutDays.map((workoutDay) => {
-        if (workoutDay.id !== selectedWorkoutDayId) return workoutDay;
-
-        return {
-          ...workoutDay,
-          exercises: workoutDay.exercises.map((ex) => {
-            const activeExercise = activeExercises.find((activeEx) => activeEx.exerciseId === ex.exerciseId)
-
-            if (!activeExercise) return ex;
-
-            return {
-              ...ex,
-              sets: ex.sets.map((set) => {
-                const activeSet = activeExercise.sets.find((activeSet) => activeSet.id === set.id);
-
-                if (!activeSet) return set
-
-                return {
-                  ...set,
-                  weight: activeSet.weight,
-                  reps: activeSet.reps
-                }
-              })
-            }
-          })
-        }
-      })
-    }
+    const updatedSplit = buildUpdatedTrainingSplit(selectedTrainingSplit, selectedWorkoutDayId, activeExercises)
 
     // create new workout history and update the split
     try {
