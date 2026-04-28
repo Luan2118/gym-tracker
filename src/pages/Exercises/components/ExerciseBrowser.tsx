@@ -4,6 +4,7 @@ import { exercises } from '../../../data/exercises'
 import { useState } from 'react';
 import closeX from '../../../assets/activeWorkout/x-close.png'
 import ExerciseItem from './ExerciseItem';
+import { ExerciseMetaData } from '../../../types';
 
 type ExerciseBrowserProps = {
   isMobile: boolean
@@ -11,18 +12,6 @@ type ExerciseBrowserProps = {
   handleCloseDialog: () => void
 }
 
-type Exercise = {
-  id: string;
-  name: string;
-  video: string;
-  images: string[];
-  muscleGroup: string;
-  bodyRegion: string;
-  equipment: string;
-  primaryMuscles: string[];
-  secondaryMuscles: string[];
-  instructions: string[];
-}
 
 
 
@@ -67,7 +56,7 @@ export default function ExerciseBrowser({ isMobile, handleSelectExercise, handle
       return muscleGroupEquipmentFilter(ex)
     })
 
-  function muscleGroupEquipmentFilter(ex: Exercise, bodyPart?: string) {
+  function muscleGroupEquipmentFilter(ex: ExerciseMetaData, bodyPart?: string) {
 
     // all muscle group and all equipment
     if (selectedMuscleOption.toLocaleLowerCase() === 'all muscles' && selectedEquipment.toLocaleLowerCase() === 'all equipment') {
