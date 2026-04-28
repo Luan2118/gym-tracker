@@ -40,7 +40,7 @@ export default function BodyWeight() {
   const [updateBodyWeightError, setUpdateBodyWeightError] = useState<string | null>(null);
   const [isUpdatingBodyWeight, setIsUpdatingBodyWeight] = useState(false);
   const [deleteBodyWeightId, setDeleteBodyWeightId] = useState<string | null>(null);
-  const [deletingBodyWeight, setDeletingBodyWeightI] = useState(false);
+  const [deletingBodyWeight, setDeletingBodyWeight] = useState(false);
   const [deleteBodyWeightSuccess, setDeleteBodyWeightSuccess] = useState<string | null>(null);
 
   const bwInputRef = useRef<HTMLInputElement | null>(null);
@@ -199,7 +199,7 @@ export default function BodyWeight() {
   async function deleteBodyWeight(id: string) {
     setDeleteBodyWeightError(null);
     setDeleteBodyWeightSuccess(null);
-    setDeletingBodyWeightI(true);
+    setDeletingBodyWeight(true);
     setDeleteBodyWeightId(id);
     try {
       await deleteBodyWeightById(id)
@@ -209,7 +209,7 @@ export default function BodyWeight() {
       console.error("Failed to delete body weight:", error);
       setDeleteBodyWeightError('Failed to delete body weight')
     } finally {
-      setDeletingBodyWeightI(false);
+      setDeletingBodyWeight(false);
     }
   }
 
