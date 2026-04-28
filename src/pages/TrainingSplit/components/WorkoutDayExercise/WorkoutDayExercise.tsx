@@ -1,8 +1,8 @@
 import styles from './WorkoutDayExercise.module.css'
-import plusIcon from '../../../assets/training-split/plus-icon.png'
-import deleteWorkoutDayIcon from '../../../assets/training-split/delete-workout-day.png'
-import { exercises, EXERCISE_BASE_PREFIX } from '../../../data/exercises'
-import { TrainingSplitExercise } from '../../../types'
+import plusIcon from '../../../../assets/training-split/plus-icon.png'
+import deleteWorkoutDayIcon from '../../../../assets/training-split/delete-workout-day.png'
+import { exercises, EXERCISE_BASE_PREFIX } from '../../../../data/exercises'
+import { TrainingSplitExercise } from '../../../../types'
 
 type WorkoutDayExerciseProps = {
   addedExercise: TrainingSplitExercise

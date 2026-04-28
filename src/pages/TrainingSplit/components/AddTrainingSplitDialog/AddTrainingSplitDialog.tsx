@@ -1,8 +1,8 @@
 import styles from './AddTrainingSplitDialog.module.css'
-import deleteWorkoutDayIcon from '../../../assets/training-split/delete-workout-day.png'
-import close from '../../../assets/training-split/x-close.png'
-import WorkoutDayExercise from './WorkoutDayExercise'
-import { TrainingSplitWorkoutDay } from '../../../types'
+import deleteWorkoutDayIcon from '../../../../assets/training-split/delete-workout-day.png'
+import close from '../../../../assets/training-split/x-close.png'
+import WorkoutDayExercise from '../WorkoutDayExercise/WorkoutDayExercise'
+import { TrainingSplitWorkoutDay } from '../../../../types'
 
 
 type AddTrainingSplitDialogProps = {
