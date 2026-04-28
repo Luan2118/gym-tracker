@@ -1,26 +1,18 @@
 import styles from './BodyWeight.module.css'
 import BodyWeightItem from './components/BodyWeightItem'
-import setPastDate from '../../utils/setPastDate';
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate, useOutletContext, useSearchParams } from 'react-router-dom';
 import getPaginationData from '../../utils/getPaginationData';
-import { BodyWeight as BodyWeightType, LayoutContextType } from '../../types';
+import { LayoutContextType } from '../../types';
 import { createBodyWeight, deleteBodyWeightById, updateBodyWeightById } from '../../api/bodyWeightsApi';
+import { getVisibleBodyWeights, BodyWeightFilter } from './utils/getVisibleBodyWeights';
 
-type BodyWeightFilter =
-  | 'lastWeek'
-  | 'lastTwoWeeks'
-  | 'lastMonth'
-  | 'lastTwoMonths'
-  | 'customDate'
-  | 'all'
+
 
 
 type ApplyPresetFilter = Exclude<BodyWeightFilter, 'customDate'>
 
 export default function BodyWeight() {
-
-
 
   const { bodyWeights, setBodyWeights, isBodyWeightsLoading, bodyWeightsError } = useOutletContext<LayoutContextType>();
 
@@ -54,37 +46,12 @@ export default function BodyWeight() {
   }, [searchParams]);
 
 
-  const today = new Date().toISOString();
-  const lastWeekDate = setPastDate(7);
-  const lastTwoWeeksDate = setPastDate(14);
-  const lastMonthDate = setPastDate(30);
-  const lastTwoMonthsDate = setPastDate(60);
-
-  function getBodyWeightsInRange(bodyWeights: BodyWeightType[], date: string): BodyWeightType[] {
-    return bodyWeights.filter((bw) => today >= bw.date && date <= bw.date)
-  }
-
-  const lastWeek = getBodyWeightsInRange(bodyWeights, lastWeekDate)
-  const lastTwoWeeks = getBodyWeightsInRange(bodyWeights, lastTwoWeeksDate)
-  const lastMonth = getBodyWeightsInRange(bodyWeights, lastMonthDate)
-  const lastTwoMonths = getBodyWeightsInRange(bodyWeights, lastTwoMonthsDate)
-  const customDate = bodyWeights.filter((bw) => {
-    const bwDate = bw.date.slice(0, 10);
-    const from = dateFrom || '0000-01-01';
-    const to = dateTo || '9999-12-31';
-
-
-    return from <= bwDate && to >= bwDate;
-  });
-
-  const visibleBodyWeights =
-    filter === 'lastWeek' ? lastWeek :
-      filter === 'lastTwoWeeks' ? lastTwoWeeks :
-        filter === 'lastMonth' ? lastMonth :
-          filter === 'lastTwoMonths' ? lastTwoMonths :
-            filter === 'customDate' ? customDate :
-              bodyWeights
-
+  const visibleBodyWeights = getVisibleBodyWeights({
+    filter,
+    bodyWeights,
+    dateFrom,
+    dateTo
+  })
 
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -130,7 +97,7 @@ export default function BodyWeight() {
 
     const editBBwInputId = setTimeout(() => {
       setEditBwInputValidation(false)
-    }, 882000)
+    }, 2000)
 
     return () => clearTimeout(editBBwInputId)
   }, [editBwInputValidation])
@@ -153,7 +120,7 @@ export default function BodyWeight() {
     try {
       const savedBodyWeight = await createBodyWeight({
         bw: Number(bodyWeightInputText),
-        date: today.slice(0, 10)
+        date: new Date().toISOString().slice(0, 10)
       })
 
       setBodyWeights((prev) => {
@@ -358,11 +325,17 @@ export default function BodyWeight() {
               </span>
               {bodyWeightsError}
             </p>
-          ) : visibleBodyWeights.length === 0 ? (
+          ) : bodyWeights.length === 0 ? (
             <p
-              className={`${styles['status-message']} ${styles['no-body-weight-logs-yet-text']}`}
+              className={`${styles['status-message']} ${styles['no-body-weight-logs-text']}`}
             >
               No body weight logs yet
+            </p>
+          ) : visibleBodyWeights.length === 0 ? (
+            <p
+              className={`${styles['status-message']} ${styles['no-body-weight-logs-text']}`}
+            >
+              No body weight logs match your filters
             </p>
           ) : (
             <ul>
