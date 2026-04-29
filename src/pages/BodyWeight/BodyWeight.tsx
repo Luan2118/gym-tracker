@@ -54,7 +54,7 @@ export default function BodyWeight() {
 
   const [currentPage, setCurrentPage] = useState(1);
 
-  const itemsPerPage = 10;
+  const itemsPerPage = 7;
 
   const { pageNumbers, paginatedData, totalPages } = getPaginationData(itemsPerPage, visibleBodyWeights, currentPage)
 
