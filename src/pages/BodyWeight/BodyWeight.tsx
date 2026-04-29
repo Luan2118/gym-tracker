@@ -33,7 +33,6 @@ export default function BodyWeight() {
   const [isUpdatingBodyWeight, setIsUpdatingBodyWeight] = useState(false);
   const [deleteBodyWeightId, setDeleteBodyWeightId] = useState<string | null>(null);
   const [deletingBodyWeight, setDeletingBodyWeight] = useState(false);
-  const [deleteBodyWeightSuccess, setDeleteBodyWeightSuccess] = useState<string | null>(null);
 
   const bwInputRef = useRef<HTMLInputElement | null>(null);
   const [searchParams] = useSearchParams();
@@ -58,16 +57,6 @@ export default function BodyWeight() {
   const itemsPerPage = 10;
 
   const { pageNumbers, paginatedData, totalPages } = getPaginationData(itemsPerPage, visibleBodyWeights, currentPage)
-
-  useEffect(() => {
-    if (!deleteBodyWeightSuccess) return;
-
-    const deletedSuccessId = setTimeout(() => {
-      setDeleteBodyWeightSuccess(null)
-    }, 2000)
-
-    return () => clearTimeout(deletedSuccessId)
-  }, [deleteBodyWeightSuccess])
 
   useEffect(() => {
     if (feedback !== 'added') return;
@@ -165,13 +154,11 @@ export default function BodyWeight() {
 
   async function deleteBodyWeight(id: string) {
     setDeleteBodyWeightError(null);
-    setDeleteBodyWeightSuccess(null);
     setDeletingBodyWeight(true);
     setDeleteBodyWeightId(id);
     try {
       await deleteBodyWeightById(id)
       setBodyWeights((prev) => prev.filter((bw) => bw.id !== id))
-      setDeleteBodyWeightSuccess('Body weight deleted');
     } catch (error) {
       console.error("Failed to delete body weight:", error);
       setDeleteBodyWeightError('Failed to delete body weight')
@@ -300,14 +287,6 @@ export default function BodyWeight() {
           </section>
 
           <h2 className={styles["sr-only"]}>Body weight entries</h2>
-          {deleteBodyWeightSuccess && (
-            <p
-              role="status"
-              className={`${styles["status-message"]} ${styles["success-message"]}`}
-            >
-              Body weight log deleted.
-            </p>
-          )}
           {isBodyWeightsLoading ? (
             <p
               role="status"
