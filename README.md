@@ -6,6 +6,35 @@ The app allows users to build their own training split, add workout days and exe
 
 Supabase is used for storing training splits, workout history, and body weight entries.
 
+## Live Demo
+
+[Live Demo](https://gym-tracker-azure-tau.vercel.app/)
+
+The deployed version includes shared sample data so the main features can be previewed immediately.
+
+## Screenshots
+
+### Dashboard
+![Dashboard](./screenshots/dashboard.png)
+
+### Training split
+![Training split](./screenshots/trainingSplit.png)
+
+
+### Active Workout
+![Active Workout](./screenshots/activeWorkout.png)
+
+### Workout History
+![Workout History](./screenshots/workoutHistory.png)
+
+### Exercises
+![Exercises](./screenshots/exercises.png)
+
+### Body Weight
+![Body Weight](./screenshots/bodyWeight.png)
+
+
+
 ## Features
 
 - Create and manage custom training splits
@@ -52,7 +81,7 @@ cd gym-tracker-project
 npm install
 ```
 
-3. Create a `.env` file in the project root
+3. Create a `.env` file in the project root and add your Supabase credentials
 
 ```env
 VITE_SUPABASE_URL=your_supabase_project_url
@@ -74,7 +103,7 @@ VITE_SUPABASE_URL=
 VITE_SUPABASE_PUBLISHABLE_KEY=
 ```
 
-The `.env` file is not included in the repository.
+An empty `.env.example` file is included in the repository as a template. The real `.env` file is not included in the repository.
 
 ## Project Structure
 
@@ -94,6 +123,7 @@ src/
 ## Current Limitations
 
 - The app does not include user authentication
+- The deployed demo uses shared sample data
 - Exercise data is based on a curated local exercise list
 - The app is focused on individual workout tracking, not coaching or social features
 - Local setup requires a Supabase project with matching database tables
@@ -105,4 +135,3 @@ src/
 - Add more advanced workout statistics
 - Improve exercise progress analytics
 - Add automated tests
-
