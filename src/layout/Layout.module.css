@@ -13,7 +13,8 @@
   padding: 0.5rem 1rem;
   border-radius: 0.25rem;
   border: none;
-fix: prevent sidebar from pushing main content}
+
+}
 
 .layout {
   display: flex;
@@ -25,8 +26,7 @@ fix: prevent sidebar from pushing main content}
   width: 90%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 2rem;
-
+  padding-bottom: 2.5rem;
 }
 
 @media (max-width: 940px) {
