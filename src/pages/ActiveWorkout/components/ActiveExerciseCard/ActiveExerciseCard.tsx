@@ -82,7 +82,7 @@ export default function ActiveExerciseCard({ ex, exerciseId, workoutHistory, han
               return (
                 <div key={set.id} className={styles["active-workout-b-p-set-wrapper"]}>
                   <div className={styles["active-workout-b-p-set"]}>Set {index + 1}:</div>
-                  <span className={styles["active-workout-b-p-set-value"]}>{bestSet ? `${bestSet.weight} × ${bestSet.reps}` : "-"}</span>
+                  <span className={styles["active-workout-b-p-set-value"]}>{bestSet ? `${bestSet.weight} × ${bestSet.reps}` : "×"}</span>
                 </div>
               )
             })}

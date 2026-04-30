@@ -40,6 +40,7 @@
 .active-workout-b-p-set-wrapper {
   text-align: left;
   display: flex;
+  align-items: center;
 }
 
 .active-workout-b-p-set {
@@ -72,6 +73,7 @@
   border-radius: 10rem;
   padding: clamp(0.5rem, 2vw, 0.8rem) clamp(1.3rem, 2vw, 1.8rem);
   border: 1px solid rgb(255, 255, 255, 0.06);
+  align-items: center;
 
 }
 
