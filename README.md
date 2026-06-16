@@ -71,7 +71,7 @@ The deployed version includes shared sample data so the main features can be pre
 1. Clone the repository
 
 ```bash
-git clone https://github.com/Luan2118/gym-tracker-project.git
+git clone https://github.com/Luan2118/gym-tracker.git
 cd gym-tracker-project
 ```
 
