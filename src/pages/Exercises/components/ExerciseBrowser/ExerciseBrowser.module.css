@@ -35,6 +35,15 @@
   margin-right: 3rem;
 }
 
+.filter-search-wrapper:hover,
+.filter-search-wrapper:hover .search-exercise-input {
+  background-color: rgb(70, 70, 70);
+}
+
+.filter-search-wrapper:active,
+.filter-search-wrapper:active .search-exercise-input {
+  background-color: rgb(80, 80, 80);
+}
 .search-exercise-input:focus {
   outline: none;
   box-shadow: none;
@@ -77,6 +86,17 @@
   cursor: pointer;
   width: 100%;
   margin-bottom: 1rem;
+  transition: 0.2s ease;
+}
+
+.exercise-category-select:hover,
+.equipment-category-select:hover {
+  background-color: rgb(70, 70, 70);
+}
+
+.exercise-category-select:active,
+.equipment-category-select:active {
+  background-color: rgb(80, 80, 80);
 }
 
 .clicked-filter-button {
@@ -111,28 +131,13 @@
 }
 
 .upper-body-exercises-button:disabled,
-.lower-body-exercises-button:disabled{
+.lower-body-exercises-button:disabled {
   opacity: 0.45;
   cursor: not-allowed;
 }
 
 .selected-exercise-buttons-wrapper {
   margin: 1rem 0;
-}
-
-.selected-exercise-last-30-btn,
-.selected-exercise-last-60-btn,
-.selected-exercise-last-90-btn,
-.selected-exercise-all-btn {
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  background-color: rgb(60, 60, 60);
-  color: white;
-  font-size: clamp(1.3rem, 1vw, 1.5rem);
-  border-radius: 1rem;
-  cursor: pointer;
-  padding: 0.8rem 1.3rem;
-  margin-right: 1rem;
-  transition: 0.2s ease;
 }
 
 .upper-body-exercises-button:hover,

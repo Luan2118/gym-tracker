@@ -226,7 +226,7 @@ export default function SelectedExercisePanel({ selectedExerciseId, }: SelectedE
                         <button
                           aria-pressed={chartFilter === 'last30'}
                           type="button"
-                          className={styles["selected-exercise-last-30-btn"]}
+                          className={chartFilter === 'last30' ? styles["selected-exercise-clicked"] : styles["selected-exercise-last-30-btn"]}
                           onClick={() => setChartFilter('last30')}>
                           Last 30 Days
                         </button>
@@ -234,7 +234,7 @@ export default function SelectedExercisePanel({ selectedExerciseId, }: SelectedE
                         <button
                           aria-pressed={chartFilter === 'last60'}
                           type="button"
-                          className={styles["selected-exercise-last-60-btn"]}
+                          className={chartFilter === 'last60' ? styles["selected-exercise-clicked"] :styles["selected-exercise-last-60-btn"]}
                           onClick={() => setChartFilter('last60')}>
                           Last 60 Days
                         </button>
@@ -242,7 +242,7 @@ export default function SelectedExercisePanel({ selectedExerciseId, }: SelectedE
                         <button
                           aria-pressed={chartFilter === 'last90'}
                           type="button"
-                          className={styles["selected-exercise-last-90-btn"]}
+                          className={chartFilter === 'last90' ? styles["selected-exercise-clicked"] :styles["selected-exercise-last-90-btn"]}
                           onClick={() => setChartFilter('last90')}>
                           Last 90 Days
                         </button>
@@ -250,7 +250,7 @@ export default function SelectedExercisePanel({ selectedExerciseId, }: SelectedE
                         <button
                           aria-pressed={chartFilter === 'all'}
                           type="button"
-                          className={styles["selected-exercise-all-btn"]}
+                          className={chartFilter === 'all' ? styles["selected-exercise-clicked"] : styles["selected-exercise-all-btn"]}
                           onClick={() => setChartFilter('all')}>
                           All
                         </button>
